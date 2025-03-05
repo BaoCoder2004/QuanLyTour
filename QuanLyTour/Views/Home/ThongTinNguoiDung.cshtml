@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Thông tin người dùng";
+    Layout = "~/Views/Shared/_DeTail.cshtml";
+}
+<section class="innerpage-wrapper">
+    <div id="login" class="innerpage-section-padding">
+        <div class="container">
+            <h2>Thông tin người dùng</h2>
+
+            <!-- Hiển thị thông báo nếu có -->
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success">@TempData["Message"]</div>
+
+                <!-- Tự động chuyển hướng sau 5 giây -->
+                <script>
+                    setTimeout(function () {
+                        window.location.href = '@Url.Action("DangXuat", "Home")'; // Chuyển đến action DangXuat
+                    }, 5000); // 5000ms = 5s
+                </script>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+            }
+
+             @using(Html.BeginForm("ThongTinNguoiDung","Home"))
+            {
+               <form>
+                    <div class="form-group">
+                        <label for="TenNguoiDung">Họ tên</label>
+                        <input type="text" class="form-control" id="TenNguoiDung" name="TenNguoiDung" value="@Model.TenNguoiDung" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="DiaChi">Địa chỉ</label>
+                        <input type="text" class="form-control" id="DiaChi" name="DiaChi" value="@Model.DiaChi" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="SoDienThoai">Số điện thoại</label>
+                        <input type="text" class="form-control" id="SoDienThoai" name="SoDienThoai" value="@Model.SoDienThoai" required />
+                    </div>
+                    <input type="hidden" name="MaNguoiDung" value="@Model.MaNguoiDung" />
+                    <button type="submit" class="btn btn-orange btn-block">Lưu thay đổi</button>
+               </form>
+            }
+        </div><!-- end container -->
+    </div><!-- end login -->
+</section><!-- end innerpage-wrapper -->

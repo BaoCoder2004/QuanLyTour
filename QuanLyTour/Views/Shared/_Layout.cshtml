@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Homepage</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="images/favicon.png" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i,900,900i%7CMerriweather:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
+    <!-- Bootstrap Stylesheet -->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome Stylesheet -->
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom Stylesheets -->
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/orange.css" rel="stylesheet" />
+    <link href="~/css/responsive.css" rel="stylesheet" />
+
+    <!-- Owl Carousel Stylesheet -->
+    <link href="~/css/owl.carousel.css" rel="stylesheet" />
+    <link href="~/css/owl.theme.css" rel="stylesheet" />
+
+    <!-- Flex Slider Stylesheet -->
+    <link href="~/css/flexslider.css" rel="stylesheet" />
+
+    <!--Date-Picker Stylesheet-->
+    <link href="~/css/datepicker.css" rel="stylesheet" />
+    <!-- Magnific Gallery -->
+    <link href="~/css/magnific-popup.css" rel="stylesheet" />
+</head>
+<body id="hotel-homepage">
+
+    <!--====== LOADER =====-->
+    <div class="loader"></div>
+
+
+    <!--======== SEARCH-OVERLAY =========-->
+    <div class="overlay">
+        <a href="javascript:void(0)" id="close-button" class="closebtn">&times;</a>
+        <div class="overlay-content">
+            <div class="form-center">
+                @using (Html.BeginForm("TimKiemTour", "Home", FormMethod.Get, new { @class = "form-inline", role = "form" }))
+                {
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" name="keyword" class="form-control" placeholder="Search..." required />
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn">
+                                    <span><i class="fa fa-search"></i></span>
+                                </button>
+                            </span>
+                        </div><!-- end input-group -->
+                    </div>
+
+                    <!-- end form-group -->
+                }
+            </div><!-- end form-center -->
+        </div><!-- end overlay-content -->
+    </div><!-- end overlay -->
+    <!--============= TOP-BAR ===========-->
+    <div id="top-bar" class="tb-text-grey">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div id="info">
+                        <ul class="list-unstyled list-inline">
+                            @*  <li><span><i class="fa fa-map-marker"></i></span>29 Land St, Lorem City, CA</li>
+                            <li><span><i class="fa fa-phone"></i></span>+00 123 4567</li> *@
+                        </ul>
+                    </div><!-- end info -->
+                </div><!-- end columns -->
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div id="links">
+                        <ul class="list-unstyled list-inline">
+                            <li class="dropdown">
+                                @if (Context.Session.GetString("UserName") != null)
+                                {
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        Xin chào, @Context.Session.GetString("UserName") <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="@Url.Action("ThongTinNguoiDung","Home")">Thông tin cá nhân</a></li>
+                                        <li><a href="@Url.Action("ThongtinTourDat","Home")">Thông tin tour đã đặt</a></li>
+                                        <li><a href="@Url.Action("DangXuat", "Home")">Đăng xuất</a></li>
+                                        <!-- Bạn có thể thêm các tùy chọn khác ở đây -->
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("DangNhap", "Home")"><span><i class="fa fa-lock"></i></span>Đăng nhập</a>
+                                }
+                            </li>
+                            @if (Context.Session.GetString("UserName") == null)
+                            {
+                                <li><a href="@Url.Action("DangKy", "Home")"><span><i class="fa fa-plus"></i></span>Đăng ký</a></li>
+                            }
+                        </ul>
+                    </div><!-- end links -->
+                </div><!-- end columns -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end top-bar -->
+    <!--========================= FLEX SLIDER =====================-->
+    <!-- Modal -->
+
+
+    <section class="flexslider-container" id="flexslider-container-3">
+
+        <div class="header-absolute">
+            <nav class="navbar navbar-default main-navbar navbar-custom navbar-transparent" id="mynavbar">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" id="menu-button">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <div class="header-search hidden-lg">
+                            <a href="javascript:void(0)" class="search-button"><span><i class="fa fa-search"></i></span></a>
+                        </div>
+                        <a href="#" class="navbar-brand"><span><i class="fa fa-plane"></i>HANOI</span>TOUR</a>
+                    </div><!-- end navbar-header -->
+
+                    <div class="collapse navbar-collapse" id="myNavbar1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Trang chủ<span></span></a>
+                            </li>
+                         
+                            <li><a href="javascript:void(0)" class="search-button"><span><i class="fa fa-search"></i></span></a></li>
+                        </ul>
+                    </div><!-- end navbar collapse -->
+                </div><!-- end container -->
+            </nav><!-- end navbar -->
+        </div><!-- end header-absolute -->
+
+        <div class="sidenav-content">
+            <div id="mySidenav" class="sidenav">
+                <h2 id="web-name"><span><i class="fa fa-plane"></i></span>Star Travel</h2>
+
+                <div id="main-menu">
+                    <div class="closebtn">
+                        <button class="btn btn-default" id="closebtn">&times;</button>
+                    </div><!-- end close-btn -->
+                </div><!-- end main-menu -->
+            </div><!-- end mySidenav -->
+        </div><!-- end sidenav-content -->
+
+        <div class="flexslider slider" id="slider-3">
+            <ul class="slides">
+
+                <li class="item-1 back-size" style="background:linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url(hinhanh/banner_tour.jpg) 50% 65%;
+	background-size:cover;
+	height:100%;">
+                </li><!-- end item-1 -->
+            </ul>
+        </div><!-- end slider -->
+        @RenderBody();
+
+
+        <!--======================= FOOTER =======================-->
+        <section id="footer" class="ftr-heading-w ftr-heading-mgn-2">
+
+            <div id="footer-top" class="banner-padding ftr-top-grey ftr-text-grey">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 footer-widget ftr-about ftr-our-company">
+                            <h3 class="footer-heading">HANOITOUR</h3>
+                            
+                            <ul class="social-links list-inline list-unstyled">
+                                <li><a href="#"><span><i class="fa fa-facebook"></i></span></a></li>
+                                <li><a href="#"><span><i class="fa fa-twitter"></i></span></a></li>
+                                <li><a href="#"><span><i class="fa fa-google-plus"></i></span></a></li>
+                                <li><a href="#"><span><i class="fa fa-pinterest-p"></i></span></a></li>
+                                <li><a href="#"><span><i class="fa fa-instagram"></i></span></a></li>
+                                <li><a href="#"><span><i class="fa fa-linkedin"></i></span></a></li>
+                                <li><a href="#"><span><i class="fa fa-youtube-play"></i></span></a></li>
+                            </ul>
+                        </div><!-- end columns -->
+
+                        <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 footer-widget ftr-map">
+                            <div class="map">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6509729.487836256!2d-123.77686152799836!3d37.1864783963941!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb9fe5f285e3d%3A0x8b5109a227086f55!2sCalifornia!5e0!3m2!1sen!2s!4v1490695907554" allowfullscreen></iframe>
+                            </div>
+                        </div><!-- end columns -->
+
+                    </div><!-- end row -->
+                </div><!-- end container -->
+            </div><!-- end footer-top -->
+
+            <div id="footer-bottom" class="ftr-bot-black">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="copyright">
+                            <p>© 2017 <a href="#">StarTravel</a>. All rights reserved.</p>
+                        </div><!-- end columns -->
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="terms">
+                            <ul class="list-unstyled list-inline">
+                                <li><a href="#">Terms & Condition</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                            </ul>
+                        </div><!-- end columns -->
+                    </div><!-- end row -->
+                </div><!-- end container -->
+            </div><!-- end footer-bottom -->
+
+        </section><!-- end footer -->
+        <!-- Page Scripts Starts -->
+        <script src="~/js/jquery.min.js"></script>
+        <script src="~/js/jquery.magnific-popup.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+        <script src="~/js/jquery.flexslider.js"></script>
+        <script src="~/js/bootstrap-datepicker.js"></script>
+        <script src="~/js/owl.carousel.min.js"></script>
+        <script src="~/js/custom-navigation.js"></script>
+        <script src="~/js/custom-flex.js"></script>
+        <script src="~/js/custom-owl.js"></script>
+        <script src="~/js/custom-date-picker.js"></script>
+        <script src="~/js/custom-gallery.js"></script>
+
+        <!-- Page Scripts Ends -->
+</body>
+</html>

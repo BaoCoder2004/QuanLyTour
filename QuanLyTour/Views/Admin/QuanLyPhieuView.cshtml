@@ -1,0 +1,146 @@
+﻿@model IPagedList<QuanLyTour.Models.PhieuDatTour>
+@using X.PagedList
+@using X.PagedList.Mvc.Core;
+@{
+    var userName = ViewContext.HttpContext.Session.GetString("UserName");
+    var IdUser = ViewContext.HttpContext.Session.GetString("UserId");
+}
+@{
+    ViewData["Title"] = "QuanLyPhieuView";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+<style>
+    .search-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+        .search-container input[type=text] {
+            padding: 6px;
+            margin-right: 5px;
+        }
+
+        .search-container button {
+            padding: 6px 10px;
+        }
+</style>
+<section id="main-content">
+    <section class="wrapper">
+        <!-- page start-->
+        <section class="panel">
+            <header class="panel-heading">
+                Quản lý thông tin phiếu đặt tour
+            </header>
+            <div class="panel-body">
+                <div class="grid cs-style-3">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Mã phiếu</th>
+                                <th>Tên Khách Hàng</th>
+                                <th>Địa chỉ</th>
+                                <th>Số Điện Thoại</th>
+                                <th>Tên Tour</th>
+                                <th>Đơn Giá / 1 người</th>
+                                <th>Số lượng</th>
+                                <th>Ngày đi</th>
+                                <th>Ngày Đặt Tour</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var phieuDatTour in Model)
+                            {
+                                <tr>
+                                    <td>@phieuDatTour.MaPhieu</td>
+                                    <td>@phieuDatTour.TenNguoiDung</td>
+                                    <td>@phieuDatTour.DiaChi</td>
+                                    <td>@phieuDatTour.SoDienThoai</td>
+                                    <td>@phieuDatTour.TenTour</td>
+                                    <td>@phieuDatTour.GiaTour.ToString("#,##") VND</td>
+                                    <td>@phieuDatTour.SoLuong</td>
+                                    <td>@phieuDatTour.NgayDi.ToString("dd/MM/yyyy")</td>
+                                    <td>@phieuDatTour.NgayDatTour.ToString("dd/MM/yyyy")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="pagination-container">
+                        @Html.PagedListPager(Model, page => Url.Action("QuanLyPhieuView", new { page }))
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- page end-->
+    </section>
+</section>
+
+
+
+< <!-- Modal -->
+<div class="modal fade" id="addRoomModal" tabindex="-1" role="dialog" aria-labelledby="addRoomModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addRoomModalLabel">Thêm Phòng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form để thêm phòng -->
+                <form id="addRoomForm">
+                    <div class="form-group">
+                        <label for="maPhong">Mã Phòng</label>
+                        <input type="text" class="form-control" id="maPhong" placeholder="Mã Phòng">
+                    </div>
+                    <div class="form-group">
+                        <label for="tenPhong">Tên Phòng</label>
+                        <input type="text" class="form-control" id="tenPhong" placeholder="Tên Phòng">
+                    </div>
+                    <div class="form-group">
+                        <label for="tenLoaiPhong">Loại Phòng</label>
+                        <select class="form-control" id="tenLoaiPhong">
+                            <!-- Danh sách loại phòng sẽ được tải bằng AJAX và điền vào đây -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="hinhAnh1">Hình Ảnh 1</label>
+                        <input type="file" class="form-control-file" id="hinhAnh1">
+                    </div>
+                    <div class="form-group">
+                        <label for="hinhAnh2">Hình Ảnh 2</label>
+                        <input type="file" class="form-control-file" id="hinhAnh2">
+                    </div>
+                    <div class="form-group">
+                        <label for="hinhAnh3">Hình Ảnh 3</label>
+                        <input type="file" class="form-control-file" id="hinhAnh3">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" id="addRoomButton">Thêm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        //    fancybox
+        jQuery(".fancybox").fancybox();
+    });
+
+</script>
+<script>
+    document.getElementById("checkAll").addEventListener("click", function () {
+        var checkboxes = document.getElementsByClassName("checkItem");
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = this.checked;
+        }
+    });
+</script>
+

@@ -1,0 +1,86 @@
+﻿@model IPagedList<QuanLyTour.Models.HoaDon>
+@using X.PagedList
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "QuanLyHoaDonView";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    .search-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+        .search-container input[type=text] {
+            padding: 6px;
+            margin-right: 5px;
+        }
+
+        .search-container button {
+            padding: 6px 10px;
+        }
+</style>
+<section id="main-content">
+    <section class="wrapper">
+        <!-- page start-->
+        <section class="panel">
+            <header class="panel-heading">
+                Quản lý hóa đơn thanh toán
+            </header>
+            <div class="panel-body">
+                <div class="grid cs-style-3">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Mã hóa đơn</th>
+                                <th>Tên Người Dùng</th>
+                                <th>Tên Tour</th>
+                                <th>Ngày Đặt Tour</th>
+                                <th>Tổng Tiền</th>
+                                <th>Ngày Thanh Toán</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var HoaDon in Model)
+                            {
+                                <tr>
+                                    <td>@HoaDon.MaHoaDon</td>
+                                    <td>@HoaDon.TenNguoiDung</td>
+                                    <td>@HoaDon.TenTour</td>
+                                    <td>@HoaDon.NgayDatTour.ToString("dd/MM/yyyy")</td>
+                                    <td>@HoaDon.TongTien.ToString("#,##") VND</td>
+                                    <td>@HoaDon.NgayThanhToan.ToString("dd/MM/yyyy")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="pagination-container">
+                        @Html.PagedListPager(Model, page => Url.Action("QuanLyHoaDonView", new { page }))
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- page end-->
+    </section>
+</section>
+
+
+<script type="text/javascript">
+    $(function () {
+        //    fancybox
+        jQuery(".fancybox").fancybox();
+    });
+
+</script>
+<script>
+    document.getElementById("checkAll").addEventListener("click", function () {
+        var checkboxes = document.getElementsByClassName("checkItem");
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = this.checked;
+        }
+    });
+</script>
+
+

@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewData["Title"] = "Thông tin tour đã đặt";
+    Layout = "~/Views/Shared/_Detail.cshtml";
+}
+@model List<TourDatViewModel>
+<section class="innerpage-wrapper">
+ <h2 class="text-center">DANH SÁCH CÁC TOUR ĐÃ ĐẶT</h2>
+    @if (Model != null && Model.Count > 0)
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Tên Tour</th>
+                    <th>Loại Tour</th>
+                    <th>Ngày Đặt</th>
+                    <th>Ngày Đi</th>
+                    <th>Số Lượng</th>
+                    <th>Thành Tiền</th>
+                    <th>Ngày Thanh Toán</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tour in Model)
+                {
+                    <tr>
+                        <td>@tour.TenTour</td>
+                        <td>@tour.LoaiTour</td>
+                        <td>@tour.NgayDat.ToString("dd/MM/yyyy")</td>
+                        <td>@tour.NgayDi.ToString("dd/MM/yyyy")</td>
+                        <td>@tour.SoLuong</td>
+                        <td>@tour.ThanhTien.ToString("N0")</td>
+                        <td>
+                            @if (tour.NgayThanhToan.HasValue)
+                            {
+                                @tour.NgayThanhToan.Value.ToString("dd/MM/yyyy")
+                            }
+                            else
+                            {
+                                <span>Chưa thanh toán</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Chưa có tour nào được đặt.</p>
+    }
+</section>
+
+
+
+
+
+

@@ -1,0 +1,110 @@
+﻿@model ViewModel
+
+@{
+    ViewData["Title"] = "SuaTourView";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section id="main-content">
+    <section class="wrapper">
+        <!-- page start-->
+        <section class="panel">
+            <header class="panel-heading">
+                Sửa thông tin tour
+            </header>
+            <div class="panel-body">
+                <div class="grid cs-style-3">
+                    @using (Html.BeginForm("SuaTourView", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <form id="addRoomForm">
+                            @foreach (var tour in Model.TourView)
+                            {
+                                <input style="display: none; type="text" class="form-control" id="maPhong" placeholder="Tên Phòng" name="maTour" value="@tour.MaTour">
+                            }
+                            <div class="form-group">
+                                <label for="tenPhong">Tên Phòng</label>
+                                @foreach (var tour in Model.TourView)
+                                {
+                                    <input type="text" class="form-control" id="tenPhong" placeholder="Tên Phòng" name="tenTour" required value="@tour.TenTour">
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label for="donGia">Giá Tour</label>
+                                @foreach (var tour in Model.TourView)
+                                {
+                                    <input type="text" class="form-control" id="donGia" placeholder="Đơn Giá" name="giaTour" required value="@tour.GiaTour">
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label for="tenLoaiPhong">Loại Phòng</label>
+                                <select class="form-control" name="maLoai">
+
+                                    @foreach (var TourTypes in Model.LoaiTourView)
+                                    {
+                                        <option value="@TourTypes.MaLoaiTour">
+                                            @TourTypes.TenLoaiTour
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="trangThai">Tour mới</label>
+                                @foreach (var tour in Model.TourView)
+                                {
+                                    <input type="text" class="form-control" id="donGia" placeholder="1: Tour mới || 0" name="trangThai" required value="@(tour.TrangThai ? "1" : "0")">
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label for="hinhAnh1">Hình Ảnh 1</label>
+                                @foreach (var room in Model.TourView)
+                                {
+                                    <input type="file" class="form-control-file" name="hinhAnh1">
+                                    <p>Ảnh hiện tại: @room.HinhAnh1</p>
+                                    <img src="@Url.Content("~/hinhanh/" + room.HinhAnh1)" alt="Hình ảnh" width="100" height="100" />
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label for="hinhAnh2">Hình Ảnh 2</label>
+                                @foreach (var room in Model.TourView)
+                                {
+                                    <input type="file" class="form-control-file" name="hinhAnh2">
+                                    <p>Ảnh hiện tại: @room.HinhAnh2</p>
+                                    <img src="@Url.Content("~/hinhanh/" + room.HinhAnh2)" alt="Hình ảnh" width="100" height="100" />
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label for="hinhAnh3">Hình Ảnh 3</label>
+                                @foreach (var room in Model.TourView)
+                                {
+                                    <input type="file" class="form-control-file" name="hinhAnh3">
+                                    <p>Ảnh hiện tại: @room.HinhAnh3</p>
+                                    <img src="@Url.Content("~/hinhanh/" + room.HinhAnh3)" alt="Hình ảnh" width="100" height="100" />
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label for="moTa">Mô tả</label>
+                                @foreach (var room in Model.TourView)
+                                {
+                                    <textarea class="form-control" rows="10" name="moTa" placeholder="Nhập mô tả cho tour...">@(!string.IsNullOrEmpty(room.MoTa) ? room.MoTa : "")</textarea>
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label for="lichTrinh">Lịch trình</label>
+                                @foreach (var room in Model.TourView)
+                                {
+                                    <textarea class="form-control" rows="10" name="lichTrinh" placeholder="Nhập lịch trình cho tour...">@(!string.IsNullOrEmpty(room.LichTrinh) ? room.LichTrinh : "")</textarea>
+                                }
+                            </div>
+                            <div class="modal-footer">
+                                <a href="@Url.Action("QuanLyTourView","Admin")"> <button type="button" class="btn btn-secondary">Hủy</button></a>
+                                <button type="submit" class="btn btn-primary">Sửa</button>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </section>
+        <!-- page end-->
+    </section>
+</section>
+

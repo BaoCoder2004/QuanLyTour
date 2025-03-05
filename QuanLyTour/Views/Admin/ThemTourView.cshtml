@@ -1,0 +1,71 @@
+﻿@model List<LoaiTour>
+@{
+    ViewData["Title"] = "ThemTourView";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section id="main-content">
+    <section class="wrapper">
+        <!-- page start-->
+        <section class="panel">
+            <header class="panel-heading">
+                Thêm tour mới
+            </header>
+            <div class="panel-body">
+                <div class="grid cs-style-3">
+                    @using (Html.BeginForm("ThemTourView", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <form id="addRoomForm">
+                            <div class="form-group">
+                                <label for="tenPhong">Tên Tour</label>
+                                <input type="text" class="form-control" id="tenPhong" placeholder="Tên tour" name="tenTour" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="donGia">Giá Tour</label>
+                                <input type="text" class="form-control" id="donGia" placeholder="Giá tour" name="giaTour" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="tenLoaiPhong">Loại Phòng</label>
+                                <select class="form-control" name="maLoai">
+                                    @foreach (var tourTypes in Model)
+                                    {
+                                        <option value="@tourTypes.MaLoaiTour">@tourTypes.TenLoaiTour</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="trangThai">Tour Mới</label>
+                                <input type="text" class="form-control" id="donGia" placeholder="Nhập 1 xác định là Tour mới || Nhập 0" name="trangThai" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="hinhAnh1">Hình Ảnh 1</label>
+                                <input type="file" class="form-control-file" name="hinhAnh1">
+                            </div>
+                            <div class="form-group">
+                                <label for="hinhAnh2">Hình Ảnh 2</label>
+                                <input type="file" class="form-control-file" name="hinhAnh2">
+                            </div>
+                            <div class="form-group">
+                                <label for="hinhAnh3">Hình Ảnh 3</label>
+                                <input type="file" class="form-control-file" name="hinhAnh3">
+                            </div>
+                            <div class="form-group">
+                                <label for="moTa">Mô tả</label>
+                                <textarea class="form-control" rows="10" name="moTa" placeholder="Nhập mô tả cho tour..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="lichTrinhs">Lịch trình</label>
+                                <textarea class="form-control" name="lichTrinh" rows="10" placeholder="Nhập lịch trình cho tour..."></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="@Url.Action("QuanLyTourView","Admin")"> <button type="button" class="btn btn-secondary">Hủy</button></a>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </section>
+        <!-- page end-->
+    </section>
+</section>

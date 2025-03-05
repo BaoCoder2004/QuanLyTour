@@ -1,0 +1,76 @@
+﻿@model TourIndexViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="search-tabs" id="search-tabs-3">
+    <div class="container">
+        <div class="row">
+
+            <div class="hidden-xs hidden-sm col-md-12 no-pd-l">
+                <div class="welcome-message">
+                    <h2>LỰA CHỌN KỲ NGHỈ DƯỠNG TUYỆT VỜI</h2>
+                    <p>
+                        💥 Bạn đang tìm kiếm một địa điểm du lịch đẹp và thú vị để khám phá? <br />
+                        👉 Nhiều địa điểm du lịch đầy màu sắc, nơi bạn có thể tận hưởng thiên nhiên hoang dã, tham gia các hoạt động giải trí và thưởng thức ẩm thực đặc trưng của địa phương
+                    <p> ⚡️  Hãy đến và trải nghiệm cùng HANOITOUR của chúng tôi! </p>
+                    <a href="@Url.Action("DanhMucTour","Tour")" class="btn btn-w-border">Xem ngay</a>
+                </div>
+            </div>
+        </div><!-- end row -->
+    </div><!-- end container -->
+</div><!-- end search-tabs -->
+<section  class="section-padding" >
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-heading white-heading">
+                    <h2 style="color:black;">DANH MỤC CÁC TOUR MỚI</h2>
+                    <hr class="heading-line" />
+                </div><!-- end page-heading -->
+                @if (Model != null && Model.ToursTrongNuoc.Any())
+                {
+                    <div class="owl-carousel owl-theme owl-custom-arrow" id="owl-hotel-offers">
+                        @foreach (var tour in Model.ToursTrongNuoc)
+                        {
+                            <div class="item">
+                                <div class="main-block hotel-block">
+                                    <div class="main-img">
+                                        <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">
+                                            <img src="@Url.Content($"~/hinhanh/{tour.HinhAnh1}")" class="img-responsive" alt="@tour.TenTour" />
+                                        </a>
+                                        <div class="main-mask">
+                                            <ul class="list-unstyled list-inline offer-price-1">
+                                                <li class="price">@tour.GiaTour.ToString("#,## VND")<span class="divider">|</span><span class="pkg">1 Người</span></li>
+                                                
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="main-info hotel-info">
+                                        <div class="arrow">
+                                            <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})"><span><i class="fa fa-angle-right"></i></span></a>
+                                        </div>
+
+                                        <div class="main-title hotel-title">
+                                            <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">@tour.TenTour</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-center danger">Không có tour mới nào để hiển thị.</p>
+                }
+
+
+                <div class="view-all text-center">
+                    <a href="@Url.Action("DanhMucTour","Tour")" class="btn btn-orange">Xem nhiều hơn</a>
+                </div><!-- end view-all -->
+            </div><!-- end columns -->
+        </div><!-- end row -->
+    </div><!-- end container -->
+</section><!-- end hotel-offers -->
