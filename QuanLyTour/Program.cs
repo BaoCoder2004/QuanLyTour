@@ -9,7 +9,7 @@ builder.Services.AddSession(options =>
 });
 
 // Add services to the container.
-//add
+//addthang
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
