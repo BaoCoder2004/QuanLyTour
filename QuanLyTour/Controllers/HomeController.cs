@@ -3,7 +3,14 @@ using Microsoft.Data.SqlClient;
 using QuanLyTour.Models;
 using System.Diagnostics;
 using X.PagedList.Extensions;
-
+using System.Data.SqlClient;
+using System.Net;
+using System.Net.Mail;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Org.BouncyCastle.Crypto.Generators;
+using BCrypt.Net;
 namespace QuanLyTour.Controllers
 {
     public class HomeController : Controller
@@ -179,8 +186,167 @@ namespace QuanLyTour.Controllers
         {
             return View();
         }
+		public IActionResult XacNhanMa()
+        {
+            return View();
+        }
+		private bool SendVerificationCode(string toEmail, string code)
+		{
+			try
+			{
+				// Thông tin tài khoản Gmail gửi email
+				string fromEmail = "thangvv.a5k47gtb@gmail.com";
+				string appPassword = "bmro eebj biiv ueec"; // Sử dụng mật khẩu ứng dụng (App Password)
 
-        [HttpPost]
+				// Tạo nội dung email
+				MailMessage mail = new MailMessage
+				{
+					From = new MailAddress(fromEmail),
+					Subject = "Mã xác nhận đổi mật khẩu",
+					Body = $"Mã xác nhận của bạn là: {code}",
+					IsBodyHtml = false
+				};
+
+				mail.To.Add(toEmail);
+
+				// Cấu hình SMTP Gmail
+				using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+				{
+					smtp.Credentials = new NetworkCredential(fromEmail, appPassword);
+					smtp.EnableSsl = true; // Bật SSL
+					smtp.Send(mail);
+				}
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Lỗi gửi email: " + ex.ToString()); // Hiển thị toàn bộ lỗi
+				ViewBag.ErrorMessage = "Lỗi gửi email: " + ex.Message;
+				return false;
+			}
+
+		}
+		[HttpPost]
+		public IActionResult ForgotPassword(string email)
+		{
+			using (SqlConnection conn = new SqlConnection(_connectionString))
+			{
+				conn.Open();
+				string query = "SELECT COUNT(*) FROM NguoiDung WHERE Email = @Email";
+				using (SqlCommand cmd = new SqlCommand(query, conn))
+				{
+					cmd.Parameters.AddWithValue("@Email", email);
+					int count = (int)cmd.ExecuteScalar();
+					if (count == 0)
+					{
+						ViewBag.ErrorMessage = "Email không tồn tại!";
+						return View("QuenMatKhau");
+					}
+				}
+			}
+
+			// Tạo mã xác nhận ngẫu nhiên
+			string resetCode = new Random().Next(100000, 999999).ToString();
+			HttpContext.Session.SetString("ResetCode", resetCode);
+			HttpContext.Session.SetString("ResetEmail", email);
+			
+
+
+			bool emailSent = SendVerificationCode(email, resetCode);
+			if (emailSent)
+			{
+				ViewBag.SuccessMessage = "Mã xác nhận đã được gửi đến email của bạn!";
+				return View("XacNhanMa");
+			}
+			else
+			{
+				ViewBag.ErrorMessage = "Gửi email thất bại!";
+				return View("QuenMatKhau");
+			}
+		}
+
+        // Gửi email chứa mã xác nhận
+       
+		// Xác nhận mã và cập nhật mật khẩu
+		
+		[HttpPost]
+		public IActionResult ConfirmResetCode(string email, string code, string newPassword)
+		{
+			// Lấy dữ liệu từ Session
+			string sessionCode = HttpContext.Session.GetString("ResetCode");
+			string sessionEmail = HttpContext.Session.GetString("ResetEmail");
+
+			// Kiểm tra phiên làm việc hợp lệ
+			if (string.IsNullOrEmpty(sessionCode) || string.IsNullOrEmpty(sessionEmail))
+			{
+				ViewBag.ErrorMessage = "Phiên làm việc không hợp lệ!";
+				return View("XacNhanMa");
+			}
+
+			// Kiểm tra mã xác nhận có đúng không
+			if (sessionCode != code || sessionEmail != email)
+			{
+				ViewBag.ErrorMessage = "Mã xác nhận không đúng!";
+				return View("XacNhanMa");
+			}
+
+			// Kiểm tra nếu mật khẩu mới trống
+			if (string.IsNullOrEmpty(newPassword))
+			{
+				ViewBag.ErrorMessage = "Mật khẩu mới không được để trống!";
+				return View("XacNhanMa");
+			}
+
+			try
+			{
+				using (SqlConnection conn = new SqlConnection(_connectionString))
+				{
+					conn.Open();
+
+					// Kiểm tra email có tồn tại không trước khi cập nhật
+					string checkQuery = "SELECT COUNT(*) FROM NguoiDung WHERE Email = @Email";
+					using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
+					{
+						checkCmd.Parameters.AddWithValue("@Email", email);
+						int count = (int)checkCmd.ExecuteScalar();
+
+						if (count == 0)
+						{
+							ViewBag.ErrorMessage = "Email không tồn tại trong hệ thống!";
+							return View("XacNhanMa");
+						}
+					}
+
+					// Cập nhật mật khẩu mới (KHÔNG mã hóa Bcrypt)
+					string updateQuery = "UPDATE NguoiDung SET MatKhau = @newMatKhau WHERE Email = @Email";
+					using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
+					{
+						cmd.Parameters.AddWithValue("@newMatKhau", newPassword);
+						cmd.Parameters.AddWithValue("@Email", email);
+
+						cmd.ExecuteNonQuery();
+					}
+				}
+
+				// Xóa session sau khi đổi mật khẩu thành công
+				HttpContext.Session.Remove("ResetCode");
+				HttpContext.Session.Remove("ResetEmail");
+
+				ViewBag.SuccessMessage = "Mật khẩu đã được cập nhật thành công!";
+				return View("DangNhap");
+			}
+			catch (Exception ex)
+			{
+				ViewBag.ErrorMessage = "Lỗi hệ thống: " + ex.Message;
+				return View("XacNhanMa");
+			}
+		}
+
+
+
+
+		[HttpPost]
         public IActionResult ThongTinNguoiDung(string TenNguoiDung, string DiaChi, string SoDienThoai)
         {
             // Lấy maNguoiDung từ session

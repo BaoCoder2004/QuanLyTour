@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Xác nhận mã";
+    Layout = "~/Views/Shared/_LoginUser.cshtml";
+}
+
+<section class="innerpage-wrapper">
+    <div id="confirm-code" class="innerpage-section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="flex-content">
+                        <div class="custom-form custom-form-fields">
+                            <h3>Xác nhận mã</h3>
+
+                            @if (ViewBag.SuccessMessage != null)
+                            {
+                                    <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+                            }
+                            @if (ViewBag.ErrorMessage != null)
+                            {
+                                    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+                            }
+
+                            @using (Html.BeginForm("ConfirmResetCode", "Home", FormMethod.Post))
+                            {
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" placeholder="Nhập email của bạn" required name="email" />
+                                        <span><i class="fa fa-envelope"></i></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Nhập mã xác nhận" required name="code" />
+                                        <span><i class="fa fa-key"></i></span>
+                                    </div>
+
+                                <div class="form-group">
+                                    <input type="password" class="form-control" placeholder="Nhập mật khẩu mới" required name="newPassword" />
+                                    <span><i class="fa fa-lock"></i></span>
+                                </div>
+
+
+                                    <button class="btn btn-orange btn-block">Xác nhận</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

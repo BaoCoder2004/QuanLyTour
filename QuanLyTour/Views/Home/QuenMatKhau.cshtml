@@ -8,12 +8,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-
                     <div class="flex-content">
                         <div class="custom-form custom-form-fields">
                             <h3>Quên mật khẩu</h3>
 
-                            <!-- Hiển thị thông báo nếu có -->
                             @if (ViewBag.SuccessMessage != null)
                             {
                                 <div class="alert alert-success">@ViewBag.SuccessMessage</div>
@@ -30,21 +28,12 @@
                                     <span><i class="fa fa-envelope"></i></span>
                                 </div>
 
-                                <button class="btn btn-orange btn-block">Gửi yêu cầu</button>
+                                <button class="btn btn-orange btn-block">Gửi mã xác nhận</button>
                             }
-
-                            <div class="other-links">
-                                <p class="link-line"><a href="DangNhap">Quay lại đăng nhập</a></p>
-                            </div>
-                        </div><!-- end custom-form -->
-
-                        <div class="flex-content-img custom-form-img">
-                            <img src="~/hinhanh/danang1.jpg" class="img-responsive" alt="forgot-password-img" />
-                        </div><!-- end custom-form-img -->
-                    </div><!-- end flex-content -->
-
-                </div><!-- end columns -->
-            </div><!-- end row -->
-        </div><!-- end container -->
-    </div><!-- end forgot-password -->
-</section><!-- end innerpage-wrapper -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
