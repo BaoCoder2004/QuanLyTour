@@ -19,5 +19,8 @@ namespace QuanLyTour.Models
         [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
         public string? SoDienThoai { get; set; }
         public bool TrangThai  { get; set; }
+		[Required(ErrorMessage = "Email không được để trống")]
+		public string? Email { get; set; }
+
     }
 }

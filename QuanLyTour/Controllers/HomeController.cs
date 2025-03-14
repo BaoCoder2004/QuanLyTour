@@ -112,15 +112,17 @@ namespace QuanLyTour.Controllers
                             int maNguoiDung = Convert.ToInt32(reader["MaNguoiDung"]);
                             string soDienThoai = reader["SoDienthoai"].ToString();
                             string diaChi = reader["DiaChi"].ToString();
+							string Email= reader["Email"].ToString();
 
-                            // Lưu thông tin vào session
-                            HttpContext.Session.SetString("UserName", tenNguoiDung);
+							// Lưu thông tin vào session
+							HttpContext.Session.SetString("UserName", tenNguoiDung);
                             HttpContext.Session.SetString("UserPhone",soDienThoai);
                             HttpContext.Session.SetString("UserAd", diaChi);
                             HttpContext.Session.SetInt32("UserId", maNguoiDung);
+							HttpContext.Session.SetString("UserEmail",Email);
 
-                            // Chuyển hướng đến trang chính
-                            return RedirectToAction("Index", "Home");
+							// Chuyển hướng đến trang chính
+							return RedirectToAction("Index", "Home");
                         }
                         else
                         {
@@ -152,7 +154,7 @@ namespace QuanLyTour.Controllers
             ThongTinNguoiDung nguoiDung = null;
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                string query = "SELECT MaNguoiDung, TenNguoiDung, DiaChi, SoDienThoai " +
+                string query = "SELECT MaNguoiDung, TenNguoiDung, DiaChi, SoDienThoai, Email " +
                                "FROM NguoiDung WHERE MaNguoiDung = @MaNguoiDung";
 
                 SqlCommand command = new SqlCommand(query, connection);
@@ -169,7 +171,8 @@ namespace QuanLyTour.Controllers
                         TenNguoiDung = reader["TenNguoiDung"].ToString(),
                         DiaChi = reader["DiaChi"].ToString(),
                         SoDienThoai = reader["SoDienThoai"].ToString(),
-                    };
+						Email = reader["Email"].ToString(),
+					};
                 }
                 connection.Close();
             }
@@ -347,7 +350,7 @@ namespace QuanLyTour.Controllers
 
 
 		[HttpPost]
-        public IActionResult ThongTinNguoiDung(string TenNguoiDung, string DiaChi, string SoDienThoai)
+        public IActionResult ThongTinNguoiDung(string TenNguoiDung, string DiaChi, string SoDienThoai,string Email)
         {
             // Lấy maNguoiDung từ session
             var maNguoiDung = HttpContext.Session.GetInt32("UserId");
@@ -364,15 +367,15 @@ namespace QuanLyTour.Controllers
                 // Cập nhật thông tin người dùng vào cơ sở dữ liệu
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    string query = "UPDATE NguoiDung SET TenNguoiDung = @TenNguoiDung, DiaChi = @DiaChi, SoDienThoai = @SoDienThoai WHERE MaNguoiDung = @MaNguoiDung";
+                    string query = "UPDATE NguoiDung SET TenNguoiDung = @TenNguoiDung, DiaChi = @DiaChi, SoDienThoai = @SoDienThoai, Email=@Email WHERE MaNguoiDung = @MaNguoiDung";
 
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@MaNguoiDung", maNguoiDung);  // Sử dụng maNguoiDung lấy từ session
                     command.Parameters.AddWithValue("@TenNguoiDung", TenNguoiDung);  // Lấy giá trị từ view
                     command.Parameters.AddWithValue("@DiaChi", DiaChi);  // Lấy giá trị từ view
                     command.Parameters.AddWithValue("@SoDienThoai", SoDienThoai);  // Lấy giá trị từ view
-
-                    connection.Open();
+					command.Parameters.AddWithValue("@Email",Email);
+					connection.Open();
                     command.ExecuteNonQuery();
                     connection.Close();
                 }
@@ -398,7 +401,7 @@ namespace QuanLyTour.Controllers
 
         // Xử lý đăng ký
         [HttpPost]
-        public IActionResult DangKy(string username, string password, string HoTen, string DiaChi, string SoDienthoai)
+        public IActionResult DangKy(string username, string password, string HoTen, string DiaChi, string SoDienthoai,string Email)
         {
             try
             {
@@ -422,8 +425,8 @@ namespace QuanLyTour.Controllers
 
                     // Thêm người dùng mới vào cơ sở dữ liệu
                     string insertQuery = @"
-                    INSERT INTO NguoiDung (TenDangNhap, MatKhau, TenNguoiDung, DiaChi, SoDienThoai, TrangThai, LoaiTaiKhoan)
-                    VALUES (@TenDangNhap, @MatKhau, @TenNguoiDung, @DiaChi, @SoDienThoai, @TrangThai, @LoaiTaiKhoan)";
+                    INSERT INTO NguoiDung (TenDangNhap, MatKhau, TenNguoiDung, DiaChi, SoDienThoai, TrangThai, LoaiTaiKhoan,Email)
+                    VALUES (@TenDangNhap, @MatKhau, @TenNguoiDung, @DiaChi, @SoDienThoai, @TrangThai, @LoaiTaiKhoan,@Email)";
                     using (var insertCommand = new SqlCommand(insertQuery, connection))
                     {
                         insertCommand.Parameters.AddWithValue("@TenDangNhap", username);
@@ -433,8 +436,8 @@ namespace QuanLyTour.Controllers
                         insertCommand.Parameters.AddWithValue("@SoDienThoai", SoDienthoai);
                         insertCommand.Parameters.AddWithValue("@TrangThai", true); // Mặc định kích hoạt
                         insertCommand.Parameters.AddWithValue("@LoaiTaiKhoan", false); // Mặc định tài khoản thường
-
-                        insertCommand.ExecuteNonQuery();
+						insertCommand.Parameters.AddWithValue("@Email", Email);
+						insertCommand.ExecuteNonQuery();
                     }
                 }
 
