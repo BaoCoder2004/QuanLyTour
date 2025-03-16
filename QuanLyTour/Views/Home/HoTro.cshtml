@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Hỗ Trợ ";
+    Layout = "~/Views/Shared/_Detail.cshtml";
+}
+<section class="innerpage-wrapper">
+    <div id="support-section" class="innerpage-section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="flex-content">
+                        <div class="custom-form custom-form-fields">
+                            <h3>Hỗ Trợ</h3>
+
+                            @if (ViewBag.SuccessMessage != null)
+                            {
+                                <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+                            }
+                            @if (ViewBag.ErrorMessage != null)
+                            {
+                                <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+                            }
+
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#gioithieu">Giới thiệu</a></li>
+                                <li><a data-toggle="tab" href="#faq">Hỏi đáp</a></li>
+                                <li><a data-toggle="tab" href="#lienhe">Liên hệ</a></li>
+                                <li><a data-toggle="tab" href="#huongdan">Hướng dẫn sử dụng</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <!-- Giới thiệu -->
+                                <div id="gioithieu" class="tab-pane fade in active">
+                                    <h3>Giới Thiệu</h3>
+                                    <p>HanoiTour là nền tảng đặt tour du lịch hàng đầu, mang đến trải nghiệm tốt nhất cho khách hàng.</p>
+                                </div>
+
+                                <!-- Hỏi đáp -->
+                                <div id="faq" class="tab-pane fade">
+                                    <h3>Hỏi Đáp (FAQ)</h3>
+                                    <h4>1. Làm thế nào để đặt tour?</h4>
+                                    <p>Bạn có thể đặt tour trực tuyến trên website của chúng tôi.</p>
+
+                                    <h4>2. Chính sách hoàn tiền như thế nào?</h4>
+                                    <p>Bạn có thể yêu cầu hoàn tiền trong vòng 7 ngày kể từ ngày đặt tour.</p>
+                                </div>
+
+                                <!-- Liên hệ -->
+                                <div id="lienhe" class="tab-pane fade">
+                                    <h3>Liên Hệ</h3>
+                                    @using (Html.BeginForm("SendSupportMessage", "Home", FormMethod.Post))
+                                    {
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Họ và tên" required name="fullname" />
+                                            <span><i class="fa fa-user"></i></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" placeholder="Email của bạn" required name="email" />
+                                            <span><i class="fa fa-envelope"></i></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <textarea class="form-control" placeholder="Nhập nội dung hỗ trợ" required name="message"></textarea>
+                                            <span><i class="fa fa-comment"></i></span>
+                                        </div>
+
+                                        <button class="btn btn-orange btn-block">Gửi hỗ trợ</button>
+                                    }
+                                </div>
+
+                                <!-- Hướng dẫn sử dụng -->
+                                <div id="huongdan" class="tab-pane fade">
+                                    <h3>Hướng Dẫn Sử Dụng</h3>
+                                    <h4>1. Cách đặt tour</h4>
+                                    <p>Chọn tour -> Nhập thông tin -> Thanh toán -> Nhận email xác nhận.</p>
+
+                                    <h4>2. Cách hủy tour</h4>
+                                    <p>Liên hệ với bộ phận hỗ trợ hoặc gửi yêu cầu hủy trên website.</p>
+                                </div>
+                            </div> <!-- End tab-content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

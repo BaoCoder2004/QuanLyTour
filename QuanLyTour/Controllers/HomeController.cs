@@ -269,10 +269,6 @@ namespace QuanLyTour.Controllers
 			}
 		}
 
-        // Gửi email chứa mã xác nhận
-       
-		// Xác nhận mã và cập nhật mật khẩu
-		
 		[HttpPost]
 		public IActionResult ConfirmResetCode(string email, string code, string newPassword)
 		{
@@ -345,10 +341,10 @@ namespace QuanLyTour.Controllers
 				return View("XacNhanMa");
 			}
 		}
-
-
-
-
+		public IActionResult HoTro()
+		{
+			return View();
+		}
 		[HttpPost]
         public IActionResult ThongTinNguoiDung(string TenNguoiDung, string DiaChi, string SoDienThoai,string Email)
         {
