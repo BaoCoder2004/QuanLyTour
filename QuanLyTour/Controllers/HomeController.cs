@@ -341,6 +341,18 @@ namespace QuanLyTour.Controllers
 				return View("XacNhanMa");
 			}
 		}
+		public IActionResult KhachSan()
+		{
+			return View();
+		}
+		public IActionResult VeMayBay()
+		{
+			return View();
+		}
+		public IActionResult VeTau()
+		{
+			return View();
+		}
 		public IActionResult HoTro()
 		{
 			return View();
