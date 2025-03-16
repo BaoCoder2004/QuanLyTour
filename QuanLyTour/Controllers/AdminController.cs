@@ -162,7 +162,7 @@ namespace QuanLyTour.Controllers
 
             using (var connection = new SqlConnection(_connectionString))
             {
-                string sql = "SELECT p.MaTour, p.TenTour, l.TenLoaiTour, p.GiaTour, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, p.MaLoaiTour, p.MoTa, p.LichTrinh " +
+                string sql = "SELECT p.MaTour, p.TenTour, l.TenLoaiTour,p.SoNgay, p.DiaDiem, p.GiaTour, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, p.MaLoaiTour, p.MoTa, p.LichTrinh " +
                              "FROM Tour p " +
                              "INNER JOIN LoaiTour l ON p.MaLoaiTour = l.MaLoaiTour";
 
@@ -179,7 +179,9 @@ namespace QuanLyTour.Controllers
                                 TenTour = !reader.IsDBNull(reader.GetOrdinal("TenTour")) ? reader.GetString(reader.GetOrdinal("TenTour")) : string.Empty,
                                 TenLoaiTour = !reader.IsDBNull(reader.GetOrdinal("TenLoaiTour")) ? reader.GetString(reader.GetOrdinal("TenLoaiTour")) : string.Empty,
                                 GiaTour = !reader.IsDBNull(reader.GetOrdinal("GiaTour")) ? reader.GetDecimal(reader.GetOrdinal("GiaTour")) : 0,
-                                HinhAnh1 = !reader.IsDBNull(reader.GetOrdinal("HinhAnh1")) ? reader.GetString(reader.GetOrdinal("HinhAnh1")) : string.Empty,
+								SoNgay = !reader.IsDBNull(reader.GetOrdinal("SoNgay")) ? reader.GetString(reader.GetOrdinal("SoNgay")) : string.Empty,
+								DiaDiem = !reader.IsDBNull(reader.GetOrdinal("DiaDiem")) ? reader.GetString(reader.GetOrdinal("DiaDiem")) : string.Empty,
+								HinhAnh1 = !reader.IsDBNull(reader.GetOrdinal("HinhAnh1")) ? reader.GetString(reader.GetOrdinal("HinhAnh1")) : string.Empty,
                                 HinhAnh2 = !reader.IsDBNull(reader.GetOrdinal("HinhAnh2")) ? reader.GetString(reader.GetOrdinal("HinhAnh2")) : string.Empty,
                                 HinhAnh3 = !reader.IsDBNull(reader.GetOrdinal("HinhAnh3")) ? reader.GetString(reader.GetOrdinal("HinhAnh3")) : string.Empty,
                                 MaLoaiTour = !reader.IsDBNull(reader.GetOrdinal("MaLoaiTour")) ? reader.GetInt32(reader.GetOrdinal("MaLoaiTour")) : 0,
@@ -260,7 +262,7 @@ namespace QuanLyTour.Controllers
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                string rooms = "SELECT p.MaTour, p.TenTour, p.MaLoaiTour, p.TrangThai, p.GiaTour, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, l.TenLoaiTour, p.MoTa, p.LichTrinh " +
+                string rooms = "SELECT p.MaTour, p.TenTour, p.MaLoaiTour, p.TrangThai,p.SoNgay, p.DiaDiem, p.GiaTour, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, l.TenLoaiTour, p.MoTa, p.LichTrinh " +
                    "FROM Tour p " +
                    "INNER JOIN LoaiTour l ON p.MaLoaiTour = l.MaLoaiTour " +
                    "WHERE p.MaTour = @maTour And p.MaLoaiTour = @maLoai";
@@ -277,7 +279,9 @@ namespace QuanLyTour.Controllers
                                 MaTour = reader.GetInt32(reader.GetOrdinal("MaTour")),
                                 TenTour = !reader.IsDBNull(reader.GetOrdinal("TenTour")) ? reader.GetString(reader.GetOrdinal("TenTour")) : string.Empty,
                                 TenLoaiTour = !reader.IsDBNull(reader.GetOrdinal("TenLoaiTour")) ? reader.GetString(reader.GetOrdinal("TenLoaiTour")) : string.Empty,
-                                GiaTour = !reader.IsDBNull(reader.GetOrdinal("GiaTour")) ? reader.GetDecimal(reader.GetOrdinal("GiaTour")) : 0,
+								SoNgay = !reader.IsDBNull(reader.GetOrdinal("SoNgay")) ? reader.GetString(reader.GetOrdinal("SoNgay")) : string.Empty,
+								DiaDiem = !reader.IsDBNull(reader.GetOrdinal("DiaDiem")) ? reader.GetString(reader.GetOrdinal("DiaDiem")) : string.Empty,
+								GiaTour = !reader.IsDBNull(reader.GetOrdinal("GiaTour")) ? reader.GetDecimal(reader.GetOrdinal("GiaTour")) : 0,
                                 HinhAnh1 = !reader.IsDBNull(reader.GetOrdinal("HinhAnh1")) ? reader.GetString(reader.GetOrdinal("HinhAnh1")) : string.Empty,
                                 HinhAnh2 = !reader.IsDBNull(reader.GetOrdinal("HinhAnh2")) ? reader.GetString(reader.GetOrdinal("HinhAnh2")) : string.Empty,
                                 HinhAnh3 = !reader.IsDBNull(reader.GetOrdinal("HinhAnh3")) ? reader.GetString(reader.GetOrdinal("HinhAnh3")) : string.Empty,
@@ -299,7 +303,7 @@ namespace QuanLyTour.Controllers
             return View(viewModel);
         }
         [HttpPost]
-        public IActionResult SuaTourView(int maTour, string tenTour, decimal giaTour, int maLoai, IFormFile hinhAnh1, IFormFile hinhAnh2, IFormFile hinhAnh3, int trangThai, string moTa, string lichTrinh)
+        public IActionResult SuaTourView(int maTour, string tenTour, string soNgay, string diaDiem, decimal giaTour, int maLoai, IFormFile hinhAnh1, IFormFile hinhAnh2, IFormFile hinhAnh3, int trangThai, string moTa, string lichTrinh)
         {
             string hinhAnh1Path = SaveFile(hinhAnh1);
             string hinhAnh2Path = SaveFile(hinhAnh2);
@@ -309,13 +313,15 @@ namespace QuanLyTour.Controllers
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
-                    string sql = "UPDATE Tour SET MaLoaiTour = @maLoai, TenTour = @tenTour, GiaTour = @giaTour, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
+                    string sql = "UPDATE Tour SET MaLoaiTour = @maLoai, TenTour = @tenTour,SoNgay = @soNgay,DiaDiem = @diaDiem, GiaTour = @giaTour, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
                                  "WHERE MaTour = @maTour";
                     using (var command = new SqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@maTour", maTour);
                         command.Parameters.AddWithValue("@tenTour", tenTour);
-                        command.Parameters.AddWithValue("@maLoai", maLoai);
+						command.Parameters.AddWithValue("@soNgay", soNgay);
+						command.Parameters.AddWithValue("@diaDiem", diaDiem);
+						command.Parameters.AddWithValue("@maLoai", maLoai);
                         command.Parameters.AddWithValue("@giaTour", giaTour); 
                         command.Parameters.AddWithValue("@trangThai", trangThai); 
                         command.Parameters.AddWithValue("@moTa", moTa); 
@@ -330,13 +336,15 @@ namespace QuanLyTour.Controllers
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
-                    string sql = "UPDATE Tour SET MaLoaiTour = @maLoai, TenTour = @tenTour, GiaTour = @giaTour, HinhAnh1 = @hinhAnh1Path, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
+                    string sql = "UPDATE Tour SET MaLoaiTour = @maLoai, TenTour = @tenTour,SoNgay = @soNgay,DiaDiem = @diaDiem, GiaTour = @giaTour, HinhAnh1 = @hinhAnh1Path, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
                                 "WHERE MaTour = @maTour";
                     using (var command = new SqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@maTour", maTour);
                         command.Parameters.AddWithValue("@tenTour", tenTour);
-                        command.Parameters.AddWithValue("@maLoai", maLoai);
+						command.Parameters.AddWithValue("@soNgay", soNgay);
+						command.Parameters.AddWithValue("@diaDiem", diaDiem);
+						command.Parameters.AddWithValue("@maLoai", maLoai);
                         command.Parameters.AddWithValue("@giaTour", giaTour);
                         command.Parameters.AddWithValue("@hinhAnh1Path", hinhAnh1Path);
                         command.Parameters.AddWithValue("@trangThai", trangThai);
@@ -352,13 +360,15 @@ namespace QuanLyTour.Controllers
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
-                    string sql = "UPDATE Tour SET MaLoaiTour = @maLoai, TenTour = @tenTour, GiaTour = @giaTour, HinhAnh2 = @hinhAnh2Path, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
+                    string sql = "UPDATE Tour SET MaLoaiTour = @maLoai, TenTour = @tenTour,SoNgay = @soNgay,DiaDiem = @diaDiem, GiaTour = @giaTour, HinhAnh2 = @hinhAnh2Path, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
                                "WHERE MaTour = @maTour";
                     using (var command = new SqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@maTour", maTour);
                         command.Parameters.AddWithValue("@tenTour", tenTour);
-                        command.Parameters.AddWithValue("@maLoai", maLoai);
+						command.Parameters.AddWithValue("@soNgay", soNgay);
+						command.Parameters.AddWithValue("@diaDiem", diaDiem);
+						command.Parameters.AddWithValue("@maLoai", maLoai);
                         command.Parameters.AddWithValue("@giaTour", giaTour);
                         command.Parameters.AddWithValue("@hinhAnh2Path", hinhAnh2Path);
                         command.Parameters.AddWithValue("@trangThai", trangThai);
@@ -374,13 +384,15 @@ namespace QuanLyTour.Controllers
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
-                    string sql = "UPDATE Tour SET MaLoaiTour = @maLoai, TenTour = @tenTour, GiaTour = @giaTour, HinhAnh3 = @hinhAnh3Path, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
+                    string sql = "UPDATE Tour SET MaLoaiTour = @maLoai, TenTour = @tenTour,SoNgay = @soNgay,DiaDiem = @diaDiem, GiaTour = @giaTour, HinhAnh3 = @hinhAnh3Path, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
                                 "WHERE MaTour = @maTour";
                     using (var command = new SqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@maTour", maTour);
                         command.Parameters.AddWithValue("@tenTour", tenTour);
-                        command.Parameters.AddWithValue("@maLoai", maLoai);
+						command.Parameters.AddWithValue("@soNgay", soNgay);
+						command.Parameters.AddWithValue("@diaDiem", diaDiem);
+						command.Parameters.AddWithValue("@maLoai", maLoai);
                         command.Parameters.AddWithValue("@giaTour", giaTour);
                         command.Parameters.AddWithValue("@hinhAnh3Path", hinhAnh3Path);
                         command.Parameters.AddWithValue("@trangThai", trangThai);
@@ -396,13 +408,15 @@ namespace QuanLyTour.Controllers
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
-                    string sql = "UPDATE Tour SET MaLoaiTour = @maLoai, TenTour = @tenTour, GiaTour = @giaTour, HinhAnh1 = @hinhAnh1Path,HinhAnh2 = @hinhAnh2Path,HinhAnh3 = @hinhAnh3Path,TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
+                    string sql = "UPDATE Tour SET MaLoaiTour = @maLoai, TenTour = @tenTour,SoNgay = @soNgay,DiaDiem = @diaDiem, GiaTour = @giaTour, HinhAnh1 = @hinhAnh1Path,HinhAnh2 = @hinhAnh2Path,HinhAnh3 = @hinhAnh3Path,TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
                                 "WHERE MaTour = @maTour";
                     using (var command = new SqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@maTour", maTour);
                         command.Parameters.AddWithValue("@tenTour", tenTour);
-                        command.Parameters.AddWithValue("@maLoai", maLoai);
+						command.Parameters.AddWithValue("@soNgay", soNgay);
+						command.Parameters.AddWithValue("@diaDiem", diaDiem);
+						command.Parameters.AddWithValue("@maLoai", maLoai);
                         command.Parameters.AddWithValue("@giaTour", giaTour);
                         command.Parameters.AddWithValue("@hinhAnh1Path", hinhAnh1Path);
                         command.Parameters.AddWithValue("@hinhAnh2Path", hinhAnh2Path);
@@ -444,7 +458,7 @@ namespace QuanLyTour.Controllers
             return View(tourTypes);
         }
         [HttpPost]
-        public IActionResult ThemTourView(string tenTour, int trangThai, decimal giaTour, int maLoai, IFormFile hinhAnh1, IFormFile hinhAnh2, IFormFile hinhAnh3, string moTa, string lichTrinh)
+        public IActionResult ThemTourView(string tenTour, int trangThai, string soNgay,string diaDiem, decimal giaTour, int maLoai, IFormFile hinhAnh1, IFormFile hinhAnh2, IFormFile hinhAnh3, string moTa, string lichTrinh)
         {
 
             string hinhAnh1Path = SaveFile(hinhAnh1);
@@ -454,13 +468,15 @@ namespace QuanLyTour.Controllers
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                string sql = "INSERT INTO Tour (TenTour, MaLoaiTour, GiaTour, HinhAnh1, HinhAnh2, HinhAnh3, TrangThai, MoTa, LichTrinh) " +
-                             "VALUES (@tenTour, @maLoai, @giaTour, @hinhAnh1Path, @hinhAnh2Path, @hinhAnh3Path, @trangThai, @moTa, @lichTrinh)";
+                string sql = "INSERT INTO Tour (TenTour, MaLoaiTour,SoNgay,DiaDiem, GiaTour, HinhAnh1, HinhAnh2, HinhAnh3, TrangThai, MoTa, LichTrinh) " +
+                             "VALUES (@tenTour, @maLoai,@soNgay,@diaDiem, @giaTour, @hinhAnh1Path, @hinhAnh2Path, @hinhAnh3Path, @trangThai, @moTa, @lichTrinh)";
                 using (var command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@tenTour", tenTour);
                     command.Parameters.AddWithValue("@maLoai", maLoai);
-                    command.Parameters.AddWithValue("@giaTour", giaTour);
+					command.Parameters.AddWithValue("@soNgay", soNgay);
+					command.Parameters.AddWithValue("@diaDiem", diaDiem);
+					command.Parameters.AddWithValue("@giaTour", giaTour);
                     command.Parameters.AddWithValue("@hinhAnh1Path", hinhAnh1Path);
                     command.Parameters.AddWithValue("@hinhAnh2Path", hinhAnh2Path);
                     command.Parameters.AddWithValue("@hinhAnh3Path", hinhAnh3Path);

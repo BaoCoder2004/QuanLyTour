@@ -22,10 +22,24 @@
                                 <input style="display: none; type="text" class="form-control" id="maPhong" placeholder="Tên Phòng" name="maTour" value="@tour.MaTour">
                             }
                             <div class="form-group">
-                                <label for="tenPhong">Tên Phòng</label>
+                                <label for="tenPhong">Tên Tour</label>
                                 @foreach (var tour in Model.TourView)
                                 {
                                     <input type="text" class="form-control" id="tenPhong" placeholder="Tên Phòng" name="tenTour" required value="@tour.TenTour">
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label for="soNgay">Số Ngày</label>
+                                @foreach (var tour in Model.TourView)
+                                {
+                                    <input type="text" class="form-control" id="soNgay" placeholder="Số Ngày" name="soNgay" required value="@tour.SoNgay">
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label for="diaDiem">Địa Điểm </label>
+                                @foreach (var tour in Model.TourView)
+                                {
+                                    <input type="text" class="form-control" id="diaDiem" placeholder="Địa Điểm" name="diaDiem" required value="@tour.DiaDiem">
                                 }
                             </div>
                             <div class="form-group">
@@ -36,7 +50,7 @@
                                 }
                             </div>
                             <div class="form-group">
-                                <label for="tenLoaiPhong">Loại Phòng</label>
+                                <label for="tenLoaiPhong">Loại Tour</label>
                                 <select class="form-control" name="maLoai">
 
                                     @foreach (var TourTypes in Model.LoaiTourView)

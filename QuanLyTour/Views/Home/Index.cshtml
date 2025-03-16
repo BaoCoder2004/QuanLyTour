@@ -83,17 +83,13 @@
                                             <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">@tour.TenTour</a>
                                         </h4>
                                         <div class="tour-duration">
-                                            <i class="fa fa-clock-o" aria-hidden="true"><span>6 Ngày 5 Đêm</span></i>
-                                         
-                                            <span><i class="fa fa-plane" aria-hidden="true"></i><i class="fa fa-bus" aria-hidden="true"></i><i class="fa fa-train" aria-hidden="true"></i></span>
+                                                <div>@($"{tour.SoNgay}")</div>
                                         </div>
                                         <div class="tour-highlights">
-                                            <div><i class="fa fa-check-circle" aria-hidden="true"></i> Du Thuyền Kawaguko</div>
-                                            <div><i class="fa fa-check-circle" aria-hidden="true"></i> Chùa Vàng Kinkakuji</div>
-                                            <div><i class="fa fa-check-circle" aria-hidden="true"></i> Trải Nghiệm Mặc Đồ Yukata</div>
+                                                <div>@($"Điểm đến: {tour.DiaDiem}")</div>
                                         </div>
                                         <div class="tour-price">
-                                            <span>31.000.000 VNĐ</span>
+                                            
                                             <div>@tour.GiaTour.ToString("#,##0") VNĐ</div>
                                         </div>
                                     </div>
