@@ -1,7 +1,7 @@
 ﻿@using X.PagedList.Mvc.Core
 @model QuanLyTour.Models.DetailViewModel
 @{
-    ViewData["Title"] = "Thông tin tour";
+    ViewData["Title"] = "Thông tin vé máy bay";
     Layout = "~/Views/Shared/_Detail.cshtml";
 }
 <!--===== INNERPAGE-WRAPPER ====-->
@@ -116,10 +116,15 @@
                                 </div><!-- end ad-img -->
                             </div><!-- end side-bar-block -->
                         </div><!-- end columns -->
+
+
+
                     </div><!-- end row -->
                 </div><!-- end columns -->
 
                 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 content-side">
+
+
                     <div class="detail-slider">
                         <div class="feature-slider">
                             @if (!string.IsNullOrEmpty(Model.TourHienTai.HinhAnh1))
@@ -191,7 +196,10 @@
 
                             <!-- end room-block -->
                         }
+
                     </div><!-- end available-rooms -->
+
+
                     <div class="text-center">
                        @Html.PagedListPager(Model.TourTuongTu, page => Url.Action("DanhMucTour", new { page, maPhong = Model.TourHienTai.MaTour }))
                     </div>

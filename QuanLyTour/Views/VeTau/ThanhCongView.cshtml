@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewData["Title"] = "Xác nhận đặt và thanh toán thành công";
+    Layout = "~/Views/Shared/_Detail.cshtml";
+}
+<div class="container">
+    <img src="~/images/success.png" height="200" width="200" alt="" class="center-block">
+    <p class="text-center" style="background-color:white; color:black; font-size:25px;">THÀNH CÔNG!</p>
+    <p class="text-center" style="background-color:white; color:black; font-size:20px;">
+        Bạn đã đặt và thanh toán thành công !<br />Cảm ơn quý khách tin tưởng dịch vụ của chúng tôi
+        <br />Chúng tôi sẽ liên hệ với quý khách để xác nhận trong thời gian sớm nhất ! <br />Xin chân thành cảm ơn !
+    </p>
+    <button class="btn btn-block btn-orange"><a href="@Url.Action("ThongTinTourDat","Home")">Xem thông tin đã đặt</a></button>
+</div>
+

@@ -1,0 +1,110 @@
+﻿@model TourTabsViewModel
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "Danh mục vé tàu";
+    Layout = "~/Views/Shared/_Detail.cshtml";
+}
+<section class="innerpage-wrapper">
+    <div id="hotel-grid" class="innerpage-section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 content-side">
+                    <!-- Tab Navigation -->
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a data-toggle="tab" href="#tab-trong-nuoc">Tour Trong Nước</a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#tab-nuoc-ngoai">Tour Nước Ngoài</a>
+                        </li>
+                    </ul>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        <!-- Tab 1: Tour Trong Nước -->
+                        <div id="tab-trong-nuoc" class="tab-pane fade in active">
+                            <div class="row">
+                                @if (Model.TourTrongNuoc != null && Model.TourTrongNuoc.Any())
+                                {
+                                    @foreach (var tour in Model.TourTrongNuoc)
+                                    {
+                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                            <div class="grid-block main-block h-grid-block">
+                                                <div class="main-img h-grid-img">
+                                                    <a href="@Url.Action("ChiTietTour", "Tour", new { maTour = tour.MaTour, maLoai = tour.MaLoaiTour })">
+                                                        <img src="~/hinhanh/@tour.HinhAnh1" class="img-responsive" alt="@tour.TenTour" />
+                                                    </a>
+                                                    <div class="main-mask">
+                                                        <ul class="list-unstyled list-inline offer-price-1">
+                                                            <li class="price">@tour.GiaTour.ToString("#,##0 VND")<span class="divider">|</span><span class="pkg">1 người</span></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="block-info h-grid-info">
+                                                    <h3 class="block-title"><a href="@Url.Action("ChiTietTour", "Tour", new { maTour = tour.MaTour, maLoai = tour.MaLoaiTour })">@tour.TenTour</a></h3>
+                                                    <p class="block-minor">@tour.TenLoaiTour</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="text-center">Không có tour trong nước nào để hiển thị.</p>
+                                }
+                            </div>
+
+                            <!-- Phân Trang Tour Trong Nước -->
+                            <div class="text-center">
+                                @Html.PagedListPager(Model.TourTrongNuoc, page => Url.Action("DanhMucTour", new { pageTrongNuoc = page }))
+                            </div>
+                        </div>
+
+                        <!-- Tab 2: Tour Nước Ngoài -->
+                        <div id="tab-nuoc-ngoai" class="tab-pane fade">
+                            <div class="row">
+                                @if (Model.TourNuocNgoai != null && Model.TourNuocNgoai.Any())
+                                {
+                                    @foreach (var tour in Model.TourNuocNgoai)
+                                    {
+                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                            <div class="grid-block main-block h-grid-block">
+                                                <div class="main-img h-grid-img">
+                                                    <a href="@Url.Action("ChiTietTour", "Tour", new { maTour = tour.MaTour, maLoai = tour.MaLoaiTour })">
+                                                        <img src="~/hinhanh/@tour.HinhAnh1" class="img-responsive" alt="@tour.TenTour" />
+                                                    </a>
+                                                    <div class="main-mask">
+                                                        <ul class="list-unstyled list-inline offer-price-1">
+                                                            <li class="price">@tour.GiaTour.ToString("#,##0 VND")<span class="divider">|</span><span class="pkg">1 người</span></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="block-info h-grid-info">
+                                                    <h3 class="block-title"><a href="@Url.Action("ChiTietTour", "Tour", new { maTour = tour.MaTour, maLoai = tour.MaLoaiTour })">@tour.TenTour</a></h3>
+                                                    <p class="block-minor">@tour.TenLoaiTour</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="text-center">Không có tour nước ngoài nào để hiển thị.</p>
+                                }
+                            </div>
+
+                            <!-- Phân Trang Tour Nước Ngoài -->
+                            <div class="text-center">
+                                @Html.PagedListPager(Model.TourNuocNgoai, page => Url.Action("DanhMucTour", new { pageNuocNgoai = page }))
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
