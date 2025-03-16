@@ -1,54 +1,3 @@
-/* ----------------------------------------------------
-Theme Name:		Star Travel - HTML Template
-Version:		1.0.1
-Author:			Star Travel
-------------------------------------------------------- */
-
-
-/* ======================================================
-	TABLE OF CONTENTS
-   ====================================================== */
-
-/**
-
-* 1.0	Settings
-* 1.1	Top Bar
-* 1.2	Navbar
-* 1.3	Slider
-* 1.4	Search Tabs
-* 1.5	Main Block
-* 1.6	Hotel Block
-* 1.7	Tour Block
-* 1.8	Cruise Block
-* 1.9	Flight Block
-* 1.10	Destination Block
-* 1.11	Vehicle Block
-* 1.12	Best Features
-* 1.13	Luxury Offers
-* 1.14	Highlights
-* 1.15	Banners
-* 1.16	Testimonials
-* 1.17	Latest Blog
-* 1.18	Packages
-* 1.19	Newsletter
-* 1.20	Footer
-* 1.21	Page Cover
-* 1.22	Sidebar
-* 1.23	Grid Block
-* 1.24	List Block
-* 1.25	Pagination
-* 1.26	Detail Pages Tabs
-* 1.27	Detail Pages Slider
-* 1.28	Custom Form
-* 1.29	Extra Pages
-* 1.30	Contact Us
-
-**/
-
-/* -----------------------------------------------------
-		Settings
-   ----------------------------------------------------- */
-
 html,body{
 	height:100%;
 	position:relative;
@@ -535,9 +484,89 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	height:60px;
 }
 
+/* CSS cho Tour Card */
+.tour-card {
+	border: 1px solid #e5e5e5;
+	border-radius: 5px;
+	overflow: hidden;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+	margin: 5px;
+	background-color: white;
+}
+
+.tour-img-container {
+	position: relative;
+}
+
+.img-resopnsive {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+}
+
+.tour-info {
+	padding: 15px;
+}
+
+.tour-info h4 {
+	margin-top: 0;
+	font-weight: bold;
+	color: #003c71;
+}
+
+.tour-info h4 a{
+	color: #003c71; 
+	text-decoration: none;
+}
+
+.tour-duration {
+	margin-bottom: 10px;
+}
+
+/* Icons in Tour Duration */
+.fa-clock-o, .fa-plane, .fa-bus, .fa-train {
+	margin-right: 5px;
+}
+
+/* Right-aligned content in Tour Duration */
+.tour-duration span{
+	float: right;
+}
+
+/* Tour Highlights Div */
+.tour-highlights {
+	margin-bottom: 10px;
+}
+
+/* Check Circle Icons in Tour Highlights */
+.fa-check-circle {
+	color: #3498db;
+	margin-right: 5px;
+}
+
+/* Tour Price Div */
+.tour-price {
+	text-align: right;
+	margin-top: 15px;
+}
+
+/* Strikethrough Original Price */
+.tour-price span{
+	text-decoration: line-through;
+	color: #888;
+	font-size: 14px;
+}
+
+/* Discounted Price */
+.tour-price div{
+	font-size: 20px;
+	font-weight: bold;
+	color: #ff8c00;
+}
+
 /*************** SIDEBAR NAV ***************/
 
-#mySidenav{
+	#mySidenav{
 	overflow-Y:auto;
 	overflow-X:hidden;
 	width:250px;
@@ -1162,35 +1191,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 }
 
 /* -----------------------------------------------------
-		Hotel Block
-   ----------------------------------------------------- */
-
-#owl-hotel-offers .item{
-	padding:10px 15px;
-}
-  
-.main-img .main-mask{
-	position:absolute;
-	bottom:0px;
-	width:100%;
-}
-
-.hotel-info{
-	padding:15px 22px 18px;
-	position:relative;
-}
-
-.hotel-info .hotel-title{
-	font-size:1.42em;
-	overflow:hidden;
-}
-
-.hotel-info .arrow{
-	overflow:hidden;
-	float:right;
-}
-
-/* -----------------------------------------------------
 		Tour Block
    ----------------------------------------------------- */
 
@@ -1269,82 +1269,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 
 #owl-cruise-offers .owl-controls .owl-buttons div{
 	padding:0px 11px;
-}
-
-/* -----------------------------------------------------
-		Flight Block
-   ----------------------------------------------------- */
-
-.flight-block{
-	margin:15px 0px;
-}
-
-.flight-block a{
-	text-decoration:none;
-}
-
-.flight-img{
-	text-align:center;
-	padding:40px 0px;
-}
-
-.flight-img img{
-	display:inline-block;
-	max-height:90px;
-}
-
-.flight-title{
-	padding:20px 20px 12px;
-}
-
-.flight-info h3{
-	margin-bottom:0px;
-}
-
-.flight-info h3 .flight-destination{
-	font-size:24px;
-	position:relative;
-	top:-3px;
-	margin-right:8px;
-}
-
-.flight-info h3 .flight-type{
-	font-size:14px;
-	text-transform:uppercase;
-	position:relative;
-	top:-4px;
-	margin-left:8px;
-}
-
-.flight-timing{
-	overflow:hidden;
-}
-
-.flight-timing li{
-	font-size:12px;
-	text-align:center;
-	padding:10px 5px 12px;
-}
-
-.flight-timing li .fa{
-	margin-right:8px;
-	font-size:19px;
-	position:relative;
-	top:3px;
-}
-
-.flight-timing li .date{
-	font-weight:bold;
-}
-
-.flight-info .offer-price-1{
-	padding:14px 15px 11px;
-}
-
-.flight-info .offer-price-1 li.price .pkg{
-	margin-left:8px;
-	font-size:12px;
-	top:-4px;
 }
 
 /* -----------------------------------------------------
@@ -1436,48 +1360,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	margin-top:0px;
 }
 
-/************* CAR-OFFER-BLOCK *************/
-
-#owl-car-offers .item{
-	padding:15px;
-}
-
-.car-offer-info{
-	padding:18px 22px;
-}
-
-.car-offer-info li a{
-	text-decoration:none;
-}
-
-.car-offer-info li h4{
-	display:inline;
-	text-transform:uppercase;
-	font-weight:bold;
-}
-
-.car-offer-info li .car-offer-price{
-	float:right;
-	margin-bottom:0px;
-}
-
-.car-offer-info li .car-offer-price{
-	font-size:22px;
-	font-weight:bold;
-	position:relative;
-}
-
-.car-offer-info li .limit{
-	font-size:14px;
-	text-transform:uppercase;
-	position:relative;
-	top:-3px;
-}
-
-.car-offer-info li .divider{
-	margin:0px 5px;
-}
-
 /* -----------------------------------------------------
 		Best Features
    ----------------------------------------------------- */
@@ -1504,72 +1386,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 
 .b-feature-block p{
 	margin-bottom:0px;
-}
-
-/* -----------------------------------------------------
-		Luxury Offers
-   ----------------------------------------------------- */
-
-.luxury-img img{
-	width:100%;
-}
-
-.luxury-text h2{
-	font-size:30px;
-	font-weight:bold;
-	margin-bottom:15px;
-}
-
-.luxury-text p{
-	margin-bottom:27px;
-	width:92%;
-}
-   
-.luxury-text .btn{
-	text-transform:capitalize;
-	height:47px;
-	margin-top:10px;
-}
-
-.luxury-text .btn-black{
-	font-size:22px;
-	padding:7px 25px;
-}
-
-.luxury-text .btn-o-border{
-	font-size:16px;
-	padding:11px 50px;
-	margin-left:2px;
-	margin-right:2px;
-}
-
-/*************** ROOMS-OFFER ***************/
-
-.luxury-room-imgs{
-	padding:31px;
-	overflow:hidden;
-}
-
-.luxury-room-block img{
-	padding:1px;
-}
-
-.luxury-room-block:nth-child(odd){
-	padding-right:0px;
-}
-
-.luxury-room-block:nth-child(even){
-	padding-left:0px;
-}
-
-.luxury-room-imgs ul li{
-	float:left;
-	margin:1px;
-}
-
-.luxury-room-text{
-	padding:90px 60px 110px;
-	overflow:hidden;
 }
 
 /*************** TOUR-OFFER ****************/
@@ -1701,57 +1517,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 /* -----------------------------------------------------
 		Banners
    ----------------------------------------------------- */
-
-/************** VIDEO-BANNER **************/
-
-#video-banner{
-	text-align:center;
-}
-
-#video-banner h2{
-	font-size:40px;
-	font-weight:bold;
-	margin-bottom:15px;
-}
-
-#video-banner p{
-	font-size:19px;
-	width:65%;
-	margin:0 auto;
-}
-
-#video-banner #play-button .fa{
-	font-size:33px;
-	width:110px;
-	height:110px;
-	padding-top:33px;
-	text-align:center;
-	margin-top:50px;
-}
-
-/************* MESSAGE-BANNER *************/
-
-#message-banner{
-	overflow:hidden;
-}
-
-#message-banner h2{
-	font-size:38px;
-	font-weight:900;
-	margin-bottom:8px;
-}
-
-#message-banner p{
-	font-size:18px;
-	margin-bottom:0px;
-}
-
-#message-banner .btn{
-	padding:18px 31px;
-	font-size:20px;
-	font-weight:900;
-	margin-top:17px;
-}
 
 /* -----------------------------------------------------
 		Highlights
@@ -1929,55 +1694,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 }
 
 /* -----------------------------------------------------
-		Latest Blog
-   ----------------------------------------------------- */
-
-.latest-block{
-	margin:15px 0px;
-}
-
-.latest-info{
-	padding:14px 20px;
-}
-
-.latest-info li{
-	font-size:12px;
-}
-
-.latest-info li .fa{
-	font-size:14px;
-	margin-right:8px;
-}
-
-.latest-info li .author{
-	float:right;
-	font-size:14px;
-}
-
-.latest-desc{
-	padding:20px;
-	position:relative;
-}
-
-.latest-desc a{
-	font-size:18px;
-}
-
-.latest-desc p{
-	margin-top:7px;
-	font-weight:normal;
-	font-size:14px;
-	text-transform:none;
-	line-height:1.4em;
-}
-
-.latest-desc .arrow .fa{
-	position:absolute;
-	bottom:20px;
-	right:20px;
-}
-
-/* -----------------------------------------------------
 		Packages
    ----------------------------------------------------- */
 
@@ -1994,42 +1710,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	font-size:15px;
 	padding:10px 28px;
 	font-weight:normal;
-}
-
-/************* HOTEL-PACKAGES *************/
-
-.hotel-package{
-	padding:40px 15px 50px;
-	transition:.4s;
-}
-
-.h-pkg-title{
-	font-size:26px;
-	font-weight:300;
-	text-transform:uppercase;
-	margin-bottom:25px;
-}
-
-.h-pkg-price{
-	font-size:38px;
-	font-weight:bold;
-	margin-bottom:0px;
-	text-transform:uppercase;
-	height:142px;
-	width:142px;
-	display:inline-block;
-	padding-top:40px;
-	transition:.4s;
-}
-
-.h-pkg-price span{
-	display:block;
-	font-size:18px;
-	margin-top:-20px;
-}
-
-.hotel-package .pkg-features{
-	padding:23px 35px;
 }
 
 /*************** TOUR-PACKAGES *************/
@@ -2814,83 +2494,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	margin-top:20px;
 }   
 
-/*********** FLIGHT-GRID BLOCK **********/
-
-.f-img{
-	padding:26px 26px;
-	text-align:center;
-}
-
-.f-img img{
-	max-width:180px;
-	display:inline-block;	
-}
-
-.f-grid-info.block-info{
-	padding:0px;
-}
-
-.f-grid-desc{
-	padding:12px 19px;
-}
-
-.f-grid-info .f-grid-time{
-	font-size:13px;
-	font-weight:bold;
-}
-
-.f-grid-info .f-grid-time .fa{
-	font-size:18px;
-	margin-right:7px;
-	top:1px;
-	position:relative;
-}
-
-.f-grid-info .block-minor{
-	font-size:12px;
-	margin-bottom:10px;
-}
-
-.f-grid-desc p:nth-of-type(2){
-	margin-bottom:0px;
-}
-
-.f-grid-timing{
-	margin:5px 0px 4px;
-}
-
-.f-grid-timing li{
-	font-size:12px;
-	padding:10px 18px;
-}
-
-.f-grid-timing li .fa{
-	font-size:19px;
-	margin-right:8px;
-	position:relative;
-	top:3px;
-}
-
-.f-grid-timing li .date{
-	font-size:14px;
-	font-weight:bold;
-}
-
-.f-grid-info .grid-btn{
-	padding:19px 18px;
-}
-
-.f-grid-info .grid-btn .btn{
-	margin-top:0px;
-}
-
-/*********** HOTEL-GRID BLOCK ***********/
-   
-.h-grid-info .block-minor{
-	font-size:13px;
-	font-weight:bold;
-}
-
 /************ TOUR-GRID BLOCK ***********/
    
 .t-grid-info .block-minor{
@@ -2905,30 +2508,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 
 .crs-grid-info .block-minor{
 	font-size:12px;
-}
-
-/************ CAR-GRID BLOCK ************/
-
-.car-features{
-	margin-bottom:-6px;
-	margin-left:1px;
-}
-
-.car-features li{
-	text-transform:uppercase;
-	font-size:12px;
-	padding-left:0px;
-	padding-right:1px;
-	margin-top:8px;
-	text-align:center;
-}
-
-.car-features li .fa{
-	display:block;
-	width:41px;
-	height:37px;
-	padding-top:10px;
-	font-size:15px;
 }
 
 /* -----------------------------------------------------
@@ -2968,73 +2547,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	padding:6px 21px 7px;
 	font-size:12px;
 	margin-top:15px;
-}
-
-/*********** FLIGHT-LIST BLOCK **********/
-
-.f-list-img .f-img{
-	padding:28px 26px;
-	text-align:center;
-}
-
-.f-list-info{
-	padding:20px 30px;
-}
-
-.f-list-info h3{
-	font-size:24px;
-}
-
-.f-list-info .block-minor{
-	font-size:14px;
-}
-
-.f-list-info .btn{
-	margin-top:17px;
-	font-size:12px;
-	padding:6px 22px;
-}
-
-.f-list-img .offer-price-1 .duration{
-	font-size:13px;
-	text-transform:none;
-}
-
-.f-list-img .offer-price-1 .duration i{
-	font-size:20px;
-	margin-right:8px;
-}
-
-.f-list-img .offer-price-1 .duration span{
-	position:relative;
-	top:-2px;
-}
-
-.f-list-img .offer-price-1 .price{
-	float:right;
-	margin-top:0px;
-}
-
-/************ CAR-LIST BLOCK ************/
-
-.cr-list-info .car-features{
-	margin:23px 0px 15px;
-}
-
-.cr-list-info .car-features li{
-	text-transform:uppercase;
-	font-size:13px;
-	padding-left:0px;
-	padding-right:13px;
-	margin-top:8px;
-}
-
-.cr-list-info .car-features li .fa{
-	width:55px;
-	height:49px;	
-	font-size:20px;
-	margin-bottom:5px;
-	padding-top:13px;
 }
 
 /* -----------------------------------------------------
@@ -3226,6 +2738,7 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	font-size:25px;
 	text-transform:uppercase;
 	margin-bottom:10px;
+	margin-top: 15px;
 }
 
 .custom-form p{
@@ -3439,259 +2952,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 #error-text .btn{
 	font-size:20px;
 	padding:14px 50px;
-}
-
-/********** COMING SOON PAGE ************/
-
-#coming-soon-text{
-	text-align:center;
-}
-
-#coming-soon-text h2{
-	font-size:92px;
-	font-weight:300;
-	text-transform:uppercase;
-	margin-top:83px;
-}
-
-#coming-soon-text p{
-	font-size:30px;
-	text-transform:uppercase;
-}
-
-#coming-soon-text form .form-group{
-	width:360px;
-	margin:60px auto 95px;
-}
-
-#coming-soon-text form input{
-	font-size:15px;
-	height:42px;
-}
-
-#coming-soon-text .input-group-btn .btn{
-	height:42px;
-	width:52px;
-	font-size:28px;
-}
-
-#coming-soon-text .input-group-btn .btn i{
-	position:relative;
-	top:-7px;
-}
-
-#coming-soon-text .timer li{
-	height:112px;
-	width:112px;
-	font-size:16px;
-	padding-top:28px;
-	margin:20px 14px; 
-	overflow:hidden;
-}
-
-#coming-soon-text .timer li .digit{
-	font-size:54px;
-	font-weight:300;
-	display:block;
-	margin-bottom:23px;
-}
-
-/********* BLOG LISTINGS PAGE ***********/
-
-.blog-list{
-	transition:.4s;
-	margin-bottom:60px;
-}
-
-.blog-post:last-child{
-	margin-bottom:0px;
-}
-
-.blog-post-img{
-	overflow:hidden;
-}
-
-.blog-post .blog-post-img img{
-	width:100%;
-	transition:.4s;
-	max-height:440px;
-}
-
-.blog-post-img .main-mask{
-	padding:15px 43px;
-}
-
-.blog-post-img .main-mask .blog-post-info li{
-	text-transform:uppercase;
-	font-size:13px;
-}
-
-.blog-post-img .main-mask .blog-post-info li .fa{
-	margin-right:10px;
-	font-size:14px;
-}
-
-.blog-post-img .main-mask .blog-post-info li:nth-child(2){
-	margin-left:13px;
-}
-
-.blog-post-img .main-mask .blog-post-info li:nth-child(2) a{
-	font-weight:bold;
-}
-
-.blog-post-detail{
-	padding:45px 40px;
-}
-
-.blog-post-detail .blog-post-title{
-	font-size:22px;
-	margin-bottom:7px;
-}
-
-.blog-post-detail .blog-post-title a{
-	text-decoration:none;
-	display:inline-block;
-}
-
-.blog-post-detail p{
-	line-height:1.6em;
-}
-
-.blog-post-detail .btn{
-	font-size:12px;
-	padding:6px 22px;
-	margin-top:12px;
-}
-
-#blog-listings .side-bar .ad-block,
-#blog-details .side-bar .ad-block{
-	margin-bottom:90px;
-}
-
-/********** BLOG DETAILS PAGE ***********/
-
-#blog-details .blog-post-detail{
-	padding-bottom:60px;
-}
-
-#blog-details .blog-post-detail p{
-	font-size:15px;
-	margin-bottom:20px;
-	line-height:1.5em;
-}
-
-#blog-details .content-side{
-	margin-top:0px;
-}
-
-#blog-details .side-bar-block{
-	margin-bottom:90px;
-}
-
-#blog-details .side-bar-block.search{
-	margin-bottom:60px;
-}
-
-#blog-details .blog-list-detail .list-title{
-	margin-bottom:20px;
-}
-
-#blog-details .blog-list-block p{
-	margin-bottom:25px;
-}
-
-#comments{
-	margin-top:120px;
-	width:95%;
-}
-
-.comment-block{
-	margin-bottom:85px;
-}
-
-.comment-block .user-img{
-	float:left;
-	margin-right:28px;
-	margin-top:7px;
-}
-
-.comment-block .user-text{
-	overflow:hidden;
-}
-
-.comment-block .user-text ul .user-name{
-	font-size:20px;
-	font-weight:bold;
-	text-transform:uppercase;
-	position:relative;
-	padding-right:12px;
-}
-
-.comment-block .user-text ul .user-name:after{
-	content:"";
-	position:absolute;
-	right:0;
-	top:1px;
-	height:20px;
-	width:2px;
-	display:block;
-}
-
-.comment-block .user-text ul .date{
-	font-size:16px;
-	padding-left:10px;
-}
-
-.comment-block .user-text p{
-	font-size:14px;
-	margin-top:12px;
-	margin-bottom:20px;
-	line-height:1.43em;
-}
-
-.comment-block .user-text a{
-	font-size:15px;
-	text-decoration:none;
-}
-
-.comment-block .user-text .fa{
-	font-size:18px;
-	margin-right:10px;
-}
-
-.reply-block{
-	padding-left:100px;
-	margin-top:75px;
-}
-
-#comment-form{
-	margin-top:115px;
-}
-
-#comment-form .innerpage-heading h1{
-	font-size:26px;
-	margin-bottom:38px;
-	text-transform:capitalize;
-}
-
-#comment-form .form-group{
-	margin-bottom:27px;
-}
-
-#comment-form input{
-	font-size:14px;
-	padding-left:15px;
-}
-
-#comment-form textarea{
-	font-size:14px;
-	padding-top:15px;
-}
-
-#comment-form .btn{
-	font-size:16px;
-	margin-top:35px;
-	padding:7px 40px;
 }
 
 /************** DASHOBARD ***************/
@@ -4042,58 +3302,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	margin-left:15px;
 }
 
-/************* WISHLIST PAGE ************/
-
-.wishlist table tr{
-	margin-bottom:28px;
-}
-
-.wishlist table tr td{
-	padding:0px;
-}
-
-.wishlist td.wishlist-img img{
-	width:100%;
-}
-
-.wishlist-text h3{
-	font-size:25px;
-	font-weight:900;
-}
-
-.wishlist-text h3 .rating{
-	margin-left:10px;
-	font-size:18px;
-}
-
-.wishlist td.wishlist-text{
-	padding:20px 30px 35px;
-}
-
-.wishlist td.wishlist-text .order{
-	font-size:15px;
-}
-
-.wishlist td.wishlist-text .order span{
-	font-weight:900;
-}
-
-.wishlist td.wishlist-text .btn{
-	margin-top:15px;
-	padding:5px 22px;
-	font-size:13px;
-	width:110px;
-}
-
-.wishlist td.wishlist-btn{
-	padding:20px 20px 20px 8px;
-}
-
-.wishlist td.wishlist-btn .btn{
-	padding:5px 22px;
-	font-size:13px;
-}
-
 /************** CARD PAGE **************/
 
 .my-cards a{
@@ -4210,219 +3418,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 
 #forgot-password .custom-form .link-line{
 	margin-top:17px;
-}
-
-/********* BEFORE YOU FLY PAGE **********/
-
-.byf-info .nav-tabs li a{
-	font-size:16px;
-}
-
-.byf-info .nav-tabs li .fa{
-	margin-right:8px;
-	width:20px;
-}
-
-.byf-info .tab-pane{
-	padding:50px 40px;
-}
-
-.byf-info .tab-pane .byf-info-wrap{
-	margin-bottom:50px;
-}
-
-.byf-info .tab-pane .byf-info-wrap img{
-	width:100%;
-}
-
-.byf-info .tab-pane .byf-info-wrap img + h3{
-	margin-top:50px;
-}
-
-.byf-info .tab-pane .byf-info-wrap .byf-info-heading{
-	margin-bottom:15px;
-}
-
-.byf-info .tab-pane .byf-info-wrap ul{
-	line-height:1.8em;
-	margin:20px 0px;
-}
-
-.tab-pane .byf-info-wrap:last-child,
-.tab-pane .byf-info-wrap p:last-child{
-	margin-bottom:0px;
-}
-
-/********* TRAVEL INSURANCE PAGE *********/
-
-.tvl-insurance-info .innerpage-heading h1{
-	font-size:30px;
-	padding-left:15px;
-}
-
-.tvl-insurance-info .innerpage-heading p{
-	width:100%;
-	margin-bottom:30px;
-}
-
-.tvl-insurance-info .innerpage-heading p + img{
-	margin-bottom:30px;
-}
-
-.insurance-desc .innerpage-heading + ul li{
-	font-size:16px;
-	position:relative;
-	padding-left:25px;
-	line-height:1.8em;
-}
-
-.insurance-desc .innerpage-heading + ul li:before{
-	content:'\f101';
-	font-family: "FontAwesome";
-	position:absolute;
-	top:0px;
-	left:0px;
-	font-size:20px;
-}
-
-.in-feature-block{
-	margin-top:25px;
-}
-
-.in-feature-block .fa{
-	font-size:40px;
-	width:90px;
-	height:90px;
-	text-align:center;
-	padding-top:24px;
-	margin-bottom:20px;
-	transition:.4s;
-	position:relative;
-	z-index:1;
-}
-
-.in-feature-block .fa::after{
-	position:absolute;
-	content:'';
-	top:0px;
-	left:0px;
-	bottom:0px;
-	right:0px;
-	z-index:-1;
-}
-
-.in-feature-block h4{
-	font-weight:bold;
-	font-size:21px;
-	margin-bottom:10px;
-}
-
-.in-feature-block p{
-	font-size:15px;
-}
-
-/************* HOLIDAYS PAGE *************/
-
-#holiday-trips .owl-holidays .item{
-	padding:15px;
-}
-
-.big-heading h2{
-	font-size:80px;
-	font-weight:900;
-	text-transform:uppercase;
-	text-align:center;
-	line-height:0.73em;
-	margin-top:-145px;
-	margin-bottom:70px;
-}
-
-#popular-destinations li{
-	margin-top:15px;
-	position:relative;
-	padding-left:25px;
-}
-
-#popular-destinations li:before{
-	content:'\f101';
-	font-family: "FontAwesome";
-	position:absolute;
-	top:0px;
-	left:0px;
-	font-size:20px;
-}
-
-#popular-destinations li a{
-	font-size:17px;
-	font-weight:bold;
-	text-decoration:none;
-}
-
-/************ THNAK YOU PAGE *************/
-
-.thank-you-note{
-	position:relative;
-	padding:0px 0px 30px 140px;
-}
-
-.thank-you-note:before{
-	content:'\f087 ';
-	font-family: "FontAwesome";
-	position:absolute;
-	top:-30px;
-	left:0px;
-	font-size:130px;
-	z-index:-1;
-}
-
-.thank-you-note h3{
-	margin-bottom:4px;
-}
-
-.thank-you-note p{
-	font-size:16px;
-	margin-bottom:20px;
-}
-
-.thank-you-note .btn{
-	padding:9px 20px;
-}
-
-.t-info-heading{
-	margin:60px 0px 40px 0px;
-	font-weight:900;
-	font-size:24px;
-}
-
-.t-info-heading span{
-	margin-right:10px;
-	padding-bottom:10px;
-}
-
-.traveler-info .table-responsive{
-	border:0px;
-}
-
-.traveler-info table tr td:nth-child(2){
-	font-weight:bold;	
-}
-
-.traveler-info table tr td:first-child{
-	padding-left:0px;
-}
-
-.payment-method p{
-	font-size:16px;
-	margin-bottom:20px;
-}
-
-.payment-method ul li{
-	margin-right:5px;
-}
-
-.payment-method ul li img{
-	max-width:100px;
-	margin-top:10px;
 }
 
 /* -----------------------------------------------------

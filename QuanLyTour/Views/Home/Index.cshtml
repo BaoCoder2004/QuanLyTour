@@ -6,7 +6,6 @@
 <div class="search-tabs" id="search-tabs-3">
     <div class="container">
         <div class="row">
-
             <div class="hidden-xs hidden-sm col-md-12 no-pd-l">
                 <div class="welcome-message">
                     <h2>LỰA CHỌN KỲ NGHỈ DƯỠNG TUYỆT VỜI</h2>
@@ -59,7 +58,7 @@
         </div><!-- end row -->
     </div><!-- end container -->
 </div><!-- end search-tabs -->
-<section  class="section-padding" >
+<section class="section-padding">
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
@@ -73,26 +72,29 @@
                         @foreach (var tour in Model.ToursTrongNuoc)
                         {
                             <div class="item">
-                                <div class="main-block hotel-block">
-                                    <div class="main-img">
+                                <div class="tour-card">
+                                    <div class="tour-img-container" style="position: relative;">
                                         <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">
-                                            <img src="@Url.Content($"~/hinhanh/{tour.HinhAnh1}")" class="img-responsive" alt="@tour.TenTour" />
+                                            <img src="@Url.Content($"~/hinhanh/{tour.HinhAnh1}")" class="img-responsive" alt="@tour.TenTour"/>
                                         </a>
-                                        <div class="main-mask">
-                                            <ul class="list-unstyled list-inline offer-price-1">
-                                                <li class="price">@tour.GiaTour.ToString("#,## VND")<span class="divider">|</span><span class="pkg">1 Người</span></li>
-                                                
-                                            </ul>
-                                        </div>
                                     </div>
-
-                                    <div class="main-info hotel-info">
-                                        <div class="arrow">
-                                            <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})"><span><i class="fa fa-angle-right"></i></span></a>
-                                        </div>
-
-                                        <div class="main-title hotel-title">
+                                    <div class="tour-info">
+                                        <h4>
                                             <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">@tour.TenTour</a>
+                                        </h4>
+                                        <div class="tour-duration">
+                                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                            <span>6 Ngày 5 Đêm</span>
+                                            <span><i class="fa fa-plane" aria-hidden="true"></i><i class="fa fa-bus" aria-hidden="true"></i><i class="fa fa-train" aria-hidden="true"></i></span>
+                                        </div>
+                                        <div class="tour-highlights">
+                                            <div><i class="fa fa-check-circle" aria-hidden="true"></i> Du Thuyền Kawaguko</div>
+                                            <div><i class="fa fa-check-circle" aria-hidden="true"></i> Chùa Vàng Kinkakuji</div>
+                                            <div><i class="fa fa-check-circle" aria-hidden="true"></i> Trải Nghiệm Mặc Đồ Yukata</div>
+                                        </div>
+                                        <div class="tour-price">
+                                            <span>31.000.000 VNĐ</span>
+                                            <div>@tour.GiaTour.ToString("#,##0") VNĐ</div>
                                         </div>
                                     </div>
                                 </div>
@@ -104,7 +106,6 @@
                 {
                     <p class="text-center danger">Không có tour mới nào để hiển thị.</p>
                 }
-
 
                 <div class="view-all text-center">
                     <a href="@Url.Action("DanhMucTour","Tour")" class="btn btn-orange">Xem nhiều hơn</a>

@@ -89,23 +89,21 @@
                     <li class="dropdown active">
                         <a href="@Url.Action("HoTro","Home")">Hỗ Trợ<span></span></a>
                     </li>
-
-                    @* <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Loại Phòng<span><i class="fa fa-angle-down"></i></span></a>
-                    <ul class="dropdown-menu">
-                    @foreach (var item in Model.LoaiPhongView)
-                    {
-                        <li><a href="@Url.Action("DetailViewDanhMuc","Detail",new {maLoai = item.MaLoaiPhong})">@item.TenLoaiPhong</a></li>
-                    }
-
-                    </ul>
+                    <li class="dropdown active">
+                        <a href="@Url.Action("KhachSan","Home")">Khách Sạn<span></span></a>
                     </li>
-                    <li><a href="javascript:void(0)" class="search-button"><span><i class="fa fa-search"></i></span>Tìm Kiếm</a></li> *@
+                    <li class="dropdown active">
+                        <a href="@Url.Action("VeMayBay","Home")">Vé Máy Bay<span></span></a>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="@Url.Action("VeTau","Home")">Vé Tàu<span></span></a>
+                    </li>
                 </ul>
             </div><!-- end navbar collapse -->
         </div><!-- end container -->
     </nav><!-- end navbar -->
     <!--=================== PAGE-COVER =================-->
-    <section class="page-cover" id="cover-hotel-grid-list">
+    <section class="page-cover">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
