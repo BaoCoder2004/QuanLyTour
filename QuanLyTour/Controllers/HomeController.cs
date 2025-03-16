@@ -39,7 +39,7 @@ namespace QuanLyTour.Controllers
                     connection.Open();
 
                     string queryTrongNuoc = @"
-                SELECT MaTour, TenTour,SoNgay,DiaDiem, MaLoaiTour, TrangThai, GiaTour, HinhAnh1 
+                SELECT MaTour, TenTour, MaLoaiTour, TrangThai, GiaTour, HinhAnh1 
                 FROM Tour 
                 WHERE TrangThai = 1";
 
@@ -54,12 +54,10 @@ namespace QuanLyTour.Controllers
                                 {
                                     MaTour = reader.GetInt32(0),
                                     TenTour = reader.GetString(1),
-									SoNgay = reader.GetString(2),
-									DiaDiem = reader.GetString(3),
-									MaLoaiTour = reader.GetInt32(4),
-                                    TrangThai = reader.GetBoolean(5),
-                                    GiaTour = reader.GetDecimal(6),
-                                    HinhAnh1 = reader.GetString(7)
+                                    MaLoaiTour = reader.GetInt32(2),
+                                    TrangThai = reader.GetBoolean(3),
+                                    GiaTour = reader.GetDecimal(4),
+                                    HinhAnh1 = reader.GetString(5)
                                 });
                             }
                         }
