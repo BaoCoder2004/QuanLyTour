@@ -15,6 +15,45 @@
                         👉 Nhiều địa điểm du lịch đầy màu sắc, nơi bạn có thể tận hưởng thiên nhiên hoang dã, tham gia các hoạt động giải trí và thưởng thức ẩm thực đặc trưng của địa phương
                     <p> ⚡️  Hãy đến và trải nghiệm cùng HANOITOUR của chúng tôi! </p>
                     <a href="@Url.Action("DanhMucTour","Tour")" class="btn btn-w-border">Xem ngay</a>
+
+                    <div class="search-form-container" style="margin-top:20px">
+                        <div class="row">
+                            <!-- Ô nhập địa điểm -->
+                            <div class="col-xs-12 col-md-4" style="padding-right: 5px; margin-bottom: 10px;">
+                                <div class="input-group">
+                                    <span class="input-group-addon" style="background-color: white; border-right: none;"><i class="fa fa-map-marker"></i></span>
+                                    <input type="text" class="form-control input-lg" placeholder="Bạn muốn đi đâu?" style="height: 46px; border-left: none;">
+                                </div>
+                            </div>
+
+                            <!-- Ô chọn ngày -->
+                            <div class="col-xs-12 col-md-3" style="padding-right: 5px; padding-left: 5px; margin-bottom: 10px;">
+                                <div class="input-group">
+                                    <span class="input-group-addon" style="background-color: white; border-right: none;"><i class="fa fa-calendar"></i></span>
+                                    <input type="date" class="form-control input-lg" placeholder="Ngày khởi hành" style="height: 46px; border-left: none;">
+                                </div>
+                            </div>
+
+                            <!-- Ô chọn nơi khởi hành -->
+                            <div class="col-xs-12 col-md-3" style="padding-right: 5px; padding-left: 5px; margin-bottom: 10px;">
+                                <div class="input-group">
+                                    <span class="input-group-addon" style="background-color: white; border-right: none;"><i class="fa fa-plane"></i></span>
+                                    <select class="form-control input-lg" style="height: 46px; border-left: none;">
+                                        <option selected>Khởi hành từ</option>
+                                        <option>Hồ Chí Minh</option>
+                                        <option>Hà Nội</option>
+                                        <option>Đà Nẵng</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Nút tìm kiếm -->
+                            <div class="col-xs-12 col-md-2" style="padding-left: 5px; margin-top: -10px;">
+                                <button type="submit" class="btn btn-warning btn-lg" style="background-color: #ff8c00; border-color: #ff8c00; height: 46px; width: 100%; font-weight: bold;">TÌM</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div><!-- end row -->
