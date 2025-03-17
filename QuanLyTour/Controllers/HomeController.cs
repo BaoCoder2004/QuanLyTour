@@ -188,8 +188,49 @@ namespace QuanLyTour.Controllers
 
             return View(nguoiDung); // Truyền dữ liệu tới view
         }
+		public IActionResult ThongTinNguoiDung(string TenNguoiDung, string DiaChi, string SoDienThoai, string Email)
+		{
+			// Lấy maNguoiDung từ session
+			var maNguoiDung = HttpContext.Session.GetInt32("UserId");
 
-        public IActionResult QuenMatKhau()
+			// Kiểm tra xem maNguoiDung có hợp lệ không
+			if (maNguoiDung == null)
+			{
+				TempData["ErrorMessage"] = "Bạn cần phải đăng nhập để cập nhật thông tin!";
+				return RedirectToAction("DangNhap", "Home");  // Chuyển hướng đến trang login nếu không có maNguoiDung
+			}
+
+			try
+			{
+				// Cập nhật thông tin người dùng vào cơ sở dữ liệu
+				using (SqlConnection connection = new SqlConnection(_connectionString))
+				{
+					string query = "UPDATE NguoiDung SET TenNguoiDung = @TenNguoiDung, DiaChi = @DiaChi, SoDienThoai = @SoDienThoai, Email=@Email WHERE MaNguoiDung = @MaNguoiDung";
+
+					SqlCommand command = new SqlCommand(query, connection);
+					command.Parameters.AddWithValue("@MaNguoiDung", maNguoiDung);  // Sử dụng maNguoiDung lấy từ session
+					command.Parameters.AddWithValue("@TenNguoiDung", TenNguoiDung);  // Lấy giá trị từ view
+					command.Parameters.AddWithValue("@DiaChi", DiaChi);  // Lấy giá trị từ view
+					command.Parameters.AddWithValue("@SoDienThoai", SoDienThoai);  // Lấy giá trị từ view
+					command.Parameters.AddWithValue("@Email", Email);
+					connection.Open();
+					command.ExecuteNonQuery();
+					connection.Close();
+				}
+
+				// Thông báo thành công và chuyển hướng
+				TempData["Message"] = "Cập nhật thông tin thành công! Sau 5s hệ thống sẽ tự đăng xuất tài khoản, bạn cần đăng nhập lại để xem thông tin cập nhật!";
+				return RedirectToAction("ThongTinNguoiDung");
+			}
+			catch (Exception ex)
+			{
+				// Nếu có lỗi xảy ra, ghi lại lỗi và hiển thị thông báo lỗi
+				TempData["ErrorMessage"] = "Có lỗi xảy ra: " + ex.Message;
+				return View();  // Nếu có lỗi, quay lại trang cập nhật
+			}
+		}
+
+		public IActionResult QuenMatKhau()
         {
             return View();
         }
@@ -362,47 +403,7 @@ namespace QuanLyTour.Controllers
 			return View();
 		}
 		[HttpPost]
-        public IActionResult ThongTinNguoiDung(string TenNguoiDung, string DiaChi, string SoDienThoai,string Email)
-        {
-            // Lấy maNguoiDung từ session
-            var maNguoiDung = HttpContext.Session.GetInt32("UserId");
-
-            // Kiểm tra xem maNguoiDung có hợp lệ không
-            if (maNguoiDung == null)
-            {
-                TempData["ErrorMessage"] = "Bạn cần phải đăng nhập để cập nhật thông tin!";
-                return RedirectToAction("DangNhap", "Home");  // Chuyển hướng đến trang login nếu không có maNguoiDung
-            }
-
-            try
-            {
-                // Cập nhật thông tin người dùng vào cơ sở dữ liệu
-                using (SqlConnection connection = new SqlConnection(_connectionString))
-                {
-                    string query = "UPDATE NguoiDung SET TenNguoiDung = @TenNguoiDung, DiaChi = @DiaChi, SoDienThoai = @SoDienThoai, Email=@Email WHERE MaNguoiDung = @MaNguoiDung";
-
-                    SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@MaNguoiDung", maNguoiDung);  // Sử dụng maNguoiDung lấy từ session
-                    command.Parameters.AddWithValue("@TenNguoiDung", TenNguoiDung);  // Lấy giá trị từ view
-                    command.Parameters.AddWithValue("@DiaChi", DiaChi);  // Lấy giá trị từ view
-                    command.Parameters.AddWithValue("@SoDienThoai", SoDienThoai);  // Lấy giá trị từ view
-					command.Parameters.AddWithValue("@Email",Email);
-					connection.Open();
-                    command.ExecuteNonQuery();
-                    connection.Close();
-                }
-
-                // Thông báo thành công và chuyển hướng
-                TempData["Message"] = "Cập nhật thông tin thành công! Sau 5s hệ thống sẽ tự đăng xuất tài khoản, bạn cần đăng nhập lại để xem thông tin cập nhật!";
-                return RedirectToAction("ThongTinNguoiDung");
-            }
-            catch (Exception ex)
-            {
-                // Nếu có lỗi xảy ra, ghi lại lỗi và hiển thị thông báo lỗi
-                TempData["ErrorMessage"] = "Có lỗi xảy ra: " + ex.Message;
-                return View();  // Nếu có lỗi, quay lại trang cập nhật
-            }
-        }
+        
 
 
         // Hiển thị form đăng ký

@@ -41,11 +41,11 @@
                                                         <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">@tour.TenTour</a>
                                                     </h4>
                                                     <div class="tour-duration">
-                                                        <i class="fa fa-clock-o"></i>
-                                                        <span>@($"{tour.SoNgay} Ngày {tour.SoNgay} Đêm")</span>
+                                                        <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                                        <div>@($"{tour.SoNgay}")</div>
                                                     </div>
-                                                    <div class="tour-highlight">
-                                                        Điểm đến: @(tour.DiaDiem ?? "")
+                                                    <div class="tour-highlights">
+                                                        <div>@($"Điểm đến: {tour.DiaDiem}")</div>
                                                     </div>
                                                     <div class="tour-price">
                                                         <div>@tour.GiaTour.ToString("#,##0") VNĐ</div>
@@ -86,11 +86,11 @@
                                                         <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">@tour.TenTour</a>
                                                      </h4>
                                                     <div class="tour-duration">
-                                                        <i class="fa fa-clock-o"></i>
-                                                        <span>@($"{tour.SoNgay} Ngày {tour.SoNgay} Đêm")</span>
+                                                        <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                                        <div>@($"{tour.SoNgay}")</div>
                                                     </div>
-                                                    <div class="tour-highlight">
-                                                        Điểm đến: @(tour.DiaDiem ?? "")
+                                                    <div class="tour-highlights">
+                                                        <div>@($"Điểm đến: {tour.DiaDiem}")</div>
                                                     </div>
                                                     <div class="tour-price">
                                                         <div>@tour.GiaTour.ToString("#,##0") VNĐ</div>

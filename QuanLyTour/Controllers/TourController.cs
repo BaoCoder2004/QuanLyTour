@@ -118,67 +118,76 @@ namespace QuanLyTour.Controllers
             return View(viewModel);
 
         }
-        public IActionResult DanhMucTour(int pageTrongNuoc = 1, int pageNuocNgoai = 1, int pageSize = 12)
-        {
-            var model = new TourTabsViewModel();
-            try
-            {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    connection.Open();
+		public IActionResult DanhMucTour(int pageTrongNuoc = 1, int pageNuocNgoai = 1, int pageSize = 12)
+		{
+			var model = new TourTabsViewModel();
+			try
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					connection.Open();
 
-                    // Lấy danh sách Tour Trong Nước
-                    string queryTrongNuoc = @"
-                SELECT p.MaTour, p.TenTour, p.MaLoaiTour, p.TrangThai, p.GiaTour, p.HinhAnh1, l.TenLoaiTour FROM Tour p 
-                INNER JOIN LoaiTour l ON p.MaLoaiTour = l.MaLoaiTour WHERE p.MaLoaiTour = 1";
+					// Lấy danh sách Tour Trong Nước
+					string queryTrongNuoc = @"
+            SELECT p.MaTour, p.TenTour, p.MaLoaiTour, p.TrangThai, p.SoNgay, p.DiaDiem, p.GiaTour, p.HinhAnh1, l.TenLoaiTour 
+            FROM Tour p 
+            INNER JOIN LoaiTour l ON p.MaLoaiTour = l.MaLoaiTour 
+            WHERE p.MaLoaiTour = 1";
 
-                    var tourTrongNuoc = GetTours(connection, queryTrongNuoc);
-                    model.TourTrongNuoc = tourTrongNuoc.ToPagedList(pageTrongNuoc, pageSize);
+					var tourTrongNuoc = GetTours(connection, queryTrongNuoc);
+					model.TourTrongNuoc = tourTrongNuoc.ToPagedList(pageTrongNuoc, pageSize);
 
-                    // Lấy danh sách Tour Nước Ngoài
-                    string queryNuocNgoai = @"SELECT p.MaTour, p.TenTour, p.MaLoaiTour, p.TrangThai, p.GiaTour, p.HinhAnh1, l.TenLoaiTour FROM Tour p 
-                    INNER JOIN LoaiTour l ON p.MaLoaiTour = l.MaLoaiTour WHERE p.MaLoaiTour = 2";
+					// Lấy danh sách Tour Nước Ngoài
+					string queryNuocNgoai = @"
+            SELECT p.MaTour, p.TenTour, p.MaLoaiTour, p.TrangThai, p.SoNgay, p.DiaDiem, p.GiaTour, p.HinhAnh1, l.TenLoaiTour 
+            FROM Tour p 
+            INNER JOIN LoaiTour l ON p.MaLoaiTour = l.MaLoaiTour 
+            WHERE p.MaLoaiTour = 2";
 
-                    var tourNuocNgoai = GetTours(connection, queryNuocNgoai);
-                    model.TourNuocNgoai = tourNuocNgoai.ToPagedList(pageNuocNgoai, pageSize);
-                }
-            }
-            catch (Exception ex)
-            {
-                ViewBag.ErrorMessage = "Có lỗi xảy ra: " + ex.Message;
-            }
+					var tourNuocNgoai = GetTours(connection, queryNuocNgoai);
+					model.TourNuocNgoai = tourNuocNgoai.ToPagedList(pageNuocNgoai, pageSize);
+				}
+			}
+			catch (Exception ex)
+			{
+				ViewBag.ErrorMessage = "Có lỗi xảy ra: " + ex.Message;
+			}
 
-            return View(model);
-        }
+			return View(model);
+		}
 
-        // Hàm lấy danh sách tour
-        private List<TourViewModel> GetTours(SqlConnection connection, string query)
-        {
-            var tours = new List<TourViewModel>();
+		// Hàm lấy danh sách tour
+		private List<TourViewModel> GetTours(SqlConnection connection, string query)
+		{
+			var tours = new List<TourViewModel>();
 
-            using (var command = new SqlCommand(query, connection))
-            {
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        tours.Add(new TourViewModel
-                        {
-                            MaTour = reader.GetInt32(0),
-                            TenTour = reader.GetString(1),
-                            MaLoaiTour = reader.GetInt32(2),
-                            TrangThai = reader.GetBoolean(3),
-                            GiaTour = reader.GetDecimal(4),
-                            HinhAnh1 = reader.GetString(5),
-                            TenLoaiTour = reader.GetString(6)
-                        });
-                    }
-                }
-            }
+			using (var command = new SqlCommand(query, connection))
+			{
+				using (var reader = command.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						tours.Add(new TourViewModel
+						{
+							MaTour = reader.GetInt32(0),
+							TenTour = reader.GetString(1),
+							MaLoaiTour = reader.GetInt32(2),
+							TrangThai = reader.GetBoolean(3),
+							SoNgay = reader.IsDBNull(4) ? "Không xác định" : reader.GetString(4),  // Xử lý NULL
+							DiaDiem = reader.IsDBNull(5) ? "Không có địa điểm" : reader.GetString(5),  // Xử lý NULL
+							GiaTour = reader.GetDecimal(6),
+							HinhAnh1 = reader.IsDBNull(7) ? "" : reader.GetString(7), // Xử lý NULL
+							TenLoaiTour = reader.GetString(8)
+						});
+					}
+				}
+			}
 
-            return tours;
-        }
-        [HttpPost]
+			return tours;
+		}
+
+
+		[HttpPost]
         public IActionResult DatTour(int MaNguoiDung, string TenNguoiDung, string SoDienThoai, string DiaChi, int SoLuong, string SoThe, string ChuThe, int maTour, DateTime NgayDi)
         {
             if (string.IsNullOrWhiteSpace(SoThe) || string.IsNullOrWhiteSpace(ChuThe))
