@@ -494,14 +494,15 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	background-color: #fff;
 }
 
-.tour-card:hover {
-	transform: translateY(-5px);
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
+	.tour-card:hover {
+		transform: translateY(-10px);
+		transition: 0.5s;
+	}
 
-.tour-card:hover .tour-img-container img {
-	transform: scale(1.03);
-}
+		.tour-card:hover .tour-img-container img {
+			transform: scale(1.15);
+			transition: 0.5s;
+		}
 
 .tour-img-container {
 	position: relative;
@@ -551,7 +552,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 .tour-highlights{
 	color: #3498db;
 }
-
 
 /* Icons in Tour Duration */
 .fa-clock-o, .fa-plane, .fa-bus, .fa-train {
@@ -2474,8 +2474,10 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	padding:12px 19px 19px;
 }
 
-.block-info a{
-	text-decoration:none;
+.block-info h4 a {
+	text-decoration: none;
+	color: #003c71;
+	font-weight: 600;
 }
 
 .block-title{
@@ -2630,7 +2632,7 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	width:100%;
 }
 
-.detail-tabs .tab-pane .tab-text{
+.detail-tabs .tab-pane .text{
 	padding-top:25px;
 }
 
