@@ -61,6 +61,7 @@ namespace QuanLyTour.Controllers
                                     GiaTour = reader.GetDecimal(6),
                                     HinhAnh1 = reader.GetString(7)
                                 });
+
                             }
                         }
                     }
@@ -74,11 +75,12 @@ namespace QuanLyTour.Controllers
             // Tạo ViewModel tổng hợp
             var viewModel = new TourIndexViewModel
             {
-                ToursTrongNuoc = toursTrongNuoc,
+                ToursTrongNuoc = toursTrongNuoc
             };
 
             return View(viewModel);
         }
+    
         [HttpGet]
         public IActionResult DangNhap()
         {
