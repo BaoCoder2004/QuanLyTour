@@ -36,30 +36,6 @@
     <!--====== LOADER =====-->
     <div class="loader"></div>
 
-
-    <!--======== SEARCH-OVERLAY =========-->
-    <div class="overlay">
-        <a href="javascript:void(0)" id="close-button" class="closebtn">&times;</a>
-        <div class="overlay-content">
-            <div class="form-center">
-                @using (Html.BeginForm("TimKiemTour", "Home", FormMethod.Get, new { @class = "form-inline", role = "form" }))
-                {
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" name="keyword" class="form-control" placeholder="Search..." required />
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn">
-                                    <span><i class="fa fa-search"></i></span>
-                                </button>
-                            </span>
-                        </div><!-- end input-group -->
-                    </div>
-
-                    <!-- end form-group -->
-                }
-            </div><!-- end form-center -->
-        </div><!-- end overlay-content -->
-    </div><!-- end overlay -->
     <!--============= TOP-BAR ===========-->
     <div id="top-bar" class="tb-text-grey">
         <div class="container">
@@ -106,7 +82,6 @@
     <!--========================= FLEX SLIDER =====================-->
     <!-- Modal -->
 
-
     <section class="flexslider-container" id="flexslider-container-3">
         <div class="header-absolute">
             <nav class="navbar navbar-default main-navbar navbar-custom navbar-transparent" id="mynavbar">
@@ -140,7 +115,6 @@
                             <li class="dropdown active">
                                 <a href="@Url.Action("HoTro","Home")">Hỗ Trợ<span></span></a>
                             </li>
-                            <li><a href="javascript:void(0)" class="search-button"><span><i class="fa fa-search"></i></span></a></li>
                         </ul>
                     </div><!-- end navbar collapse -->
                 </div><!-- end container -->
@@ -161,7 +135,6 @@
 
         <div class="flexslider slider" id="slider-3">
             <ul class="slides">
-
                 <li class="item-1 back-size" style="background:linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url(hinhanh/KhachSan.jpg) 50% 65%;
 	background-size:cover;
 	height:100%;">

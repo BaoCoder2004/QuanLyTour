@@ -19,20 +19,33 @@
                             @foreach (var tour in Model)
                             {
                                 <div class="col-sm-6 col-md-6 col-lg-4">
-                                    <div class="grid-block main-block h-grid-block">
-                                        <div class="main-img h-grid-img">
+                                    <div class="grid-block main-block h-grid-block tour-card">
+                                        <div class="main-img h-grid-img tour-img-container">
                                             <a href="@Url.Action("ChiTietTour", "Tour", new { maTour = tour.MaTour, maLoai = tour.MaLoaiTour })">
                                                 <img src="~/hinhanh/@tour.HinhAnh1" class="img-responsive" alt="@tour.TenTour" />
                                             </a>
-                                            <div class="main-mask">
-                                                <ul class="list-unstyled list-inline offer-price-1">
-                                                    <li class="price">@tour.GiaTour.ToString("#,##0 VND")<span class="divider">|</span><span class="pkg">1 người</span></li>
-                                                </ul>
-                                            </div>
                                         </div>
-                                        <div class="block-info h-grid-info">
-                                            <h3 class="block-title"><a href="@Url.Action("ChiTietTour", "Tour", new { maTour = tour.MaTour, maLoai = tour.MaLoaiTour })">@tour.TenTour</a></h3>
-                                            <p class="block-minor">@tour.TenLoaiTour</p>
+                                        <div class="block-info h-grid-info tour-info">
+                                            <h4>
+                                                <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">@tour.TenTour</a>
+                                            </h4>
+                                            <div class="tour-duration-container">
+                                                <div class="tour-duration">
+                                                    <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                                    <div>@($"{tour.SoNgay}")</div>
+                                                </div>
+                                                <div class="transportation-icons">
+                                                    <i class="fa fa-plane" aria-hidden="true"></i>
+                                                    <i class="fa fa-bus" aria-hidden="true"></i>
+                                                    <i class="fa fa-train" aria-hidden="true"></i>
+                                                </div>
+                                            </div>
+                                            <div class="tour-highlights">
+                                                <div>@($"Điểm đến: {tour.DiaDiem}")</div>
+                                            </div>
+                                            <div class="tour-price">
+                                                <div>@tour.GiaTour.ToString("#,##0") VNĐ</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

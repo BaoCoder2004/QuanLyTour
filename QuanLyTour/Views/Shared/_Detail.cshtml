@@ -44,28 +44,6 @@
     <!--====== LOADER =====-->
     <div class="loader"></div>
 
-    <!--======== SEARCH-OVERLAY =========-->
-    <div class="overlay">
-        <a href="javascript:void(0)" id="close-button" class="closebtn">&times;</a>
-        <div class="overlay-content">
-            <div class="form-center">
-                @using (Html.BeginForm("TimKiemTour", "Home", FormMethod.Get, new { @class = "form-inline", role = "form" }))
-                {
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" name="keyword" class="form-control" placeholder="Search..." required />
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn">
-                                    <span><i class="fa fa-search"></i></span>
-                                </button>
-                            </span>
-                        </div><!-- end input-group -->
-                    </div>
-                    <!-- end form-group -->
-                }
-            </div><!-- end form-center -->
-        </div><!-- end overlay-content -->
-    </div><!-- end overlay -->
     <!--============= TOP-BAR ===========-->
     <div id="top-bar" class="tb-text-grey">
         <div class="container">
@@ -114,9 +92,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <div class="header-search hidden-lg">
-                    <a href="javascript:void(0)" class="search-button"><span><i class="fa fa-search"></i></span></a>
-                </div>
                 <a href="@Url.Action("Index","Home")" class="navbar-brand"><span><i class="fa fa-plane"></i>HANOI</span>TOUR</a>
             </div><!-- end navbar-header -->
 
