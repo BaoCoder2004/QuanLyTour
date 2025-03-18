@@ -33,6 +33,24 @@
                         <input type="text" class="form-control" id="TenNguoiDung" name="TenNguoiDung" value="@Model.TenNguoiDung" required />
                     </div>
                     <div class="form-group">
+                        <label for="NgaySinh">Ngày tháng năm sinh</label>
+                        <input type="date" class="form-control" id="NgaySinh" name="NgaySinh" value="@(Model.NgaySinh?.ToString("yyyy-MM-dd"))" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Giới tính</label>
+                        <div>
+                            <label class="radio-inline">
+                                <input type="radio" name="GioiTinh" value="Nam" @(Model.GioiTinh == "Nam" ? "checked" : "") required /> Nam
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="GioiTinh" value="Nữ" @(Model.GioiTinh == "Nữ" ? "checked" : "") /> Nữ
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="GioiTinh" value="Khác" @(Model.GioiTinh == "Khác" ? "checked" : "") /> Khác
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="DiaChi">Địa chỉ</label>
                         <input type="text" class="form-control" id="DiaChi" name="DiaChi" value="@Model.DiaChi" required />
                     </div>
