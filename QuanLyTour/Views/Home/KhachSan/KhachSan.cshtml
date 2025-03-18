@@ -1,5 +1,5 @@
-﻿@using QuanLyTour.Models.Tour
-@model TourIndexViewModel
+﻿@using QuanLyTour.Models.KhachSan
+@model KhachSanIndexViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -16,42 +16,36 @@
                     <p> ⚡️  Hãy đến và trải nghiệm cùng HANOITOUR của chúng tôi! </p>
                     <a href="@Url.Action("DanhMucKhachSan","KhachSan")" class="btn btn-w-border">Xem ngay</a>
 
-                    <div class="search-form-container" style="margin-top:20px">
-                        <div class="row">
-                            <!-- Ô nhập địa điểm -->
-                            <div class="col-xs-12 col-md-4" style="padding-right: 5px; margin-bottom: 10px;">
-                                <div class="input-group">
-                                    <span class="input-group-addon" style="background-color: white; border-right: none;"><i class="fa fa-map-marker"></i></span>
-                                    <input type="text" class="form-control input-lg" placeholder="Bạn muốn đi đâu?" style="height: 46px; border-left: none;">
+                    <div class="search-container">
+                        <div class="input-group search-box">
+                            <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                            <input type="text" class="form-control" placeholder="Bạn muốn đi đâu?">
+                        </div>
+
+                        <div class="search-options">
+                            <!-- Chọn ngày đi và ngày về -->
+                            <div class="search-date">
+                                <div class="date-box">
+                                    <i class="fa fa-calendar"></i>
+                                    <input type="text" class="form-control" placeholder="19 tháng 03 - Thứ tư">
+                                </div>
+                                <span class="night-count">1 đêm</span>
+                                <div class="date-box">
+                                    <i class="fa fa-calendar"></i>
+                                    <input type="text" class="form-control" placeholder="20 tháng 03 - Thứ năm">
                                 </div>
                             </div>
 
-                            <!-- Ô chọn ngày -->
-                            <div class="col-xs-12 col-md-3" style="padding-right: 5px; padding-left: 5px; margin-bottom: 10px;">
-                                <div class="input-group">
-                                    <span class="input-group-addon" style="background-color: white; border-right: none;"><i class="fa fa-calendar"></i></span>
-                                    <input type="date" class="form-control input-lg" placeholder="Ngày khởi hành" style="height: 46px; border-left: none;">
-                                </div>
-                            </div>
-
-                            <!-- Ô chọn nơi khởi hành -->
-                            <div class="col-xs-12 col-md-3" style="padding-right: 5px; padding-left: 5px; margin-bottom: 10px;">
-                                <div class="input-group">
-                                    <span class="input-group-addon" style="background-color: white; border-right: none;"><i class="fa fa-plane"></i></span>
-                                    <select class="form-control input-lg" style="height: 46px; border-left: none;">
-                                        <option selected>Khởi hành từ</option>
-                                        <option>Hồ Chí Minh</option>
-                                        <option>Hà Nội</option>
-                                        <option>Đà Nẵng</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Nút tìm kiếm -->
-                            <div class="col-xs-12 col-md-2" style="padding-left: 5px; margin-top: -10px;">
-                                <button type="submit" class="btn btn-warning btn-lg" style="background-color: #ff8c00; border-color: #ff8c00; height: 46px; width: 100%; font-weight: bold;">TÌM</button>
+                            <!-- Chọn số người và số phòng -->
+                            <div class="search-people">
+                                <i class="fa fa-user"></i>
+                                <input type="text" class="form-control" placeholder="2 người lớn, 0 trẻ em">
+                                <span class="room-count">1 Phòng</span>
                             </div>
                         </div>
+
+                        <!-- Nút tìm kiếm -->
+                        <button type="submit" class="btn btn-warning search-btn">Tìm</button>
                     </div>
 
                 </div>
@@ -67,21 +61,21 @@
                     <h2 style="color:black;">DANH MỤC CÁC TOUR MỚI</h2>
                     <hr class="heading-line" />
                 </div><!-- end page-heading -->
-                @if (Model != null && Model.ToursTrongNuoc.Any())
+                @if (Model != null && Model.KhachSansTrongNuoc.Any())
                 {
                     <div class="owl-carousel owl-theme owl-custom-arrow" id="owl-hotel-offers">
-                        @foreach (var tour in Model.ToursTrongNuoc)
+                        @foreach (var tour in Model.KhachSansTrongNuoc)
                         {
                             <div class="item">
                                 <div class="tour-card">
                                     <div class="tour-img-container">
-                                        <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">
-                                            <img src="@Url.Content($"~/hinhanh/{tour.HinhAnh1}")" class="img-responsive" alt="@tour.TenTour" />
+                                        <a href="@Url.Action("ChiTietKhachSan","KhachSan",new {maKhachSan = tour.MaKhachSan, maLoai = tour.MaLoaiKhachSan})">
+                                            <img src="@Url.Content($"~/hinhanh/{tour.HinhAnh1}")" class="img-responsive" alt="@tour.TenKhachSan" />
                                         </a>
                                     </div>
                                     <div class="tour-info">
                                         <h4>
-                                            <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">@tour.TenTour</a>
+                                            <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaKhachSan, maLoai = tour.MaLoaiKhachSan})">@tour.TenKhachSan</a>
                                         </h4>
                                         <div class="tour-duration-container">
                                             <div class="tour-duration">
@@ -98,7 +92,7 @@
                                             <div>@($"Điểm đến: {tour.DiaDiem}")</div>
                                         </div>
                                         <div class="tour-price">
-                                            <div>@tour.GiaTour.ToString("#,##0") VNĐ</div>
+                                            <div>@tour.GiaKhachSan.ToString("#,##0") VNĐ</div>
                                         </div>
                                     </div>
                                 </div>
@@ -112,7 +106,7 @@
                 }
 
                 <div class="view-all text-center">
-                    <a href="@Url.Action("DanhMucTour","Tour")" class="btn btn-orange">Xem nhiều hơn</a>
+                    <a href="@Url.Action("DanhMucKhachSan","KhachSan")" class="btn btn-orange">Xem nhiều hơn</a>
                 </div><!-- end view-all -->
             </div><!-- end columns -->
         </div><!-- end row -->
