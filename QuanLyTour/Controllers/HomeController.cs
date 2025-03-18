@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Org.BouncyCastle.Crypto.Generators;
 using BCrypt.Net;
+using QuanLyTour.Models.Tour;
 namespace QuanLyTour.Controllers
 {
     public class HomeController : Controller

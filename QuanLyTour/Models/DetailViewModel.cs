@@ -1,4 +1,5 @@
-﻿using X.PagedList;
+﻿using QuanLyTour.Models.Tour;
+using X.PagedList;
 namespace QuanLyTour.Models
 {
     public class DetailViewModel

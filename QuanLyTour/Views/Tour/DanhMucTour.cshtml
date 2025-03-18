@@ -1,4 +1,5 @@
 ﻿@model TourTabsViewModel
+@using QuanLyTour.Models.Tour
 @using X.PagedList;
 @using X.PagedList.Mvc.Core;
 @{
@@ -31,18 +32,25 @@
                                     {
                                         <div class="col-sm-6 col-md-6 col-lg-4">
                                             <div class="grid-block main-block h-grid-block tour-card">
-                                                <div class="main-img h-grid-img">
+                                                <div class="main-img h-grid-img tour-img-container">
                                                     <a href="@Url.Action("ChiTietTour", "Tour", new { maTour = tour.MaTour, maLoai = tour.MaLoaiTour })">
                                                         <img src="~/hinhanh/@tour.HinhAnh1" class="img-responsive" alt="@tour.TenTour" />
                                                     </a>
                                                 </div>
-                                                <div class="block-info h-grid-info tour-content">
+                                                <div class="block-info h-grid-info tour-info">
                                                     <h4>
                                                         <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">@tour.TenTour</a>
                                                     </h4>
-                                                    <div class="tour-duration">
-                                                        <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
-                                                        <div>@($"{tour.SoNgay}")</div>
+                                                    <div class="tour-duration-container">
+                                                        <div class="tour-duration">
+                                                            <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                                            <div>@($"{tour.SoNgay}")</div>
+                                                        </div>
+                                                        <div class="transportation-icons">
+                                                            <i class="fa fa-plane" aria-hidden="true"></i>
+                                                            <i class="fa fa-bus" aria-hidden="true"></i>
+                                                            <i class="fa fa-train" aria-hidden="true"></i>
+                                                        </div>
                                                     </div>
                                                     <div class="tour-highlights">
                                                         <div>@($"Điểm đến: {tour.DiaDiem}")</div>
@@ -76,18 +84,25 @@
                                     {
                                         <div class="col-sm-6 col-md-6 col-lg-4">
                                             <div class="grid-block main-block h-grid-block tour-card">
-                                                <div class="main-img h-grid-img">
+                                                <div class="main-img h-grid-img tour-img-container">
                                                     <a href="@Url.Action("ChiTietTour", "Tour", new { maTour = tour.MaTour, maLoai = tour.MaLoaiTour })">
                                                         <img src="~/hinhanh/@tour.HinhAnh1" class="img-responsive" alt="@tour.TenTour" />
                                                     </a>
                                                 </div>
-                                                <div class="block-info h-grid-info tour-content">
+                                                <div class="block-info h-grid-info tour-info">
                                                     <h4>
                                                         <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">@tour.TenTour</a>
-                                                     </h4>
-                                                    <div class="tour-duration">
-                                                        <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
-                                                        <div>@($"{tour.SoNgay}")</div>
+                                                    </h4>
+                                                    <div class="tour-duration-container">
+                                                        <div class="tour-duration">
+                                                            <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                                            <div>@($"{tour.SoNgay}")</div>
+                                                        </div>
+                                                        <div class="transportation-icons">
+                                                            <i class="fa fa-plane" aria-hidden="true"></i>
+                                                            <i class="fa fa-bus" aria-hidden="true"></i>
+                                                            <i class="fa fa-train" aria-hidden="true"></i>
+                                                        </div>
                                                     </div>
                                                     <div class="tour-highlights">
                                                         <div>@($"Điểm đến: {tour.DiaDiem}")</div>
@@ -117,6 +132,3 @@
         </div>
     </div>
 </section>
-
-
-

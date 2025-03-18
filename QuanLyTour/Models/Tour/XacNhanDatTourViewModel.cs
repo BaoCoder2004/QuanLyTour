@@ -1,4 +1,4 @@
-﻿namespace QuanLyTour.Models
+﻿namespace QuanLyTour.Models.Tour
 {
     public class XacNhanDatTourViewModel
     {

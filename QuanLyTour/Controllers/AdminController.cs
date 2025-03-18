@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using X.PagedList;
 using QuanLyTour.Models;
 using X.PagedList.Extensions;
+using QuanLyTour.Models.Tour;
 
 namespace QuanLyTour.Controllers
 {

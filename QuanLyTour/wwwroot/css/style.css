@@ -533,10 +533,16 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	text-decoration: none;
 }
 
+.tour-duration-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
 .tour-duration {
 	display: flex;
 	align-items: center;
-	margin-bottom: 10px;
 }
 
 	.tour-duration span {
@@ -553,23 +559,14 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 		color: #333;
 	}
 
-.tour-highlights{
-	color: #3498db;
+.transportation-icons i {
+	margin-left: 5px;
+	color: #666;
+	font-size: 14px;
 }
 
-/* Icons in Tour Duration */
-.fa-clock-o, .fa-plane, .fa-bus, .fa-train {
-	margin-right: 5px;
-}
-
-/* Right-aligned content in Tour Duration */
-.tour-duration span{
-	float: right;
-}
-
-/* Tour Highlights Div */
 .tour-highlights {
-	margin-bottom: 10px;
+	color: #3498db;
 }
 
 /* Check Circle Icons in Tour Highlights */

@@ -1,5 +1,5 @@
 ﻿using X.PagedList;
-namespace QuanLyTour.Models
+namespace QuanLyTour.Models.Tour
 {
     public class TourTabsViewModel
     {

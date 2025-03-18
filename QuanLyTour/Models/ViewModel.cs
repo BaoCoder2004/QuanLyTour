@@ -1,4 +1,6 @@
-﻿namespace QuanLyTour.Models
+﻿using QuanLyTour.Models.Tour;
+
+namespace QuanLyTour.Models
 {
     public class ViewModel
     {
