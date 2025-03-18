@@ -241,6 +241,8 @@ namespace QuanLyTour.Controllers
         {
             return View();
         }
+
+		#region  reset password
 		private bool SendVerificationCode(string toEmail, string code)
 		{
 			try
@@ -387,6 +389,8 @@ namespace QuanLyTour.Controllers
 				return View("XacNhanMa");
 			}
 		}
+		#endregion 
+
 		public IActionResult KhachSan()
 		{
 			return View();
@@ -474,7 +478,7 @@ namespace QuanLyTour.Controllers
 
                     // Truy vấn dữ liệu Tour dựa vào từ khóa
                     string query = @"
-                SELECT t.MaTour, t.TenTour, t.MaLoaiTour, t.TrangThai, t.GiaTour, t.HinhAnh1, l.TenLoaiTour
+                SELECT t.MaTour, t.TenTour, t.MaLoaiTour,t.SoNgay,t.DiaDiem, t.TrangThai, t.GiaTour, t.HinhAnh1, l.TenLoaiTour
                 FROM Tour t
                 INNER JOIN LoaiTour l ON t.MaLoaiTour = l.MaLoaiTour
                 WHERE (TenTour LIKE @Keyword)";
@@ -492,10 +496,12 @@ namespace QuanLyTour.Controllers
                                     MaTour = reader.GetInt32(0),
                                     TenTour = reader.GetString(1),
                                     MaLoaiTour = reader.GetInt32(2),
-                                    TrangThai = reader.GetBoolean(3),
-                                    GiaTour = reader.GetDecimal(4),
-                                    HinhAnh1 = reader.GetString(5),
-                                    TenLoaiTour = reader.GetString(6)
+									SoNgay = reader.GetString(3),
+									DiaDiem = reader.GetString(4),
+									TrangThai = reader.GetBoolean(5),
+                                    GiaTour = reader.GetDecimal(6),
+                                    HinhAnh1 = reader.GetString(7),
+                                    TenLoaiTour = reader.GetString(8)
                                 });
                             }
                         }

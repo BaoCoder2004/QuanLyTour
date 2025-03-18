@@ -39,7 +39,7 @@ namespace QuanLyTour.Controllers
                 connection.Open();
 
                 // Truy vấn thông tin tour hiện tại
-                string sql = "SELECT p.MaTour, p.TenTour, p.MaLoaiTour, p.TrangThai, p.GiaTour, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, l.TenLoaiTour, p.MoTa, p.LichTrinh " +
+                string sql = "SELECT p.MaTour, p.TenTour, p.MaLoaiTour, p.TrangThai, p.SoNgay, p.DiaDiem, p.GiaTour, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, l.TenLoaiTour, p.MoTa, p.LichTrinh " +
                     "FROM Tour p " +
                     "INNER JOIN LoaiTour l ON p.MaLoaiTour = l.MaLoaiTour " +
                     "WHERE p.MaTour = @maTour";
@@ -59,19 +59,21 @@ namespace QuanLyTour.Controllers
                                 TenTour = !reader.IsDBNull(1) ? reader.GetString(1) : string.Empty,
                                 MaLoaiTour = !reader.IsDBNull(2) ? reader.GetInt32(2) : 0,
                                 TrangThai = !reader.IsDBNull(3) && reader.GetBoolean(3),
-                                GiaTour = !reader.IsDBNull(4) ? reader.GetDecimal(4) : 0,
-                                HinhAnh1 = !reader.IsDBNull(5) ? reader.GetString(5) : string.Empty,
-                                HinhAnh2 = !reader.IsDBNull(6) ? reader.GetString(6) : string.Empty,
-                                HinhAnh3 = !reader.IsDBNull(7) ? reader.GetString(7) : string.Empty,
-                                TenLoaiTour = !reader.IsDBNull(8) ? reader.GetString(8) : string.Empty,
-                                MoTa = !reader.IsDBNull(9) ? reader.GetString(9) : string.Empty,
-                                LichTrinh = !reader.IsDBNull(10) ? reader.GetString(10) : string.Empty,
+								SoNgay = !reader.IsDBNull(4) ? reader.GetString(4) : string.Empty,
+								DiaDiem = !reader.IsDBNull(5) ? reader.GetString(5) : string.Empty,
+								GiaTour = !reader.IsDBNull(6) ? reader.GetDecimal(6) : 0,
+                                HinhAnh1 = !reader.IsDBNull(7) ? reader.GetString(7) : string.Empty,
+                                HinhAnh2 = !reader.IsDBNull(8) ? reader.GetString(8) : string.Empty,
+                                HinhAnh3 = !reader.IsDBNull(9) ? reader.GetString(9) : string.Empty,
+                                TenLoaiTour = !reader.IsDBNull(10) ? reader.GetString(10) : string.Empty,
+                                MoTa = !reader.IsDBNull(11) ? reader.GetString(11) : string.Empty,
+                                LichTrinh = !reader.IsDBNull(12) ? reader.GetString(12) : string.Empty,
                             };
                         }
                     }
                 }
                 // Truy vấn các tour tương tự
-                string sqlTourtt = "SELECT p.MaTour, p.TenTour, p.MaLoaiTour, p.TrangThai, p.GiaTour, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, l.TenLoaiTour " +
+                string sqlTourtt = "SELECT p.MaTour, p.TenTour, p.MaLoaiTour, p.TrangThai, p.SoNgay, p.DiaDiem, p.GiaTour, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, l.TenLoaiTour " +
                                    "FROM Tour p " +
                                    "INNER JOIN LoaiTour l ON p.MaLoaiTour = l.MaLoaiTour " +
                                    "WHERE  p.MaTour != @maTour AND p.MaLoaiTour = @maLoaiTour";
@@ -91,11 +93,13 @@ namespace QuanLyTour.Controllers
                                 TenTour = reader.GetString(1),
                                 MaLoaiTour = reader.GetInt32(2),
                                 TrangThai = reader.GetBoolean(3),
-                                GiaTour = reader.GetDecimal(4),
-                                HinhAnh1 = reader.GetString(5),
-                                HinhAnh2 = reader.GetString(6),
-                                HinhAnh3 = reader.GetString(7),
-                                TenLoaiTour = reader.GetString(8)
+								SoNgay = reader.IsDBNull(4) ? "Không xác định" : reader.GetString(4),  // Xử lý NULL
+								DiaDiem = reader.IsDBNull(5) ? "Không có địa điểm" : reader.GetString(5),  // Xử lý NULL
+								GiaTour = reader.GetDecimal(6),
+                                HinhAnh1 = reader.GetString(7),
+                                HinhAnh2 = reader.GetString(8),
+                                HinhAnh3 = reader.GetString(9),
+                                TenLoaiTour = reader.GetString(10)
                             });
                         }
                     }
