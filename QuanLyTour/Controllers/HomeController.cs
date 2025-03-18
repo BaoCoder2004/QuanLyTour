@@ -189,6 +189,7 @@ namespace QuanLyTour.Controllers
 
             return View(nguoiDung); // Truyền dữ liệu tới view
         }
+		[HttpPost]
 		public IActionResult ThongTinNguoiDung(string TenNguoiDung, string DiaChi, string SoDienThoai, string Email)
 		{
 			// Lấy maNguoiDung từ session
@@ -403,7 +404,7 @@ namespace QuanLyTour.Controllers
 		{
 			return View();
 		}
-		[HttpPost]
+		
         
 
 
