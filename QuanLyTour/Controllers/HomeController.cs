@@ -189,6 +189,7 @@ namespace QuanLyTour.Controllers
 
             return View(nguoiDung); // Truyền dữ liệu tới view
         }
+
 		[HttpPost]
 		public IActionResult ThongTinNguoiDung(string TenNguoiDung, string DiaChi, string SoDienThoai, string Email)
 		{
@@ -300,8 +301,6 @@ namespace QuanLyTour.Controllers
 			string resetCode = new Random().Next(100000, 999999).ToString();
 			HttpContext.Session.SetString("ResetCode", resetCode);
 			HttpContext.Session.SetString("ResetEmail", email);
-			
-
 
 			bool emailSent = SendVerificationCode(email, resetCode);
 			if (emailSent)
@@ -405,9 +404,6 @@ namespace QuanLyTour.Controllers
 			return View();
 		}
 		
-        
-
-
         // Hiển thị form đăng ký
         public IActionResult DangKy()
         {

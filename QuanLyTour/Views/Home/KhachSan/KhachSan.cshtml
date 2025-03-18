@@ -1,7 +1,6 @@
-﻿@using QuanLyTour.Models.KhachSan
-@model KhachSanIndexViewModel
-@{
-    ViewData["Title"] = "Home Page";
+﻿@{
+    ViewData["Title"] = "Khách sạn";
+    Layout = "~/Views/Shared/_Detail.cshtml";
 }
 
 <div class="search-tabs" id="search-tabs-3">
@@ -106,7 +105,7 @@
                 }
 
                 <div class="view-all text-center">
-                    <a href="@Url.Action("DanhMucKhachSan","KhachSan")" class="btn btn-orange">Xem nhiều hơn</a>
+                    <a href="@Url.Action("DanhMucKhachSan","")" class="btn btn-orange">Xem nhiều hơn</a>
                 </div><!-- end view-all -->
             </div><!-- end columns -->
         </div><!-- end row -->
