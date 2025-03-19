@@ -25,33 +25,13 @@
                 <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
             }
 
-             @using(Html.BeginForm("ThongTinNguoiDung","Home"))
+            @using (Html.BeginForm("ThongTinNguoiDung", "Home"))
             {
-               <form>
+                <form>
                     <div class="form-group">
                         <label for="TenNguoiDung">Họ tên</label>
                         <input type="text" class="form-control" id="TenNguoiDung" name="TenNguoiDung" value="@Model.TenNguoiDung" required />
                     </div>
-<<<<<<< HEAD
-                    @* <div class="form-group">  *@
-                    @*     <label for="NgaySinh">Ngày tháng năm sinh</label>  *@
-                    @*     <input type="date" class="form-control" id="NgaySinh" name="NgaySinh" value="@(Model.NgaySinh?.ToString("yyyy-MM-dd"))" required /> *@
-                    @*  </div>  *@
-                    @*  <div class="form-group">  *@
-                    @*      <label>Giới tính</label>  *@
-                    @*      <div>  *@
-                    @*          <label class="radio-inline">  *@
-                    @*             <input type="radio" name="GioiTinh" value="Nam" @(Model.GioiTinh == "Nam" ? "checked" : "") required /> Nam  *@
-                    @*          </label>  *@
-                    @*        <label class="radio-inline">  *@
-                    @*              <input type="radio" name="GioiTinh" value="Nữ" @(Model.GioiTinh == "Nữ" ? "checked" : "") /> Nữ  *@
-                    @*          </label>  *@
-                    @*          <label class="radio-inline">  *@
-                    @*       <input type="radio" name="GioiTinh" value="Khác" @(Model.GioiTinh == "Khác" ? "checked" : "") /> Khác  *@
-                    @*   </label>  *@
-                    @*      </div>  *@
-                    @*  </div>  *@
-=======
                     <div class="form-group">
                         <label for="ngaysinh" class="col-sm-3 col-form-label">Ngày sinh</label>
                         <div class="col-sm-9">
@@ -74,7 +54,6 @@
                             </div>
                         </div>
                     </div>
->>>>>>> 1634eaee22ac126f6077c74b91c337e33f31c287
                     <div class="form-group">
                         <label for="DiaChi">Địa chỉ</label>
                         <input type="text" class="form-control" id="DiaChi" name="DiaChi" value="@Model.DiaChi" required />
@@ -90,7 +69,7 @@
                     </div>
                     <input type="hidden" name="MaNguoiDung" value="@Model.MaNguoiDung" />
                     <button type="submit" class="btn btn-orange btn-block">Lưu thay đổi</button>
-               </form>
+                </form>
             }
         </div><!-- end container -->
     </div><!-- end login -->
