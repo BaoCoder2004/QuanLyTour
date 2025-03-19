@@ -27,7 +27,7 @@
         <!-- page start-->
         <section class="panel">
             <header class="panel-heading">
-                Quản lý thông tin KhachSan
+                Quản lý thông tin Khách Sạn
             </header>
             <div class="panel-body">
                 <a href="@Url.Action("ThemTourView","Admin")"><button type="button" class="btn btn-success" style="margin-bottom: 15px"><i class="fa fa-plus"></i></button></a>
@@ -49,12 +49,12 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Mã Tour</th>
-                                <th>Tên Tour</th>
-                                <th>Loại Tour</th>
+                                <th>Mã Khách Sạn</th>
+                                <th>Tên Khách Sạn</th>
+                                <th>Loại Khách Sạn</th>
                                 <th>Số Ngày</th>
                                 <th>Địa Điểm</th>
-                                <th>GiaTour</th>
+                                <th>Giá</th>
                                 <th>Hình Ảnh 1</th>
                                 <th>Hình Ảnh 2</th>
                                 <th>Hình Ảnh 3</th>
@@ -65,32 +65,32 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var tour in Model)
+                            @foreach (var khachsan  in Model)
                             {
                                 <tr>
                                     <td><input type="checkbox" class="checkItem"></td>
-                                    <td>@tour.MaKhachSan</td>
-                                    <td>@tour.TenKhachSan</td>
-                                    <td>@tour.TenLoaiKhachSan</td>
-                                    <td>@tour.SoNgay</td>
-                                    <td>@tour.DiaDiem</td>
-                                    <td>@tour.GiaKhachSan.ToString("#,##") VND</td>
+                                    <td>@khachsan.MaKhachSan</td>
+                                    <td>@khachsan.TenKhachSan</td>
+                                    <td>@khachsan.TenLoaiKhachSan</td>
+                                    <td>@khachsan.SoNgay</td>
+                                    <td>@khachsan.DiaDiem</td>
+                                    <td>@khachsan.GiaKhachSan.ToString("#,##") VND</td>
                                     <td>
-                                        <img src="@Url.Content("~/hinhanh/" + tour.HinhAnh1)" alt="Hình ảnh phòng" width="100" height="100" />
+                                        <img src="@Url.Content("~/hinhanh/" +khachsan.HinhAnh1)" alt="Hình ảnh phòng" width="100" height="100" />
+                                    </td>                                   
+                                    <td>                                   
+                                        <img src="@Url.Content("~/hinhanh/" +khachsan.HinhAnh2)" alt="Hình ảnh phòng" width="100" height="100" />
+                                    </td>                                   
+                                    <td>                                   
+                                        <img src="@Url.Content("~/hinhanh/" +khachsan.HinhAnh3)" alt="Hình ảnh phòng" width="100" height="100" />
+                                    </td>
+                                    <td>@khachsan.MoTa</td>
+                                    <td>@khachsan.LichTrinh</td>
+                                    <td>
+                                        <a href="@Url.Action("SuaTourView","Admin", new{maTour = khachsan.MaKhachSan, maLoai = khachsan.MaLoaiKhachSan})"><button type="button" class="btn btn-warning" style="margin-left:5px;"><i class="fa fa-edit"></i></button></a>
                                     </td>
                                     <td>
-                                        <img src="@Url.Content("~/hinhanh/" + tour.HinhAnh2)" alt="Hình ảnh phòng" width="100" height="100" />
-                                    </td>
-                                    <td>
-                                        <img src="@Url.Content("~/hinhanh/" + tour.HinhAnh3)" alt="Hình ảnh phòng" width="100" height="100" />
-                                    </td>
-                                    <td>@tour.MoTa</td>
-                                    <td>@tour.LichTrinh</td>
-                                    <td>
-                                        <a href="@Url.Action("SuaTourView","Admin", new{maTour = tour.MaKhachSan, maLoai = tour.MaLoaiKhachSan})"><button type="button" class="btn btn-warning" style="margin-left:5px;"><i class="fa fa-edit"></i></button></a>
-                                    </td>
-                                    <td>
-                                        <a href="@Url.Action("XoaTourView","Admin", new{maTour = tour.MaKhachSan})"><button type="button" class="btn btn-danger" style="margin-left:5px;"><i class="fa fa-trash-o"></i></button></a>
+                                        <a href="@Url.Action("XoaKhachSanView","Admin", new{maKhachSan = khachsan.MaKhachSan})"><button type="button" class="btn btn-danger" style="margin-left:5px;"><i class="fa fa-trash-o"></i></button></a>
                                     </td>
                                 </tr>
                             }
