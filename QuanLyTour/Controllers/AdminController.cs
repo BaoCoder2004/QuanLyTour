@@ -579,6 +579,262 @@ namespace QuanLyTour.Controllers
 
 			return RedirectToAction("QuanLyKhachSanView");
 		}
+		[HttpGet]
+		public IActionResult SuaKhachSanView(int maKhachSan, int maLoai)
+		{
+			List<LoaiKhachSan> khachsanTypes = new List<LoaiKhachSan>();
+
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				string sql = "SELECT MaLoaiKhachSan, TenLoaiKhachSan FROM LoaiKhachSan";
+				using (var command = new SqlCommand(sql, connection))
+				{
+					using (var reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							khachsanTypes.Add(new LoaiKhachSan
+							{
+								MaLoaiKhachSan = reader.GetInt32(0),
+								TenLoaiKhachSan = reader.GetString(1)
+							});
+						}
+					}
+				}
+			}
+
+			List<KhachSanViewModel> khachsan = new List<KhachSanViewModel>();
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				string rooms = "SELECT p.MaKhachSan, p.TenKhachSan, p.MaLoaiKhachSan, p.TrangThai,p.SoNgay, p.DiaDiem, p.GiaKhachSan, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, l.TenLoaiKhachSan, p.MoTa, p.LichTrinh " +
+				   "FROM KhachSan p " +
+				   "INNER JOIN LoaiKhachSan l ON p.MaLoaiKhachSan = l.MaLoaiKhachSan " +
+				   "WHERE p.MaKhachSan = @maKhachSan And p.MaLoaiKhachSan = @maLoai";
+				using (var command = new SqlCommand(rooms, connection))
+				{
+					command.Parameters.AddWithValue("@maKhachSan", maKhachSan);
+					command.Parameters.AddWithValue("@maLoai", maLoai);
+					using (var reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							khachsan.Add(new KhachSanViewModel
+							{
+								MaKhachSan = reader.GetInt32(reader.GetOrdinal("MaKhachSan")),
+								TenKhachSan = !reader.IsDBNull(reader.GetOrdinal("TenKhachSan")) ? reader.GetString(reader.GetOrdinal("TenKhachSan")) : string.Empty,
+								TenLoaiKhachSan = !reader.IsDBNull(reader.GetOrdinal("TenLoaiKhachSan")) ? reader.GetString(reader.GetOrdinal("TenLoaiKhachSan")) : string.Empty,
+								SoNgay = !reader.IsDBNull(reader.GetOrdinal("SoNgay")) ? reader.GetString(reader.GetOrdinal("SoNgay")) : string.Empty,
+								DiaDiem = !reader.IsDBNull(reader.GetOrdinal("DiaDiem")) ? reader.GetString(reader.GetOrdinal("DiaDiem")) : string.Empty,
+								GiaKhachSan = !reader.IsDBNull(reader.GetOrdinal("GiaKhachSan")) ? reader.GetDecimal(reader.GetOrdinal("GiaKhachSan")) : 0,
+								HinhAnh1 = !reader.IsDBNull(reader.GetOrdinal("HinhAnh1")) ? reader.GetString(reader.GetOrdinal("HinhAnh1")) : string.Empty,
+								HinhAnh2 = !reader.IsDBNull(reader.GetOrdinal("HinhAnh2")) ? reader.GetString(reader.GetOrdinal("HinhAnh2")) : string.Empty,
+								HinhAnh3 = !reader.IsDBNull(reader.GetOrdinal("HinhAnh3")) ? reader.GetString(reader.GetOrdinal("HinhAnh3")) : string.Empty,
+								MaLoaiKhachSan = !reader.IsDBNull(reader.GetOrdinal("MaLoaiKhachSan")) ? reader.GetInt32(reader.GetOrdinal("MaLoaiKhachSan")) : 0,
+								TrangThai = !reader.IsDBNull(reader.GetOrdinal("TrangThai")) && reader.GetBoolean(reader.GetOrdinal("TrangThai")),
+								MoTa = !reader.IsDBNull(reader.GetOrdinal("MoTa")) ? reader.GetString(reader.GetOrdinal("MoTa")) : string.Empty,
+								LichTrinh = !reader.IsDBNull(reader.GetOrdinal("LichTrinh")) ? reader.GetString(reader.GetOrdinal("LichTrinh")) : string.Empty,
+							});
+						}
+					}
+				}
+
+			}
+			ViewModel viewModel = new ViewModel
+			{
+				LoaiKhachSanView = khachsanTypes,
+				KhachSanView = khachsan
+			};
+			return View(viewModel);
+		}
+		[HttpPost]
+		public IActionResult SuaKhachSanView(int maKhachSan, string tenKhachSan, string soNgay, string diaDiem, decimal giaKhachSan, int maLoai, IFormFile hinhAnh1, IFormFile hinhAnh2, IFormFile hinhAnh3, int trangThai, string moTa, string lichTrinh)
+		{
+			string hinhAnh1Path = SaveFile(hinhAnh1);
+			string hinhAnh2Path = SaveFile(hinhAnh2);
+			string hinhAnh3Path = SaveFile(hinhAnh3);
+			if (hinhAnh1Path == null && hinhAnh2Path == null && hinhAnh3Path == null)
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					connection.Open();
+					string sql = "UPDATE KhachSan SET MaLoaiKhachSan = @maLoai, TenKhachSan = @tenKhachSan,SoNgay = @soNgay,DiaDiem = @diaDiem, GiaTour = @giaKhachSan, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
+								 "WHERE MaKhachSan = @maKhachSan";
+					using (var command = new SqlCommand(sql, connection))
+					{
+						command.Parameters.AddWithValue("@maKhachSan", maKhachSan);
+						command.Parameters.AddWithValue("@tenKhachSan", tenKhachSan);
+						command.Parameters.AddWithValue("@soNgay", soNgay);
+						command.Parameters.AddWithValue("@diaDiem", diaDiem);
+						command.Parameters.AddWithValue("@maLoai", maLoai);
+						command.Parameters.AddWithValue("@giaKhachSan", giaKhachSan);
+						command.Parameters.AddWithValue("@trangThai", trangThai);
+						command.Parameters.AddWithValue("@moTa", moTa);
+						command.Parameters.AddWithValue("@lichTrinh", lichTrinh);
+
+						command.ExecuteNonQuery();
+					}
+				}
+			}
+			else if (hinhAnh1Path != null)
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					connection.Open();
+					string sql = "UPDATE KhachSan SET MaLoaiKhachSan = @maLoai, TenKhachSan = @tenKhachSan,SoNgay = @soNgay,DiaDiem = @diaDiem, GiaTour = @giaKhachSan, HinhAnh1 = @hinhAnh1Path, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
+								"WHERE MaKhachSan = @maKhachSan";
+					using (var command = new SqlCommand(sql, connection))
+					{
+						command.Parameters.AddWithValue("@maKhachSan", maKhachSan);
+						command.Parameters.AddWithValue("@tenKhachSan", tenKhachSan);
+						command.Parameters.AddWithValue("@soNgay", soNgay);
+						command.Parameters.AddWithValue("@diaDiem", diaDiem);
+						command.Parameters.AddWithValue("@maLoai", maLoai);
+						command.Parameters.AddWithValue("@giaKhachSan", giaKhachSan);
+						command.Parameters.AddWithValue("@hinhAnh1Path", hinhAnh1Path);
+						command.Parameters.AddWithValue("@trangThai", trangThai);
+						command.Parameters.AddWithValue("@moTa", moTa);
+						command.Parameters.AddWithValue("@lichTrinh", lichTrinh);
+
+						command.ExecuteNonQuery();
+					}
+				}
+			}
+			else if (hinhAnh2Path != null)
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					connection.Open();
+					string sql = "UPDATE KhachSan SET MaLoaiKhachSan = @maLoai, TenKhachSan = @tenKhachSan,SoNgay = @soNgay,DiaDiem = @diaDiem, GiaKhachSan = @giaKhachSan, HinhAnh2 = @hinhAnh2Path, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
+							   "WHERE MaKhachSan = @maKhachSan";
+					using (var command = new SqlCommand(sql, connection))
+					{
+						command.Parameters.AddWithValue("@maKhachSan", maKhachSan);
+						command.Parameters.AddWithValue("@tenKhachSan", tenKhachSan);
+						command.Parameters.AddWithValue("@soNgay", soNgay);
+						command.Parameters.AddWithValue("@diaDiem", diaDiem);
+						command.Parameters.AddWithValue("@maLoai", maLoai);
+						command.Parameters.AddWithValue("@giaKhachSan", giaKhachSan);
+						command.Parameters.AddWithValue("@hinhAnh2Path", hinhAnh2Path);
+						command.Parameters.AddWithValue("@trangThai", trangThai);
+						command.Parameters.AddWithValue("@moTa", moTa);
+						command.Parameters.AddWithValue("@lichTrinh", lichTrinh);
+
+						command.ExecuteNonQuery();
+					}
+				}
+			}
+			else if (hinhAnh3Path != null)
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					connection.Open();
+					string sql = "UPDATE KhachSan SET MaLoaiKhachSan = @maLoai, TenKhachSan = @tenKhachSan,SoNgay = @soNgay,DiaDiem = @diaDiem, GiaKhachSan = @giaKhachSan, HinhAnh3 = @hinhAnh3Path, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
+								"WHERE MaKhachSan = @maKhachSan";
+					using (var command = new SqlCommand(sql, connection))
+					{
+						command.Parameters.AddWithValue("@maKhachSan", maKhachSan);
+						command.Parameters.AddWithValue("@tenKhachSan", tenKhachSan);
+						command.Parameters.AddWithValue("@soNgay", soNgay);
+						command.Parameters.AddWithValue("@diaDiem", diaDiem);
+						command.Parameters.AddWithValue("@maLoai", maLoai);
+						command.Parameters.AddWithValue("@giaKhachSan", giaKhachSan);
+						command.Parameters.AddWithValue("@hinhAnh3Path", hinhAnh3Path);
+						command.Parameters.AddWithValue("@trangThai", trangThai);
+						command.Parameters.AddWithValue("@moTa", moTa);
+						command.Parameters.AddWithValue("@lichTrinh", lichTrinh);
+
+						command.ExecuteNonQuery();
+					}
+				}
+			}
+			else
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					connection.Open();
+					string sql = "UPDATE KhachSan SET MaLoaiKhachSan = @maLoai, TenKhachSan = @tenKhachSan,SoNgay = @soNgay,DiaDiem = @diaDiem, GiaKhachSan = @giaKhachSan, HinhAnh1 = @hinhAnh1Path,HinhAnh2 = @hinhAnh2Path,HinhAnh3 = @hinhAnh3Path,TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
+								"WHERE MaKhachSan = @maKhachSan";
+					using (var command = new SqlCommand(sql, connection))
+					{
+						command.Parameters.AddWithValue("@maKhachSan", maKhachSan);
+						command.Parameters.AddWithValue("@tenKhachSan", tenKhachSan);
+						command.Parameters.AddWithValue("@soNgay", soNgay);
+						command.Parameters.AddWithValue("@diaDiem", diaDiem);
+						command.Parameters.AddWithValue("@maLoai", maLoai);
+						command.Parameters.AddWithValue("@giaKhachSan", giaKhachSan);
+						command.Parameters.AddWithValue("@hinhAnh1Path", hinhAnh1Path);
+						command.Parameters.AddWithValue("@hinhAnh2Path", hinhAnh2Path);
+						command.Parameters.AddWithValue("@hinhAnh3Path", hinhAnh3Path);
+						command.Parameters.AddWithValue("@trangThai", trangThai);
+						command.Parameters.AddWithValue("@moTa", moTa);
+						command.Parameters.AddWithValue("@lichTrinh", lichTrinh);
+
+						command.ExecuteNonQuery();
+					}
+				}
+			}
+			return RedirectToAction("QuanLyKhachSanView");
+		}
+		[HttpGet]
+		public IActionResult ThemKhachSanView()
+		{
+			List<LoaiKhachSan> khachsanTypes = new List<LoaiKhachSan>();
+
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				string sql = "SELECT MaLoaiKhachSan, TenLoaiKhachSan FROM LoaiKhachSan";
+				using (var command = new SqlCommand(sql, connection))
+				{
+					using (var reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							khachsanTypes.Add(new LoaiKhachSan
+							{
+								MaLoaiKhachSan = reader.GetInt32(0),
+								TenLoaiKhachSan = reader.GetString(1)
+							});
+						}
+					}
+				}
+			}
+			return View(khachsanTypes);
+		}
+		[HttpPost]
+		public IActionResult ThemKhachSanView(string tenKhachSan, int trangThai, string soNgay, string diaDiem, decimal giaKhachSan, int maLoai, IFormFile hinhAnh1, IFormFile hinhAnh2, IFormFile hinhAnh3, string moTa, string lichTrinh)
+		{
+
+			string hinhAnh1Path = SaveFile(hinhAnh1);
+			string hinhAnh2Path = SaveFile(hinhAnh2);
+			string hinhAnh3Path = SaveFile(hinhAnh3);
+
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				string sql = "INSERT INTO KhachSan (TenKhachSan, MaLoaiKhachSan,SoNgay,DiaDiem, GiaKhachSan, HinhAnh1, HinhAnh2, HinhAnh3, TrangThai, MoTa, LichTrinh) " +
+							 "VALUES (@tenKhachSan, @maLoai,@soNgay,@diaDiem, @giaKhachSan, @hinhAnh1Path, @hinhAnh2Path, @hinhAnh3Path, @trangThai, @moTa, @lichTrinh)";
+				using (var command = new SqlCommand(sql, connection))
+				{
+					command.Parameters.AddWithValue("@tenKhachSan", tenKhachSan);
+					command.Parameters.AddWithValue("@maLoai", maLoai);
+					command.Parameters.AddWithValue("@soNgay", soNgay);
+					command.Parameters.AddWithValue("@diaDiem", diaDiem);
+					command.Parameters.AddWithValue("@giaKhachSan", giaKhachSan);
+					command.Parameters.AddWithValue("@hinhAnh1Path", hinhAnh1Path);
+					command.Parameters.AddWithValue("@hinhAnh2Path", hinhAnh2Path);
+					command.Parameters.AddWithValue("@hinhAnh3Path", hinhAnh3Path);
+					command.Parameters.AddWithValue("@trangThai", trangThai);
+					command.Parameters.AddWithValue("@moTa", moTa);
+					command.Parameters.AddWithValue("@lichTrinh", lichTrinh);
+
+					command.ExecuteNonQuery();
+				}
+			}
+			return RedirectToAction("QuanLyKhachSanView");
+		}
 
 
 
