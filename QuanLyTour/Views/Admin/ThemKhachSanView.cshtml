@@ -1,0 +1,82 @@
+﻿@using QuanLyTour.Models.KhachSan
+@model List<LoaiKhachSan>
+@{
+    ViewData["Title"] = "Thêm Khách Sạn";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section id="main-content">
+    <section class="wrapper">
+        <!-- page start-->
+        <section class="panel">
+            <header class="panel-heading">
+                Thêm khách sạn mới
+            </header>
+            <div class="panel-body">
+                <div class="grid cs-style-3">
+                    @using (Html.BeginForm("ThemKhachSanView", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="form-group">
+                            <label for="maKhachSan">Mã Khách Sạn</label>
+                            <input type="text" class="form-control" id="maKhachSan" placeholder="Mã khách sạn" name="maKhachSan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tenKhachSan">Tên Khách Sạn</label>
+                            <input type="text" class="form-control" id="tenKhachSan" placeholder="Tên khách sạn" name="tenKhachSan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="diaDiem">Địa Điểm</label>
+                            <input type="text" class="form-control" id="diaDiem" placeholder="Địa điểm" name="diaDiem" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="giaKhachSan">Giá Khách Sạn</label>
+                            <input type="number" class="form-control" id="giaKhachSan" placeholder="Giá khách sạn" name="giaKhachSan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loaiKhachSan">Loại Khách Sạn</label>
+                            <select class="form-control" id="loaiKhachSan" name="maLoaiKhachSan">
+                                @foreach (var loaiKhachSan in Model)
+                                {
+                                    <option value="@loaiKhachSan.MaLoaiKhachSan">@loaiKhachSan.TenLoaikhachSan</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="trangThai">Khách Sạn Mới</label>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="trangThai" name="trangThai" value="1"> Đánh dấu là khách sạn mới
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="hinhAnh1">Hình Ảnh 1</label>
+                            <input type="file" class="form-control-file" id="hinhAnh1" name="hinhAnh1">
+                        </div>
+                        <div class="form-group">
+                            <label for="hinhAnh2">Hình Ảnh 2</label>
+                            <input type="file" class="form-control-file" id="hinhAnh2" name="hinhAnh2">
+                        </div>
+                        <div class="form-group">
+                            <label for="hinhAnh3">Hình Ảnh 3</label>
+                            <input type="file" class="form-control-file" id="hinhAnh3" name="hinhAnh3">
+                        </div>
+                        <div class="form-group">
+                            <label for="moTa">Mô tả</label>
+                            <textarea class="form-control" id="moTa" rows="10" name="moTa" placeholder="Nhập mô tả cho khách sạn..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="tienNghi">Tiện nghi</label>
+                            <textarea class="form-control" id="tienNghi" rows="10" name="tienNghi" placeholder="Nhập các tiện nghi của khách sạn..."></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="@Url.Action("QuanLyKhachSanView","Admin")"> <button type="button" class="btn btn-secondary">Hủy</button></a>
+                            <button type="submit" class="btn btn-primary">Thêm</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+        <!-- page end-->
+    </section>
+</section>
