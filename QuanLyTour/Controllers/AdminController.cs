@@ -495,6 +495,7 @@ namespace QuanLyTour.Controllers
 		}
 
 		#endregion
+
 		#region KhachSan
 		public IActionResult QuanLyKhachSanView(int? page)
 		{
@@ -659,7 +660,7 @@ namespace QuanLyTour.Controllers
 				using (var connection = new SqlConnection(_connectionString))
 				{
 					connection.Open();
-					string sql = "UPDATE KhachSan SET MaLoaiKhachSan = @maLoai, TenKhachSan = @tenKhachSan,SoNgay = @soNgay,DiaDiem = @diaDiem, GiaTour = @giaKhachSan, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
+					string sql = "UPDATE KhachSan SET MaLoaiKhachSan = @maLoai, TenKhachSan = @tenKhachSan,SoNgay = @soNgay,DiaDiem = @diaDiem, GiaKhachSan = @giaKhachSan, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
 								 "WHERE MaKhachSan = @maKhachSan";
 					using (var command = new SqlCommand(sql, connection))
 					{
@@ -682,7 +683,7 @@ namespace QuanLyTour.Controllers
 				using (var connection = new SqlConnection(_connectionString))
 				{
 					connection.Open();
-					string sql = "UPDATE KhachSan SET MaLoaiKhachSan = @maLoai, TenKhachSan = @tenKhachSan,SoNgay = @soNgay,DiaDiem = @diaDiem, GiaTour = @giaKhachSan, HinhAnh1 = @hinhAnh1Path, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
+					string sql = "UPDATE KhachSan SET MaLoaiKhachSan = @maLoai, TenKhachSan = @tenKhachSan,SoNgay = @soNgay,DiaDiem = @diaDiem, GiaKhachSan = @giaKhachSan, HinhAnh1 = @hinhAnh1Path, TrangThai = @trangThai, MoTa = @moTa, LichTrinh = @lichTrinh " +
 								"WHERE MaKhachSan = @maKhachSan";
 					using (var command = new SqlCommand(sql, connection))
 					{
