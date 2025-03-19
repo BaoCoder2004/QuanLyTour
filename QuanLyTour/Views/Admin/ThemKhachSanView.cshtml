@@ -1,7 +1,7 @@
 ﻿@using QuanLyTour.Models.KhachSan
 @model List<LoaiKhachSan>
 @{
-    ViewData["Title"] = "Thêm Khách Sạn";
+    ViewData["Title"] = "ThemKhachSanView";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -16,63 +16,61 @@
                 <div class="grid cs-style-3">
                     @using (Html.BeginForm("ThemKhachSanView", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
-                        <div class="form-group">
-                            <label for="maKhachSan">Mã Khách Sạn</label>
-                            <input type="text" class="form-control" id="maKhachSan" placeholder="Mã khách sạn" name="maKhachSan" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="tenKhachSan">Tên Khách Sạn</label>
-                            <input type="text" class="form-control" id="tenKhachSan" placeholder="Tên khách sạn" name="tenKhachSan" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="diaDiem">Địa Điểm</label>
-                            <input type="text" class="form-control" id="diaDiem" placeholder="Địa điểm" name="diaDiem" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="giaKhachSan">Giá Khách Sạn</label>
-                            <input type="number" class="form-control" id="giaKhachSan" placeholder="Giá khách sạn" name="giaKhachSan" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="loaiKhachSan">Loại Khách Sạn</label>
-                            <select class="form-control" id="loaiKhachSan" name="maLoaiKhachSan">
-                                @foreach (var loaiKhachSan in Model)
-                                {
-                                    <option value="@loaiKhachSan.MaLoaiKhachSan">@loaiKhachSan.TenLoaikhachSan</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="trangThai">Khách Sạn Mới</label>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" id="trangThai" name="trangThai" value="1"> Đánh dấu là khách sạn mới
-                                </label>
+                        <form id="addRoomForm">
+                            <div class="form-group">
+                                <label for="tenPhong">Tên Khách Sạn</label>
+                                <input type="text" class="form-control" id="tenPhong" placeholder="Tên Khách Sạn" name="tenKhachSan" required>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="hinhAnh1">Hình Ảnh 1</label>
-                            <input type="file" class="form-control-file" id="hinhAnh1" name="hinhAnh1">
-                        </div>
-                        <div class="form-group">
-                            <label for="hinhAnh2">Hình Ảnh 2</label>
-                            <input type="file" class="form-control-file" id="hinhAnh2" name="hinhAnh2">
-                        </div>
-                        <div class="form-group">
-                            <label for="hinhAnh3">Hình Ảnh 3</label>
-                            <input type="file" class="form-control-file" id="hinhAnh3" name="hinhAnh3">
-                        </div>
-                        <div class="form-group">
-                            <label for="moTa">Mô tả</label>
-                            <textarea class="form-control" id="moTa" rows="10" name="moTa" placeholder="Nhập mô tả cho khách sạn..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="tienNghi">Tiện nghi</label>
-                            <textarea class="form-control" id="tienNghi" rows="10" name="tienNghi" placeholder="Nhập các tiện nghi của khách sạn..."></textarea>
-                        </div>
-                        <div class="modal-footer">
-                            <a href="@Url.Action("QuanLyKhachSanView","Admin")"> <button type="button" class="btn btn-secondary">Hủy</button></a>
-                            <button type="submit" class="btn btn-primary">Thêm</button>
-                        </div>
+                            <div class="form-group">
+                                <label for="soNgay">Số Ngày</label>
+                                <input type="text" class="form-control" id="soNgay" placeholder="Số Ngày" name="soNgay" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="diaDiem">Địa Điểm</label>
+                                <input type="text" class="form-control" id="diaDiem" placeholder="Địa Điểm" name="diaDiem" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="donGia">Giá KhachSan</label>
+                                <input type="text" class="form-control" id="donGia" placeholder="Giá Khách Sạn" name="giaKhachSan" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="tenLoaiPhong">Khu Vực </label>
+                                <select class="form-control" name="maLoai">
+                                    @foreach (var khachsanTypes in Model)
+                                    {
+                                        <option value="@khachsanTypes.MaLoaiKhachSan">@khachsanTypes.TenLoaiKhachSan</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="trangThai">Khách Sạn Mới</label>
+                                <input type="text" class="form-control" id="donGia" placeholder="Nhập 1 xác định là khách sạn mới || Nhập 0" name="trangThai" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="hinhAnh1">Hình Ảnh 1</label>
+                                <input type="file" class="form-control-file" name="hinhAnh1">
+                            </div>
+                            <div class="form-group">
+                                <label for="hinhAnh2">Hình Ảnh 2</label>
+                                <input type="file" class="form-control-file" name="hinhAnh2">
+                            </div>
+                            <div class="form-group">
+                                <label for="hinhAnh3">Hình Ảnh 3</label>
+                                <input type="file" class="form-control-file" name="hinhAnh3">
+                            </div>
+                            <div class="form-group">
+                                <label for="moTa">Mô tả</label>
+                                <textarea class="form-control" rows="10" name="moTa" placeholder="Nhập mô tả cho khách sạn..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="lichTrinhs">Lịch trình</label>
+                                <textarea class="form-control" name="lichTrinh" rows="10" placeholder="Nhập lịch trình cho khách sạn..."></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="@Url.Action("QuanLyKhachSanView","Admin")"> <button type="button" class="btn btn-secondary">Hủy</button></a>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
+                            </div>
+                        </form>
                     }
                 </div>
             </div>

@@ -22,5 +22,12 @@ namespace QuanLyTour.Models
 		[Required(ErrorMessage = "Email không được để trống")]
 		public string? Email { get; set; }
 
-    }
+		[Required(ErrorMessage = "Ngày sinh không được để trống")]
+		[DataType(DataType.Date, ErrorMessage = "Ngày sinh không hợp lệ")]
+		public DateTime? NgaySinh { get; set; }
+
+		[Required(ErrorMessage = "Giới tính không được để trống")]
+		public string? GioiTinh { get; set; } // Có thể là "Nam", "Nữ", "Khác"
+
+	}
 }
