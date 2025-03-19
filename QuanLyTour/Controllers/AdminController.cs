@@ -4,6 +4,7 @@ using X.PagedList;
 using QuanLyTour.Models;
 using X.PagedList.Extensions;
 using QuanLyTour.Models.Tour;
+using QuanLyTour.Models.KhachSan;
 
 namespace QuanLyTour.Controllers
 {
@@ -197,7 +198,50 @@ namespace QuanLyTour.Controllers
             var pagedTours = tour.ToPagedList(pageNumber, pageSize);
             return View(pagedTours);
         }
-        public IActionResult XoaTourView(int maTour)
+		public IActionResult QuanLyKhachSanView(int? page)
+		{
+			int pageSize = 6; // Số lượng mục trên mỗi trang
+			int pageNumber = (page ?? 1);
+
+			List<KhachSanViewModel> khachsan = new List<KhachSanViewModel>();
+
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				string sql = "SELECT p.MaKhachSan, p.TenKhachSan, l.TenLoaikhachSan,p.SoNgay, p.DiaDiem, p.GiaKhachSan, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, p.MaLoaiKhachSan, p.MoTa, p.LichTrinh " +
+							 "FROM KhachSan p " +
+							 "INNER JOIN LoaiKhachSan l ON p.MaLoaiKhachSan = l.MaLoaiKhachSan";
+
+				using (var command = new SqlCommand(sql, connection))
+				{
+					connection.Open();
+					using (var reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							khachsan.Add(new KhachSanViewModel
+							{
+								MaKhachSan = reader.GetInt32(reader.GetOrdinal("MaKhachSan")),
+								TenKhachSan = !reader.IsDBNull(reader.GetOrdinal("TenKhachSan")) ? reader.GetString(reader.GetOrdinal("TenKhachSan")) : string.Empty,
+								TenLoaiKhachSan = !reader.IsDBNull(reader.GetOrdinal("TenLoaikhachSan")) ? reader.GetString(reader.GetOrdinal("TenLoaiKhachSan")) : string.Empty,
+								GiaKhachSan = !reader.IsDBNull(reader.GetOrdinal("GiaKhachSan")) ? reader.GetDecimal(reader.GetOrdinal("GiaKhachSan")) : 0,
+								SoNgay = !reader.IsDBNull(reader.GetOrdinal("SoNgay")) ? reader.GetString(reader.GetOrdinal("SoNgay")) : string.Empty,
+								DiaDiem = !reader.IsDBNull(reader.GetOrdinal("DiaDiem")) ? reader.GetString(reader.GetOrdinal("DiaDiem")) : string.Empty,
+								HinhAnh1 = !reader.IsDBNull(reader.GetOrdinal("HinhAnh1")) ? reader.GetString(reader.GetOrdinal("HinhAnh1")) : string.Empty,
+								HinhAnh2 = !reader.IsDBNull(reader.GetOrdinal("HinhAnh2")) ? reader.GetString(reader.GetOrdinal("HinhAnh2")) : string.Empty,
+								HinhAnh3 = !reader.IsDBNull(reader.GetOrdinal("HinhAnh3")) ? reader.GetString(reader.GetOrdinal("HinhAnh3")) : string.Empty,
+								MaLoaiKhachSan = !reader.IsDBNull(reader.GetOrdinal("MaLoaiKhachSan")) ? reader.GetInt32(reader.GetOrdinal("MaLoaiKhachSan")) : 0,
+								MoTa = !reader.IsDBNull(reader.GetOrdinal("MoTa")) ? reader.GetString(reader.GetOrdinal("MoTa")) : string.Empty,
+								LichTrinh = !reader.IsDBNull(reader.GetOrdinal("LichTrinh")) ? reader.GetString(reader.GetOrdinal("LichTrinh")) : string.Empty,
+							});
+						}
+					}
+				}
+			}
+
+			var pagedKhachSan = khachsan.ToPagedList(pageNumber, pageSize);
+			return View(pagedKhachSan);
+		}
+		public IActionResult XoaTourView(int maTour)
         {
             bool phongDaSuDung = false;
             using (var connection = new SqlConnection(_connectionString))
