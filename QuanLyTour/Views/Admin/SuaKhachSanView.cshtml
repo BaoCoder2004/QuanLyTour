@@ -10,47 +10,47 @@
         <!-- page start-->
         <section class="panel">
             <header class="panel-heading">
-                Sửa thông tin khách sạn
+                Sửa thông tin khach san
             </header>
             <div class="panel-body">
                 <div class="grid cs-style-3">
                     @using (Html.BeginForm("SuaKhachSanView", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         <form id="addRoomForm">
-                            @foreach (var khachsan in Model.KhachSanView)
+                            @foreach (var khachSan in Model.KhachSanView)
                             {
-                                <input style="display: none; type="text" class="form-control" id="maPhong" placeholder="Tên Phòng" name="maKhachSan" value="@khachsan.MaKhachSan">
+                                <input style="display: none; type="text" class="form-control" id="maPhong" placeholder="Tên Phòng" name="maKhachSan" value="@khachSan.MaKhachSan">
                             }
                             <div class="form-group">
-                                <label for="tenPhong">Tên Khách Sạn</label>
-                                @foreach (var khachsan in Model.KhachSanView)
+                                <label for="tenPhong">Tên Khach San</label>
+                                @foreach (var khachSan in Model.KhachSanView)
                                 {
-                                    <input type="text" class="form-control" id="tenPhong" placeholder="Tên Phòng" name="tenKhachSan" required value="@khachsan.TenKhachSan">
+                                    <input type="text" class="form-control" id="tenPhong" placeholder="Tên Phòng" name="tenKhachSan" required value="@khachSan.TenKhachSan">
                                 }
                             </div>
                             <div class="form-group">
                                 <label for="soNgay">Số Ngày</label>
-                                @foreach (var khachsan in Model.KhachSanView)
+                                @foreach (var khachSan in Model.KhachSanView)
                                 {
-                                    <input type="text" class="form-control" id="soNgay" placeholder="Số Ngày" name="soNgay" required value="@khachsan.SoNgay">
+                                    <input type="text" class="form-control" id="soNgay" placeholder="Số Ngày" name="soNgay" required value="@khachSan.SoNgay">
                                 }
                             </div>
                             <div class="form-group">
                                 <label for="diaDiem">Địa Điểm </label>
-                                @foreach (var khachsan in Model.KhachSanView)
+                                @foreach (var khachSan in Model.KhachSanView)
                                 {
-                                    <input type="text" class="form-control" id="diaDiem" placeholder="Địa Điểm" name="diaDiem" required value="@khachsan.DiaDiem">
+                                    <input type="text" class="form-control" id="diaDiem" placeholder="Địa Điểm" name="diaDiem" required value="@khachSan.DiaDiem">
                                 }
                             </div>
                             <div class="form-group">
                                 <label for="donGia">Giá </label>
-                                @foreach (var khachsan in Model.KhachSanView)
+                                @foreach (var khachSan in Model.KhachSanView)
                                 {
-                                    <input type="text" class="form-control" id="donGia" placeholder="Đơn Giá" name="giaKhachSan" required value="@khachsan.GiaKhachSan">
+                                    <input type="text" class="form-control" id="donGia" placeholder="Đơn Giá" name="giaKhachSan" required value="@khachSan.GiaKhachSan">
                                 }
                             </div>
                             <div class="form-group">
-                                <label for="tenLoaiPhong">Loại Khách Sạn</label>
+                                <label for="tenLoaiPhong">Loại Khach San</label>
                                 <select class="form-control" name="maLoai">
 
                                     @foreach (var KhachSanTypes in Model.LoaiKhachSanView)
@@ -62,10 +62,10 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="trangThai">Khách Sạn mới</label>
-                                @foreach (var khachsan in Model.KhachSanView)
+                                <label for="trangThai">Tour mới</label>
+                                @foreach (var khachSan in Model.KhachSanView)
                                 {
-                                    <input type="text" class="form-control" id="donGia" placeholder="1: Khách Sạn mới || 0" name="trangThai" required value="@(khachsan.TrangThai ? "1" : "0")">
+                                    <input type="text" class="form-control" id="donGia" placeholder="1: Tour mới || 0" name="trangThai" required value="@(khachSan.TrangThai ? "1" : "0")">
                                 }
                             </div>
                             <div class="form-group">
@@ -99,18 +99,18 @@
                                 <label for="moTa">Mô tả</label>
                                 @foreach (var room in Model.KhachSanView)
                                 {
-                                    <textarea class="form-control" rows="10" name="moTa" placeholder="Nhập mô tả cho khách sạn...">@(!string.IsNullOrEmpty(room.MoTa) ? room.MoTa : "")</textarea>
+                                    <textarea class="form-control" rows="10" name="moTa" placeholder="Nhập mô tả cho tour...">@(!string.IsNullOrEmpty(room.MoTa) ? room.MoTa : "")</textarea>
                                 }
                             </div>
                             <div class="form-group">
                                 <label for="lichTrinh">Lịch trình</label>
                                 @foreach (var room in Model.KhachSanView)
                                 {
-                                    <textarea class="form-control" rows="10" name="lichTrinh" placeholder="Nhập lịch trình cho khách sạn...">@(!string.IsNullOrEmpty(room.LichTrinh) ? room.LichTrinh : "")</textarea>
+                                    <textarea class="form-control" rows="10" name="lichTrinh" placeholder="Nhập lịch trình cho ks...">@(!string.IsNullOrEmpty(room.LichTrinh) ? room.LichTrinh : "")</textarea>
                                 }
                             </div>
                             <div class="modal-footer">
-                                <a href="@Url.Action("QuanLyKhachSanView","Admin")"> <button type="button" class="btn btn-secondary">Hủy</button></a>
+                                <a href="@Url.Action("QuanLyKhaxhSanView","Admin")"> <button type="button" class="btn btn-secondary">Hủy</button></a>
                                 <button type="submit" class="btn btn-primary">Sửa</button>
                             </div>
                         </form>

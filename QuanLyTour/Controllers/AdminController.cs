@@ -3,8 +3,9 @@ using Microsoft.Data.SqlClient;
 using X.PagedList;
 using QuanLyTour.Models;
 using X.PagedList.Extensions;
-using QuanLyTour.Models.Tour;
 using QuanLyTour.Models.KhachSan;
+using QuanLyTour.Models.Tour;
+
 
 namespace QuanLyTour.Controllers
 {
@@ -71,89 +72,92 @@ namespace QuanLyTour.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Admin");  // Quay lại trang chủ
         }
-        public IActionResult QuanLyPhieuView(int? page)
-        {
-            int pageSize = 10; // Số lượng mục trên mỗi trang
-            int pageNumber = (page ?? 1);
 
-            List<PhieuDatTour> phieuTour = new List<PhieuDatTour>();
+		#region PhieuHD
+		public IActionResult QuanLyPhieuView(int? page)
+		{
+			int pageSize = 10; // Số lượng mục trên mỗi trang
+			int pageNumber = (page ?? 1);
 
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                string sql = @"SELECT KH.TenNguoiDung, KH.SoDienThoai, KH.DiaChi, P.TenTour, PDP.NgayDatTour, P.GiaTour, PDP.SoLuong, PDP.MaPhieu, KH.MaNguoiDung, P.MaTour, PDP.NgayDi
+			List<PhieuDatTour> phieuTour = new List<PhieuDatTour>();
+
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				string sql = @"SELECT KH.TenNguoiDung, KH.SoDienThoai, KH.DiaChi, P.TenTour, PDP.NgayDatTour, P.GiaTour, PDP.SoLuong, PDP.MaPhieu, KH.MaNguoiDung, P.MaTour, PDP.NgayDi
                            FROM PhieuDatTour PDP
                            INNER JOIN Tour P ON PDP.MaTour = P.MaTour
                            INNER JOIN NguoiDung KH ON PDP.MaNguoiDung = KH.MaNguoiDung";
 
-                using (var command = new SqlCommand(sql, connection))
-                {
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            phieuTour.Add(new PhieuDatTour
-                            {
-                                TenNguoiDung = reader.GetString(0),
-                                SoDienThoai = reader.GetString(1),
-                                DiaChi = reader.GetString(2),
-                                TenTour = reader.GetString(3),
-                                NgayDatTour = reader.GetDateTime(4),
-                                GiaTour = reader.GetDecimal(5),
-                                SoLuong = reader.GetInt32(6),                               
-                                MaPhieu = reader.GetInt32(7),
-                                MaNguoiDung = reader.GetInt32(8),
-                                MaTour = reader.GetInt32(9),
-                                NgayDi = reader.GetDateTime(10),
-                            });
-                        }
-                    }
-                }
-            }
+				using (var command = new SqlCommand(sql, connection))
+				{
+					using (var reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							phieuTour.Add(new PhieuDatTour
+							{
+								TenNguoiDung = reader.GetString(0),
+								SoDienThoai = reader.GetString(1),
+								DiaChi = reader.GetString(2),
+								TenTour = reader.GetString(3),
+								NgayDatTour = reader.GetDateTime(4),
+								GiaTour = reader.GetDecimal(5),
+								SoLuong = reader.GetInt32(6),
+								MaPhieu = reader.GetInt32(7),
+								MaNguoiDung = reader.GetInt32(8),
+								MaTour = reader.GetInt32(9),
+								NgayDi = reader.GetDateTime(10),
+							});
+						}
+					}
+				}
+			}
 
-            var pagedTour = phieuTour.ToPagedList(pageNumber, pageSize);
-            return View(pagedTour);
-        }
-        public IActionResult QuanLyHoaDonView(int? page)
-        {
-            int pageSize = 10; // Số lượng mục trên mỗi trang
-            int pageNumber = (page ?? 1);
+			var pagedTour = phieuTour.ToPagedList(pageNumber, pageSize);
+			return View(pagedTour);
+		}
+		public IActionResult QuanLyHoaDonView(int? page)
+		{
+			int pageSize = 10; // Số lượng mục trên mỗi trang
+			int pageNumber = (page ?? 1);
 
-            List<HoaDon> phieuTour = new List<HoaDon>();
+			List<HoaDon> phieuTour = new List<HoaDon>();
 
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                string sql = @"SELECT KH.TenNguoiDung, P.TenTour, PDP.NgayDatTour, HD.TongTien, HD.NgayThanhToan, HD.MaHoaDon
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				string sql = @"SELECT KH.TenNguoiDung, P.TenTour, PDP.NgayDatTour, HD.TongTien, HD.NgayThanhToan, HD.MaHoaDon
                            FROM HoaDon HD
                            INNER JOIN PhieuDatTour PDP ON PDP.MaPhieu = HD.maPhieu
                            INNER JOIN Tour P ON PDP.MaTour = P.MaTour
                            INNER JOIN NguoiDung KH ON PDP.MaNguoiDung = KH.MaNguoiDung";
 
-                using (var command = new SqlCommand(sql, connection))
-                {
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            phieuTour.Add(new HoaDon
-                            {
-                                TenNguoiDung = reader.GetString(0),
-                                TenTour = reader.GetString(1),
-                                NgayDatTour = reader.GetDateTime(2),
-                                TongTien = reader.GetDecimal(3),
-                                NgayThanhToan = reader.GetDateTime(4),
-                                MaHoaDon = reader.GetInt32(5),
+				using (var command = new SqlCommand(sql, connection))
+				{
+					using (var reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							phieuTour.Add(new HoaDon
+							{
+								TenNguoiDung = reader.GetString(0),
+								TenTour = reader.GetString(1),
+								NgayDatTour = reader.GetDateTime(2),
+								TongTien = reader.GetDecimal(3),
+								NgayThanhToan = reader.GetDateTime(4),
+								MaHoaDon = reader.GetInt32(5),
 
-                            });
-                        }
-                    }
-                }
-            }
+							});
+						}
+					}
+				}
+			}
 
-            var pagedRooms = phieuTour.ToPagedList(pageNumber, pageSize);
-            return View(pagedRooms);
-        }
+			var pagedRooms = phieuTour.ToPagedList(pageNumber, pageSize);
+			return View(pagedRooms);
+		}
+		#endregion
 
 		#region Tour
 		public IActionResult QuanLyTourView(int? page)
@@ -493,7 +497,6 @@ namespace QuanLyTour.Controllers
 			}
 			return RedirectToAction("QuanLyTourView");
 		}
-
 		#endregion
 
 		#region KhachSan
@@ -580,6 +583,7 @@ namespace QuanLyTour.Controllers
 
 			return RedirectToAction("QuanLyKhachSanView");
 		}
+
 		[HttpGet]
 		public IActionResult SuaKhachSanView(int maKhachSan, int maLoai)
 		{
@@ -612,7 +616,7 @@ namespace QuanLyTour.Controllers
 				string rooms = "SELECT p.MaKhachSan, p.TenKhachSan, p.MaLoaiKhachSan, p.TrangThai,p.SoNgay, p.DiaDiem, p.GiaKhachSan, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, l.TenLoaiKhachSan, p.MoTa, p.LichTrinh " +
 				   "FROM KhachSan p " +
 				   "INNER JOIN LoaiKhachSan l ON p.MaLoaiKhachSan = l.MaLoaiKhachSan " +
-				   "WHERE p.MaKhachSan =1 And p.MaLoaiKhachSan = @maLoai";
+				   "WHERE p.MaKhachSan = @maKhachSan And p.MaLoaiKhachSan = @maLoai";
 				using (var command = new SqlCommand(rooms, connection))
 				{
 					command.Parameters.AddWithValue("@maKhachSan", maKhachSan);
@@ -836,113 +840,114 @@ namespace QuanLyTour.Controllers
 			}
 			return RedirectToAction("QuanLyKhachSanView");
 		}
-
-
-
 		#endregion
 
+		#region QuanLyND
+
 		public ActionResult QuanLyNguoiDung(int? page)
-        {
-            int pageSize = 10; // Số lượng mục trên mỗi trang
-            int pageNumber = (page ?? 1);
+		{
+			int pageSize = 10; // Số lượng mục trên mỗi trang
+			int pageNumber = (page ?? 1);
 
-            List<ThongTinNguoiDung> user = new List<ThongTinNguoiDung>();
+			List<ThongTinNguoiDung> user = new List<ThongTinNguoiDung>();
 
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                string sql = @"SELECT MaNguoiDung,TenNguoiDung,DiaChi,SoDienThoai,TrangThai,TenDangNhap,MatKhau FROM NguoiDung WHERE LoaiTaiKhoan = 0";
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				string sql = @"SELECT MaNguoiDung,TenNguoiDung,DiaChi,SoDienThoai,TrangThai,TenDangNhap,MatKhau FROM NguoiDung WHERE LoaiTaiKhoan = 0";
 
-                using (var command = new SqlCommand(sql, connection))
-                {
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            user.Add(new ThongTinNguoiDung
-                            {
-                                MaNguoiDung =  reader.GetInt32(0),
-                                TenNguoiDung = reader.GetString(1),
-                                DiaChi = reader.GetString(2),
-                                SoDienThoai = reader.GetString(3),
-                                TrangThai = reader.GetBoolean(4),
-                                TenDangNhap =   reader.GetString(5),
-                                MatKhau = reader.GetString(6),
-                            });
-                        }
-                    }
-                }
-            }
+				using (var command = new SqlCommand(sql, connection))
+				{
+					using (var reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							user.Add(new ThongTinNguoiDung
+							{
+								MaNguoiDung = reader.GetInt32(0),
+								TenNguoiDung = reader.GetString(1),
+								DiaChi = reader.GetString(2),
+								SoDienThoai = reader.GetString(3),
+								TrangThai = reader.GetBoolean(4),
+								TenDangNhap = reader.GetString(5),
+								MatKhau = reader.GetString(6),
+							});
+						}
+					}
+				}
+			}
 
-            var pagedUser = user.ToPagedList(pageNumber, pageSize);
-            return View(pagedUser);
+			var pagedUser = user.ToPagedList(pageNumber, pageSize);
+			return View(pagedUser);
 
-        }
-        [HttpPost]
-        public IActionResult KichHoat(int maUser1)
-        {
-            try
-            {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    string query = "UPDATE NguoiDung SET TrangThai = 1 WHERE MaNguoiDung = @MaNguoiDung";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@MaNguoiDung", maUser1);
+		}
+		[HttpPost]
+		public IActionResult KichHoat(int maUser1)
+		{
+			try
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					string query = "UPDATE NguoiDung SET TrangThai = 1 WHERE MaNguoiDung = @MaNguoiDung";
+					SqlCommand command = new SqlCommand(query, connection);
+					command.Parameters.AddWithValue("@MaNguoiDung", maUser1);
 
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    connection.Close();
-                }
+					connection.Open();
+					command.ExecuteNonQuery();
+					connection.Close();
+				}
 
-                TempData["SuccessMessage"] = "Người dùng đã được kích hoạt thành công!";
-                return RedirectToAction("QuanLyNguoiDung"); // Điều chỉnh theo trang danh sách người dùng
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Có lỗi xảy ra: " + ex.Message;
-                return RedirectToAction("QuanLyNguoiDung");
-            }
-        }
-        [HttpPost]
-        public IActionResult HuyKickHoat(int maUser2)
-        {
-            try
-            {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    string query = "UPDATE NguoiDung SET TrangThai = 0 WHERE MaNguoiDung = @MaNguoiDung";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@MaNguoiDung", maUser2);
+				TempData["SuccessMessage"] = "Người dùng đã được kích hoạt thành công!";
+				return RedirectToAction("QuanLyNguoiDung"); // Điều chỉnh theo trang danh sách người dùng
+			}
+			catch (Exception ex)
+			{
+				TempData["ErrorMessage"] = "Có lỗi xảy ra: " + ex.Message;
+				return RedirectToAction("QuanLyNguoiDung");
+			}
+		}
+		[HttpPost]
+		public IActionResult HuyKickHoat(int maUser2)
+		{
+			try
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					string query = "UPDATE NguoiDung SET TrangThai = 0 WHERE MaNguoiDung = @MaNguoiDung";
+					SqlCommand command = new SqlCommand(query, connection);
+					command.Parameters.AddWithValue("@MaNguoiDung", maUser2);
 
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    connection.Close();
-                }
+					connection.Open();
+					command.ExecuteNonQuery();
+					connection.Close();
+				}
 
-                TempData["SuccessMessage"] = "Người dùng đã được vô hiệu hóa thành công!";
-                return RedirectToAction("QuanLyNguoiDung"); // Điều chỉnh theo trang danh sách người dùng
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Có lỗi xảy ra: " + ex.Message;
-                return RedirectToAction("QuanLyNguoiDung");
-            }
-        }
-        private string SaveFile(IFormFile file)
-        {
-            if (file != null && file.Length > 0)
-            {
-                var fileName = Path.GetFileName(file.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/hinhanh", fileName);
+				TempData["SuccessMessage"] = "Người dùng đã được vô hiệu hóa thành công!";
+				return RedirectToAction("QuanLyNguoiDung"); // Điều chỉnh theo trang danh sách người dùng
+			}
+			catch (Exception ex)
+			{
+				TempData["ErrorMessage"] = "Có lỗi xảy ra: " + ex.Message;
+				return RedirectToAction("QuanLyNguoiDung");
+			}
+		}
+		private string SaveFile(IFormFile file)
+		{
+			if (file != null && file.Length > 0)
+			{
+				var fileName = Path.GetFileName(file.FileName);
+				var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/hinhanh", fileName);
 
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
+				using (var stream = new FileStream(filePath, FileMode.Create))
+				{
+					file.CopyTo(stream);
+				}
 
-                return fileName;
-            }
-            return null;
-        }
-    }
+				return fileName;
+			}
+			return null;
+		}
+		#endregion
+
+	}
 }
