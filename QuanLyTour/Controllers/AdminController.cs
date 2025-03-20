@@ -612,7 +612,7 @@ namespace QuanLyTour.Controllers
 				string rooms = "SELECT p.MaKhachSan, p.TenKhachSan, p.MaLoaiKhachSan, p.TrangThai,p.SoNgay, p.DiaDiem, p.GiaKhachSan, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, l.TenLoaiKhachSan, p.MoTa, p.LichTrinh " +
 				   "FROM KhachSan p " +
 				   "INNER JOIN LoaiKhachSan l ON p.MaLoaiKhachSan = l.MaLoaiKhachSan " +
-				   "WHERE p.MaKhachSan = @maKhachSan And p.MaLoaiKhachSan = @maLoai";
+				   "WHERE p.MaKhachSan =@maKhachSan And p.MaLoaiKhachSan = @maLoai";
 				using (var command = new SqlCommand(rooms, connection))
 				{
 					command.Parameters.AddWithValue("@maKhachSan", maKhachSan);
@@ -642,7 +642,7 @@ namespace QuanLyTour.Controllers
 				}
 
 			}
-			ViewModel viewModel = new ViewModel
+			TViewModel viewModel = new TViewModel
 			{
 				LoaiKhachSanView = khachsanTypes,
 				KhachSanView = khachsan
