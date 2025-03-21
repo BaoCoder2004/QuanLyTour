@@ -13,15 +13,15 @@
                 <div class="col-xs-12 col-sm-12 col-md-3 side-bar left-side-bar">
 
                     <div class="side-bar-block booking-form-block">
-                        <h2 class="selected-price">@Model.TourHienTai.TenTour<span></span></h2>
-                        <h2 class="selected-price">@Model.TourHienTai.GiaTour.ToString("#,##") <span>VND | 1 người</span></h2>
+                        <h2 class="selected-price">@Model.KhachSanHienTai.TenKhachSan<span></span></h2>
+                        <h2 class="selected-price">@Model.KhachSanHienTai.GiaKhachSan.ToString("#,##") <span>VND | 1 người</span></h2>
                         @if (Context.Session.GetString("UserName") != null)
                         {
                             <div class="booking-form">
                                 <h3>BOOKING</h3>
                                 <p>Trải nghiệm ngay!</p>
 
-                                @using (Html.BeginForm("DatTour", "Tour", new { maTour = Model.TourHienTai.MaTour }, FormMethod.Post))
+                                @using (Html.BeginForm("DatKhachSan", "KhachSan", new { maKhachSan = Model.KhachSanHienTai.MaKhachSan }, FormMethod.Post))
                                 {
                                     <div class="form-group">
                                         @Html.Hidden("MaNguoiDung", (int)ViewBag.MaNguoiDung)
@@ -62,7 +62,7 @@
                                     </div>
 
                                     <script>
-                                        var gia = @Model.TourHienTai.GiaTour;
+                                        var gia = @Model.KhachSanHienTai.GiaKhachSan;
 
                                         function tinhTongTien() {
                                             var soLuong = document.getElementById("SoLuong").value || 1;
@@ -75,7 +75,7 @@
 
                                     <div class="form-group right-icon">
                                         <select class="form-control">
-                                            <option selected>@Model.TourHienTai.TenLoaiTour</option>
+                                            <option selected>@Model.KhachSanHienTai.TenLoaiKhachSan</option>
                                         </select>
                                         <i class="fa fa-angle-down"></i>
                                     </div>
@@ -93,7 +93,7 @@
                             @using (Html.BeginForm("DangNhap", "Home", FormMethod.Get))
                             {
                                 <form> 
-                                    <button class="btn btn-block btn-orange">Đăng nhập để đặt tour</button>
+                                    <button class="btn btn-block btn-orange">Đăng nhập để đặt khách sạn</button>
                                 </form>  
                             }
                         }
@@ -108,7 +108,7 @@
                                         <div class="ad-mask">
                                             <div class="ad-text">
                                                 <span>Chất lượng</span>
-                                                <h2>Giá Tour</h2>
+                                                <h2>Giá Khách Sạn</h2>
                                                 <span>Tốt nhất </span>
                                             </div><!-- end ad-text -->
                                         </div><!-- end columns -->
@@ -127,49 +127,49 @@
 
                     <div class="detail-slider">
                         <div class="feature-slider">
-                            @if (!string.IsNullOrEmpty(Model.TourHienTai.HinhAnh1))
+                            @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh1))
                             {
-                                <div><img src="~/hinhanh/@Model.TourHienTai.HinhAnh1" class="img-responsive" alt="feature-img" /></div>
+                                <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh1" class="img-responsive" alt="feature-img" /></div>
                             }
-                            @if (!string.IsNullOrEmpty(Model.TourHienTai.HinhAnh2))
+                            @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh2))
                             {
-                                <div><img src="~/hinhanh/@Model.TourHienTai.HinhAnh2" class="img-responsive" alt="feature-img" /></div>
+                                <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh2" class="img-responsive" alt="feature-img" /></div>
                             }
-                            @if (!string.IsNullOrEmpty(Model.TourHienTai.HinhAnh3))
+                            @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh3))
                             {
-                                <div><img src="~/hinhanh/@Model.TourHienTai.HinhAnh3" class="img-responsive" alt="feature-img" /></div>
+                                <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh3" class="img-responsive" alt="feature-img" /></div>
                             }
                         </div><!-- end feature-slider -->
 
                         <div class="feature-slider-nav">
-                            @if (!string.IsNullOrEmpty(Model.TourHienTai.HinhAnh1))
+                            @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh1))
                             {
-                                <div><img src="~/hinhanh/@Model.TourHienTai.HinhAnh1" class="img-responsive" alt="feature-thumb" /></div>
+                                <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh1" class="img-responsive" alt="feature-thumb" /></div>
                             }
-                            @if (!string.IsNullOrEmpty(Model.TourHienTai.HinhAnh2))
+                            @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh2))
                             {
-                                <div><img src="~/hinhanh/@Model.TourHienTai.HinhAnh2" class="img-responsive" alt="feature-thumb" /></div>
+                                <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh2" class="img-responsive" alt="feature-thumb" /></div>
                             }
-                            @if (!string.IsNullOrEmpty(Model.TourHienTai.HinhAnh3))
+                            @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh3))
                             {
-                                <div><img src="~/hinhanh/@Model.TourHienTai.HinhAnh3" class="img-responsive" alt="feature-thumb" /></div>
+                                <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh3" class="img-responsive" alt="feature-thumb" /></div>
                             }
                         </div><!-- end feature-slider-nav -->
                     </div><!-- end detail-slider -->
                     </br>
                     </br>
                     <div class="available-blocks" id="available-rooms">
-                        <h2>Mô tả chi tiết Tour</h2>
-                        <p>@Html.Raw(Model.TourHienTai.MoTa == null ? "" : Model.TourHienTai.MoTa.Replace("\n", "<br>").Replace("\r", ""))</p>
+                        <h2>Mô tả chi tiết KhachSan</h2>
+                        <p>@Html.Raw(Model.KhachSanHienTai.MoTa == null ? "" : Model.KhachSanHienTai.MoTa.Replace("\n", "<br>").Replace("\r", ""))</p>
                     </div>
                     <div class="available-blocks" id="available-rooms">
-                        <h2>Lịch trình của Tour</h2>
-                        <p>@Html.Raw(Model.TourHienTai.LichTrinh == null ? "" : Model.TourHienTai.LichTrinh.Replace("\n", "<br>").Replace("\r", ""))</p>
+                        <h2>Lịch trình của KhachSan</h2>
+                        <p>@Html.Raw(Model.KhachSanHienTai.LichTrinh == null ? "" : Model.KhachSanHienTai.LichTrinh.Replace("\n", "<br>").Replace("\r", ""))</p>
                     </div>
                     <div class="available-blocks" id="available-rooms">
-                        <h2>Các Tour @Model.TourHienTai.TenLoaiTour gợi ý:</h2>
+                        <h2>Các KhachSan @Model.KhachSanHienTai.TenLoaiKhachSan gợi ý:</h2>
 
-                        @foreach (var item in Model.TourTuongTu)
+                        @foreach (var item in Model.KhachSanTuongTu)
                         {
                             <div class="list-block main-block room-block">
                                 <div class="list-content">
@@ -179,15 +179,15 @@
                                         </a>
                                         <div class="main-mask">
                                             <ul class="list-unstyled list-inline offer-price-1">
-                                                <li class="price">@item.GiaTour.ToString("#,##") VND<span class="divider">|</span><span class="pkg">1 người</span></li>
+                                                <li class="price">@item.GiaKhachSan.ToString("#,##") VND<span class="divider">|</span><span class="pkg">1 người</span></li>
                                             </ul>
                                         </div><!-- end main-mask -->
                                     </div><!-- end room-img -->
                                     <div class="list-info room-info">
-                                        <h3 class="block-title"><a href="@Url.Action("ChiTietTour","Tour",new { maTour = item.MaTour, maLoai = item.MaLoaiTour })">@item.TenTour</a></h3>
-                                        <p class="block-minor">@item.TenTour</p>
+                                        <h3 class="block-title"><a href="@Url.Action("ChiTietKhachSan","KhachSan",new { maKhachSan = item.MaKhachSan, maLoai = item.MaLoaiKhachSan })">@item.TenKhachSan</a></h3>
+                                        <p class="block-minor">@item.TenKhachSan</p>
                                         <p></p>
-                                        <a href="@Url.Action("ChiTietTour","Tour",new { maTour = item.MaTour,maLoai = item.MaLoaiTour })" class="btn btn-orange btn-lg">Xem thêm</a>
+                                        <a href="@Url.Action("ChiTietKhachSan","KhachSan",new { maKhachSan = item.MaKhachSan,maLoai = item.MaLoaiKhachSan })" class="btn btn-orange btn-lg">Xem thêm</a>
                                     </div><!-- end room-info -->
                                 </div>
 
@@ -201,7 +201,7 @@
 
 
                     <div class="text-center">
-                       @Html.PagedListPager(Model.TourTuongTu, page => Url.Action("DanhMucTour", new { page, maPhong = Model.TourHienTai.MaTour }))
+                       @Html.PagedListPager(Model.KhachSanTuongTu, page => Url.Action("DanhMucKhachSan", new { page, maPhong = Model.KhachSanHienTai.MaKhachSan }))
                     </div>
                     <!-- end pages -->
                 </div><!-- end columns -->

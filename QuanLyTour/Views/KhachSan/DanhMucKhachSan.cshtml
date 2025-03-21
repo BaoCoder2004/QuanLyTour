@@ -1,5 +1,5 @@
-﻿@model TourTabsViewModel
-@using QuanLyTour.Models.Tour
+﻿@model KhachSanTabsViewModel
+@using QuanLyTour.Models.KhachSan
 @using X.PagedList;
 @using X.PagedList.Mvc.Core;
 @{
@@ -14,37 +14,37 @@
                     <!-- Tab Navigation -->
                     <ul class="nav nav-tabs">
                         <li class="active">
-                            <a data-toggle="tab" href="#tab-trong-nuoc">Tour Trong Nước</a>
+                            <a data-toggle="tab" href="#tab-trong-nuoc">Khách Sạn Trong Nước</a>
                         </li>
                         <li>
-                            <a data-toggle="tab" href="#tab-nuoc-ngoai">Tour Nước Ngoài</a>
+                            <a data-toggle="tab" href="#tab-nuoc-ngoai">Khách Sạn Nước Ngoài</a>
                         </li>
                     </ul>
 
                     <!-- Tab Content -->
                     <div class="tab-content">
-                        <!-- Tab 1: Tour Trong Nước -->
+                        <!-- Tab 1: Khách Sạn Trong Nước -->
                         <div id="tab-trong-nuoc" class="tab-pane fade in active">
                             <div class="row">
-                                @if (Model.TourTrongNuoc != null && Model.TourTrongNuoc.Any())
+                                @if (Model.KhachSanTrongNuoc != null && Model.KhachSanTrongNuoc.Any())
                                 {
-                                    @foreach (var tour in Model.TourTrongNuoc)
+                                    @foreach (var khachsan in Model.KhachSanTrongNuoc)
                                     {
                                         <div class="col-sm-6 col-md-6 col-lg-4">
                                             <div class="grid-block main-block h-grid-block">
                                                 <div class="main-img h-grid-img">
-                                                    <a href="@Url.Action("ChiTietTour", "Tour", new { maTour = tour.MaTour, maLoai = tour.MaLoaiTour })">
-                                                        <img src="~/hinhanh/@tour.HinhAnh1" class="img-responsive" alt="@tour.TenTour" />
+                                                    <a href="@Url.Action("ChiTietKhachSan", "KhachSan", new { maKhachSan = khachsan.MaKhachSan, maLoai = khachsan.MaLoaiKhachSan })">
+                                                        <img src="~/hinhanh/@khachsan.HinhAnh1" class="img-responsive" alt="@khachsan.TenKhachSan" />
                                                     </a>
                                                     <div class="main-mask">
                                                         <ul class="list-unstyled list-inline offer-price-1">
-                                                            <li class="price">@tour.GiaTour.ToString("#,##0 VND")<span class="divider">|</span><span class="pkg">1 người</span></li>
+                                                            <li class="price">@khachsan.GiaKhachSan.ToString("#,##0 VND")<span class="divider">|</span><span class="pkg">1 người</span></li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 <div class="block-info h-grid-info">
-                                                    <h3 class="block-title"><a href="@Url.Action("ChiTietTour", "Tour", new { maTour = tour.MaTour, maLoai = tour.MaLoaiTour })">@tour.TenTour</a></h3>
-                                                    <p class="block-minor">@tour.TenLoaiTour</p>
+                                                    <h3 class="block-title"><a href="@Url.Action("ChiTietKhachSan", "KhachSan", new { maKhachSan = khachsan.MaKhachSan, maLoai = khachsan.MaLoaiKhachSan })">@khachsan.TenKhachSan</a></h3>
+                                                    <p class="block-minor">@khachsan.TenKhachSan</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -52,38 +52,38 @@
                                 }
                                 else
                                 {
-                                    <p class="text-center">Không có tour trong nước nào để hiển thị.</p>
+                                    <p class="text-center">Không có khách sạn trong nước nào để hiển thị.</p>
                                 }
                             </div>
 
-                            <!-- Phân Trang Tour Trong Nước -->
+                            <!-- Phân Trang Khách Sạn Trong Nước -->
                             <div class="text-center">
-                                @Html.PagedListPager(Model.TourTrongNuoc, page => Url.Action("DanhMucTour", new { pageTrongNuoc = page }))
+                                @Html.PagedListPager(Model.KhachSanTrongNuoc, page => Url.Action("DanhMucKhachSan", new { pageTrongNuoc = page }))
                             </div>
                         </div>
 
-                        <!-- Tab 2: Tour Nước Ngoài -->
+                        <!-- Tab 2: Khách Sạn Nước Ngoài -->
                         <div id="tab-nuoc-ngoai" class="tab-pane fade">
                             <div class="row">
-                                @if (Model.TourNuocNgoai != null && Model.TourNuocNgoai.Any())
+                                @if (Model.KhachSanNuocNgoai != null && Model.KhachSanNuocNgoai.Any())
                                 {
-                                    @foreach (var tour in Model.TourNuocNgoai)
+                                    @foreach (var khachsan in Model.KhachSanNuocNgoai)
                                     {
                                         <div class="col-sm-6 col-md-6 col-lg-4">
                                             <div class="grid-block main-block h-grid-block">
                                                 <div class="main-img h-grid-img">
-                                                    <a href="@Url.Action("ChiTietTour", "Tour", new { maTour = tour.MaTour, maLoai = tour.MaLoaiTour })">
-                                                        <img src="~/hinhanh/@tour.HinhAnh1" class="img-responsive" alt="@tour.TenTour" />
+                                                    <a href="@Url.Action("ChiTietKhachSan", "KhachSan", new { maKhachSan =  khachsan.MaKhachSan, maLoai =  khachsan.MaLoaiKhachSan })">
+                                                        <img src="~/hinhanh/@khachsan.HinhAnh1" class="img-responsive" alt="@khachsan.TenKhachSan" />
                                                     </a>
                                                     <div class="main-mask">
                                                         <ul class="list-unstyled list-inline offer-price-1">
-                                                            <li class="price">@tour.GiaTour.ToString("#,##0 VND")<span class="divider">|</span><span class="pkg">1 người</span></li>
+                                                            <li class="price">@khachsan.GiaKhachSan.ToString("#,##0 VND")<span class="divider">|</span><span class="pkg">1 người</span></li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 <div class="block-info h-grid-info">
-                                                    <h3 class="block-title"><a href="@Url.Action("ChiTietTour", "Tour", new { maTour = tour.MaTour, maLoai = tour.MaLoaiTour })">@tour.TenTour</a></h3>
-                                                    <p class="block-minor">@tour.TenLoaiTour</p>
+                                                    <h3 class="block-title"><a href="@Url.Action("ChiTietKhachSan", "KhachSan", new { maKhachSan = khachsan.MaKhachSan, maLoai = khachsan.MaLoaiKhachSan })">@khachsan.TenKhachSan</a></h3>
+                                                    <p class="block-minor">@khachsan.TenLoaiKhachSan</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -91,13 +91,13 @@
                                 }
                                 else
                                 {
-                                    <p class="text-center">Không có tour nước ngoài nào để hiển thị.</p>
+                                    <p class="text-center">Không có khách sạn nước ngoài nào để hiển thị.</p>
                                 }
                             </div>
 
-                            <!-- Phân Trang Tour Nước Ngoài -->
+                            <!-- Phân Trang Khách Sạn Nước Ngoài -->
                             <div class="text-center">
-                                @Html.PagedListPager(Model.TourNuocNgoai, page => Url.Action("DanhMucTour", new { pageNuocNgoai = page }))
+                                @Html.PagedListPager(Model.KhachSanNuocNgoai, page => Url.Action("DanhMucKhachSan", new { pageNuocNgoai = page }))
                             </div>
                         </div>
                     </div>

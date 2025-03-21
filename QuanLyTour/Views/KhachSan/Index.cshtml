@@ -1,5 +1,5 @@
-﻿@using QuanLyTour.Models.Tour
-@model TourIndexViewModel
+﻿@using QuanLyTour.Models.KhachSan
+@model KhachSanIndexViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -14,11 +14,11 @@
                         💥 Bạn đang tìm kiếm một địa điểm du lịch đẹp và thú vị để khám phá? <br />
                         👉 Nhiều địa điểm du lịch đầy màu sắc, nơi bạn có thể tận hưởng thiên nhiên hoang dã, tham gia các hoạt động giải trí và thưởng thức ẩm thực đặc trưng của địa phương
                     <p> ⚡️  Hãy đến và trải nghiệm cùng HANOITOUR của chúng tôi! </p>
-                    <a href="@Url.Action("DanhMucTour","Tour")" class="btn btn-w-border">Xem ngay</a>
+                    <a href="@Url.Action("DanhMucKhachSan","KhachSan")" class="btn btn-w-border">Xem ngay</a>
 
                     <div class="search-form-container" style="margin-top:20px">
                         <div class="row">
-                            <form id="search-form" action="@Url.Action("TimKiemTour", "Home")" method="get">
+                            <form id="search-form" action="@Url.Action("TimKiemKhachSan", "Home")" method="get">
                                 <!-- Ô nhập địa điểm -->
                                 <div class="col-xs-12 col-md-4" style="padding-right: 5px; margin-bottom: 10px;">
                                     <div class="input-group">
@@ -69,26 +69,26 @@
                     <h2 style="color:black;">DANH MỤC CÁC KHÁCH SẠN MỚI</h2>
                     <hr class="heading-line" />
                 </div><!-- end page-heading -->
-                @if (Model != null && Model.ToursTrongNuoc.Any())
+                @if (Model != null && Model.KhachSansTrongNuoc.Any())
                 {
                     <div class="owl-carousel owl-theme owl-custom-arrow" id="owl-hotel-offers">
-                        @foreach (var tour in Model.ToursTrongNuoc)
+                        @foreach (var khachsan in Model.KhachSansTrongNuoc)
                         {
                             <div class="item">
                                 <div class="tour-card">
                                     <div class="tour-img-container">
-                                        <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">
-                                            <img src="@Url.Content($"~/hinhanh/{tour.HinhAnh1}")" class="img-responsive" alt="@tour.TenTour" />
+                                        <a href="@Url.Action("ChiTietKhachSan","KhachSan",new {maKhachSan = khachsan.MaKhachSan, maLoai = khachsan.MaLoaiKhachSan})">
+                                            <img src="@Url.Content($"~/hinhanh/{khachsan.HinhAnh1}")" class="img-responsive" alt="@khachsan.TenKhachSan" />
                                         </a>
                                     </div>
                                     <div class="tour-info">
                                         <h4>
-                                            <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">@tour.TenTour</a>
+                                            <a href="@Url.Action("ChiTietKhachSan","KhachSan",new {maKhachSan = khachsan.MaKhachSan, maLoai = khachsan.MaLoaiKhachSan})">@khachsan.TenKhachSan</a>
                                         </h4>
                                         <div class="tour-duration-container">
                                             <div class="tour-duration">
                                                 <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
-                                                <div>@($"{tour.SoNgay}")</div>
+                                                <div>@($"{khachsan.SoNgay}")</div>
                                             </div>
                                             <div class="transportation-icons">
                                                 <i class="fa fa-plane" aria-hidden="true"></i>
@@ -97,10 +97,10 @@
                                             </div>
                                         </div>
                                         <div class="tour-highlights">
-                                            <div>@($"Điểm đến: {tour.DiaDiem}")</div>
+                                            <div>@($"Điểm đến: {khachsan.DiaDiem}")</div>
                                         </div>
                                         <div class="tour-price">
-                                            <div>@tour.GiaTour.ToString("#,##0") VNĐ</div>
+                                            <div>@khachsan.GiaKhachSan.ToString("#,##0") VNĐ</div>
                                         </div>
                                     </div>
                                 </div>
@@ -114,7 +114,7 @@
                 }
 
                 <div class="view-all text-center">
-                    <a href="@Url.Action("DanhMucTour","Tour")" class="btn btn-orange">Xem nhiều hơn</a>
+                    <a href="@Url.Action("DanhMucKhachSan","KhachSan")" class="btn btn-orange">Xem nhiều hơn</a>
                 </div><!-- end view-all -->
             </div><!-- end columns -->
         </div><!-- end row -->
