@@ -1,5 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.Data.SqlClient;
+using QuanLyTour.Models;
+using QuanLyTour.Models.KhachSan;
+using QuanLyTour.Models.Tour;
+using X.PagedList;
+using X.PagedList.Extensions;
 namespace QuanLyTour.Controllers
 {
     public class KhachSanController : Controller
@@ -14,7 +19,231 @@ namespace QuanLyTour.Controllers
 		}
 		public IActionResult Index()
         {
-            return View();
-        }
-    }
+			// Kiểm tra thông tin người dùng từ Session
+			var tenNguoiDung = HttpContext.Session.GetString("TenNguoiDung");
+			ViewBag.TenNguoiDung = tenNguoiDung;
+
+			var khachsansTrongNuoc = new List<KhachSanViewModel>();
+
+			try
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					connection.Open();
+
+					string queryTrongNuoc = @"
+                SELECT MaKhachSan, TenKhachSan, SoNgay, DiaDiem, MaLoaiKhachSan, TrangThai, GiaKhachSan, HinhAnh1 
+                FROM KhachSan 
+                WHERE TrangThai = 1";
+
+					using (var command = new SqlCommand(queryTrongNuoc, connection))
+					{
+
+						using (var reader = command.ExecuteReader())
+						{
+							while (reader.Read())
+							{
+								khachsansTrongNuoc.Add(new KhachSanViewModel
+								{
+									MaKhachSan = reader.GetInt32(0),
+									TenKhachSan = reader.GetString(1),
+									SoNgay = reader.GetString(2),
+									DiaDiem = reader.GetString(3),
+									MaLoaiKhachSan = reader.GetInt32(4),
+									TrangThai = reader.GetBoolean(5),
+									GiaKhachSan = reader.GetDecimal(6),
+									HinhAnh1 = reader.GetString(7)
+								});
+
+							}
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ViewBag.ErrorMessage = "Có lỗi xảy ra: " + ex.Message;
+			}
+
+			// Tạo ViewModel tổng hợp
+			var viewModel = new KhachSanIndexViewModel
+			{
+				KhachSansTrongNuoc = khachsansTrongNuoc
+			};
+
+			return View(viewModel);
+		}
+		public IActionResult ChiTietKhachSan(string maKhachSan, string maLoai, int? page)
+		{
+			int pageSize = 10;
+			int pageNumber = page ?? 1;
+			KhachSanViewModel khachsan = null;
+			List<KhachSanViewModel> khachsantt = new List<KhachSanViewModel>();
+
+			// Lấy thông tin người dùng từ session
+			var tenNguoiDung = HttpContext.Session.GetString("UserName");
+			var soDienThoai = HttpContext.Session.GetString("UserPhone");
+			var diaChi = HttpContext.Session.GetString("UserAd");
+			var maNguoiDung = HttpContext.Session.GetInt32("UserId");
+
+			ViewBag.TenNguoiDung = tenNguoiDung;
+			ViewBag.SoDienThoai = soDienThoai;
+			ViewBag.DiaChi = diaChi;
+			ViewBag.MaNguoiDung = maNguoiDung;
+
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+
+				// Truy vấn thông tin KhachSan hiện tại
+				string sql = "SELECT p.MaKhachSan, p.TenKhachSan, p.MaLoaiKhachSan, p.TrangThai, p.SoNgay, p.DiaDiem, p.GiaKhachSan, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, l.TenLoaiKhachSan, p.MoTa, p.LichTrinh " +
+					"FROM KhachSan p " +
+					"INNER JOIN LoaiKhachSan l ON p.MaLoaiKhachSan = l.MaLoaiKhachSan " +
+					"WHERE p.MaKhachSan = @maKhachSan";
+
+
+				using (var command = new SqlCommand(sql, connection))
+				{
+					command.Parameters.AddWithValue("@maKhachSan", maKhachSan);
+
+					using (var reader = command.ExecuteReader())
+					{
+						if (reader.Read())
+						{
+							khachsan = new KhachSanViewModel
+							{
+								MaKhachSan = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0,
+								TenKhachSan = !reader.IsDBNull(1) ? reader.GetString(1) : string.Empty,
+								MaLoaiKhachSan = !reader.IsDBNull(2) ? reader.GetInt32(2) : 0,
+								TrangThai = !reader.IsDBNull(3) && reader.GetBoolean(3),
+								SoNgay = !reader.IsDBNull(4) ? reader.GetString(4) : string.Empty,
+								DiaDiem = !reader.IsDBNull(5) ? reader.GetString(5) : string.Empty,
+								GiaKhachSan = !reader.IsDBNull(6) ? reader.GetDecimal(6) : 0,
+								HinhAnh1 = !reader.IsDBNull(7) ? reader.GetString(7) : string.Empty,
+								HinhAnh2 = !reader.IsDBNull(8) ? reader.GetString(8) : string.Empty,
+								HinhAnh3 = !reader.IsDBNull(9) ? reader.GetString(9) : string.Empty,
+								TenLoaiKhachSan = !reader.IsDBNull(10) ? reader.GetString(10) : string.Empty,
+								MoTa = !reader.IsDBNull(11) ? reader.GetString(11) : string.Empty,
+								LichTrinh = !reader.IsDBNull(12) ? reader.GetString(12) : string.Empty,
+							};
+						}
+					}
+				}
+				// Truy vấn các KhachSan tương tự
+				string sqlKhachSantt = "SELECT p.MaKhachSan, p.TenKhachSan, p.MaLoaiKhachSan, p.TrangThai, p.SoNgay, p.DiaDiem, p.GiaKhachSan, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, l.TenLoaiKhachSan " +
+								   "FROM KhachSan p " +
+								   "INNER JOIN LoaiKhachSan l ON p.MaLoaiKhachSan = l.MaLoaiKhachSan " +
+								   "WHERE  p.MaKhachSan != @maKhachSan AND p.MaLoaiKhachSan = @maLoaiKhachSan";
+
+				using (var command = new SqlCommand(sqlKhachSantt, connection))
+				{
+					command.Parameters.AddWithValue("@maKhachSan", maKhachSan);
+					command.Parameters.AddWithValue("@maLoaiKhachSan", khachsan?.MaLoaiKhachSan ?? 0); // Sử dụng `MaLoaiKhachSan` từ KhachSan hiện tại
+
+					using (var reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							khachsantt.Add(new KhachSanViewModel
+							{
+								MaKhachSan = reader.GetInt32(0),
+								TenKhachSan = reader.GetString(1),
+								MaLoaiKhachSan = reader.GetInt32(2),
+								TrangThai = reader.GetBoolean(3),
+								SoNgay = reader.IsDBNull(4) ? "Không xác định" : reader.GetString(4),  // Xử lý NULL
+								DiaDiem = reader.IsDBNull(5) ? "Không có địa điểm" : reader.GetString(5),  // Xử lý NULL
+								GiaKhachSan = reader.GetDecimal(6),
+								HinhAnh1 = reader.GetString(7),
+								HinhAnh2 = reader.GetString(8),
+								HinhAnh3 = reader.GetString(9),
+								TenLoaiKhachSan = reader.GetString(10)
+							});
+						}
+					}
+				}
+			}
+
+			if (khachsan == null)
+			{
+				return NotFound();
+			}
+
+			// Sử dụng PagedList để phân trang danh sách KhachSan tương tự
+			var pagedAvailableKhachSans = khachsantt.ToPagedList(pageNumber, pageSize);
+
+			var viewModel = new DetailViewModel
+			{
+				KhachSanHienTai = khachsan,
+				KhachSanTuongTu = pagedAvailableKhachSans
+			};
+
+			return View(viewModel);
+
+		}
+		public IActionResult DanhMucKhachSan(int pageTrongNuoc = 1, int pageNuocNgoai = 1, int pageSize = 12)
+		{
+			var model = new KhachSanTabsViewModel();
+			try
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					connection.Open();
+
+					// Lấy danh sách KhachSan Trong Nước
+					string queryTrongNuoc = @"
+            SELECT p.MaKhachSan, p.TenKhachSan, p.MaLoaiKhachSan, p.TrangThai, p.SoNgay, p.DiaDiem, p.GiaKhachSan, p.HinhAnh1, l.TenLoaiKhachSan 
+            FROM KhachSan p 
+            INNER JOIN LoaiKhachSan l ON p.MaLoaiKhachSan = l.MaLoaiKhachSan 
+            WHERE p.MaLoaiKhachSan = 1";
+
+					var khachsanTrongNuoc = GetKhachSans(connection, queryTrongNuoc);
+					model.KhachSanTrongNuoc = khachsanTrongNuoc.ToPagedList(pageTrongNuoc, pageSize);
+
+					// Lấy danh sách KhachSan Nước Ngoài
+					string queryNuocNgoai = @"
+            SELECT p.MaKhachSan, p.TenKhachSan, p.MaLoaiKhachSan, p.TrangThai, p.SoNgay, p.DiaDiem, p.GiaKhachSan, p.HinhAnh1, l.TenLoaiKhachSan 
+            FROM KhachSan p 
+            INNER JOIN LoaiKhachSan l ON p.MaLoaiKhachSan = l.MaLoaiKhachSan 
+            WHERE p.MaLoaiKhachSan = 2";
+
+					var khachsanNuocNgoai = GetKhachSans(connection, queryNuocNgoai);
+					model.KhachSanNuocNgoai = khachsanNuocNgoai.ToPagedList(pageNuocNgoai, pageSize);
+				}
+			}
+			catch (Exception ex)
+			{
+				ViewBag.ErrorMessage = "Có lỗi xảy ra: " + ex.Message;
+			}
+
+			return View(model);
+		}
+		private List<KhachSanViewModel> GetKhachSans(SqlConnection connection, string query)
+		{
+			var khachsans = new List<KhachSanViewModel>();
+
+			using (var command = new SqlCommand(query, connection))
+			{
+				using (var reader = command.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						khachsans.Add(new KhachSanViewModel
+						{
+							MaKhachSan = reader.GetInt32(0),
+							TenKhachSan = reader.GetString(1),
+							MaLoaiKhachSan = reader.GetInt32(2),
+							TrangThai = reader.GetBoolean(3),
+							SoNgay = reader.IsDBNull(4) ? "Không xác định" : reader.GetString(4),  // Xử lý NULL
+							DiaDiem = reader.IsDBNull(5) ? "Không có địa điểm" : reader.GetString(5),  // Xử lý NULL
+							GiaKhachSan = reader.GetDecimal(6),
+							HinhAnh1 = reader.IsDBNull(7) ? "" : reader.GetString(7), // Xử lý NULL
+							TenLoaiKhachSan = reader.GetString(8)
+						});
+					}
+				}
+			}
+
+			return khachsans;
+		}
+	}
 }
