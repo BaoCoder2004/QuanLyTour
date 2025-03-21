@@ -82,10 +82,7 @@
 
                                     <button type="submit" class="btn btn-block btn-orange">Đặt và Thanh toán</button>
                                 }
-
-
                             </div>
-
                             <!-- end booking-form -->
                         }
                         else
@@ -98,7 +95,6 @@
                             }
                         }
                     </div><!-- end side-bar-block -->
-
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-12">
                             <div class="side-bar-block main-block ad-block">
@@ -190,22 +186,17 @@
                                         <a href="@Url.Action("ChiTietKhachSan","KhachSan",new { maKhachSan = item.MaKhachSan,maLoai = item.MaLoaiKhachSan })" class="btn btn-orange btn-lg">Xem thêm</a>
                                     </div><!-- end room-info -->
                                 </div>
-
                                 <!-- end list-content -->
                             </div>
-
                             <!-- end room-block -->
                         }
-
                     </div><!-- end available-rooms -->
-
 
                     <div class="text-center">
                        @Html.PagedListPager(Model.KhachSanTuongTu, page => Url.Action("DanhMucKhachSan", new { page, maPhong = Model.KhachSanHienTai.MaKhachSan }))
                     </div>
                     <!-- end pages -->
-                </div><!-- end columns -->
-
+                </div><!-- end columns -->  
             </div><!-- end row -->
         </div><!-- end container -->
     </div><!-- end hotel-details -->
