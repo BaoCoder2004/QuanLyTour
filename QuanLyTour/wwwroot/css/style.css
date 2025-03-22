@@ -559,14 +559,45 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 		color: #333;
 	}
 
+.hotel-group {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 8px 0;
+}
+
+.hotel-condition {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.room-condition {
+	margin-top: 15px;
+	color: #3498db;
+	font-weight: bold;
+}
+
+.divider {
+	width: 2px;
+	height: 20px;
+	background-color: #ccc;
+}
+
 .transportation-icons i {
 	margin-left: 5px;
 	color: #666;
-	font-size: 14px;
+	font-size: 18px;
 }
 
 .tour-highlights {
 	color: #3498db;
+}
+
+.star-icons i {
+	margin-left: 5px;
+	color: #ff8c00;
+	font-size: 18px;
 }
 
 /* Check Circle Icons in Tour Highlights */

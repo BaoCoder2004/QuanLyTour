@@ -54,9 +54,6 @@
                                         <label for="ChuThe">Chủ thẻ:</label>
                                         <input type="text" name="ChuThe" id="ChuThe" class="form-control" placeholder="Nhập tên chủ thẻ" required />
                                     </div>
-
-                                   
-
                                     <div class="form-group right-icon">
                                         <select class="form-control">
                                             <option selected>@Model.KhachSanHienTai.TenLoaiKhachSan</option>
@@ -119,15 +116,15 @@
                     </br>
                     </br>
                     <div class="available-blocks" id="available-rooms">
-                        <h2>Mô tả chi tiết KhachSan</h2>
+                        <h2>Mô tả chi tiết khách sạn</h2>
                         <p>@Html.Raw(Model.KhachSanHienTai.MoTa == null ? "" : Model.KhachSanHienTai.MoTa.Replace("\n", "<br>").Replace("\r", ""))</p>
                     </div>
                     <div class="available-blocks" id="available-rooms">
-                        <h2>Lịch trình của KhachSan</h2>
+                        <h2>Ưu đãi của khách sạn</h2>
                         <p>@Html.Raw(Model.KhachSanHienTai.LichTrinh == null ? "" : Model.KhachSanHienTai.LichTrinh.Replace("\n", "<br>").Replace("\r", ""))</p>
                     </div>
                     <div class="available-blocks" id="available-rooms">
-                        <h2>Các KhachSan @Model.KhachSanHienTai.TenLoaiKhachSan gợi ý:</h2>
+                        <h2>Các khách sạn @Model.KhachSanHienTai.TenLoaiKhachSan gợi ý:</h2>
 
                         @foreach (var item in Model.KhachSanTuongTu)
                         {
