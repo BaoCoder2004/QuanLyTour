@@ -1,0 +1,54 @@
+﻿@using QuanLyTour.Models.KhachSan
+@{
+    ViewData["Title"] = "Thông tin tour đã đặt";
+    Layout = "~/Views/Shared/_Detail.cshtml";
+}
+@model List<KhachSanDatViewModel>
+<section class="innerpage-wrapper">
+    <h2 class="text-center">DANH SÁCH CÁC TOUR ĐÃ ĐẶT</h2>
+    @if (Model != null && Model.Count > 0)
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>MaHoaDonKhachSan</th>
+                    <th>Tong tien</th>                
+                    <th>Ngày Thanh Toán</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var khachsan in Model)
+                {
+                    <tr>
+                        <td>@khachsan.MaHoaDonKhachSan</td>
+                       
+                        <td>@khachsan.TongTien.ToString("N0")</td>
+                      
+                      
+    
+                        <td>
+                            @if (khachsan.NgayThanhToan.HasValue)
+                            {
+                                @khachsan.NgayThanhToan.Value.ToString("dd/MM/yyyy")
+                            }
+                            else
+                            {
+                                <span>Chưa thanh toán</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Chưa có Khach san nào được đặt.</p>
+    }
+</section>
+
+
+
+
+
+

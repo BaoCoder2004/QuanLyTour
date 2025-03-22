@@ -12,19 +12,18 @@ using Microsoft.Extensions.Logging;
 using Org.BouncyCastle.Crypto.Generators;
 using BCrypt.Net;
 using QuanLyTour.Models.Tour;
+using QuanLyTour.Models.KhachSan;
 namespace QuanLyTour.Controllers
 {
     public class HomeController : Controller
     {
         private readonly string _connectionString;
         private readonly ILogger<HomeController> _logger;
-
         public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
             _logger = logger;
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
-
         public IActionResult Index()
         {
             // Kiểm tra thông tin người dùng từ Session
@@ -82,7 +81,6 @@ namespace QuanLyTour.Controllers
             return View(viewModel);
         }
 		#region Account
-
 		[HttpGet]
 		public IActionResult DangNhap()
 		{
@@ -140,60 +138,119 @@ namespace QuanLyTour.Controllers
 				}
 			}
 		}
+		// Hiển thị form đăng ký
+		public IActionResult DangKy()
+		{
+			return View();
+		}
+
+		// Xử lý đăng ký
+		[HttpPost]
+		public IActionResult DangKy(string username, string password, string HoTen, string DiaChi, string SoDienthoai, string Email)
+		{
+			try
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					connection.Open();
+
+					// Kiểm tra nếu tên đăng nhập đã tồn tại
+					string checkUserQuery = "SELECT COUNT(*) FROM NguoiDung WHERE TenDangNhap = @TenDangNhap";
+					using (var checkCommand = new SqlCommand(checkUserQuery, connection))
+					{
+						checkCommand.Parameters.AddWithValue("@TenDangNhap", username);
+						int userCount = (int)checkCommand.ExecuteScalar();
+
+						if (userCount > 0)
+						{
+							TempData["ErrorMessage"] = "Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.";
+							return RedirectToAction("DangKy");
+						}
+					}
+
+					// Thêm người dùng mới vào cơ sở dữ liệu
+					string insertQuery = @"
+                    INSERT INTO NguoiDung (TenDangNhap, MatKhau, TenNguoiDung, DiaChi, SoDienThoai, TrangThai, LoaiTaiKhoan,Email)
+                    VALUES (@TenDangNhap, @MatKhau, @TenNguoiDung, @DiaChi, @SoDienThoai, @TrangThai, @LoaiTaiKhoan,@Email)";
+					using (var insertCommand = new SqlCommand(insertQuery, connection))
+					{
+						insertCommand.Parameters.AddWithValue("@TenDangNhap", username);
+						insertCommand.Parameters.AddWithValue("@MatKhau", password); // Nên mã hóa mật khẩu trước khi lưu
+						insertCommand.Parameters.AddWithValue("@TenNguoiDung", HoTen);
+						insertCommand.Parameters.AddWithValue("@DiaChi", DiaChi);
+						insertCommand.Parameters.AddWithValue("@SoDienThoai", SoDienthoai);
+						insertCommand.Parameters.AddWithValue("@TrangThai", true); // Mặc định kích hoạt
+						insertCommand.Parameters.AddWithValue("@LoaiTaiKhoan", false); // Mặc định tài khoản thường
+						insertCommand.Parameters.AddWithValue("@Email", Email);
+						insertCommand.ExecuteNonQuery();
+					}
+				}
+
+				// Đặt thông báo thành công và tự động chuyển hướng sau 3 giây
+				TempData["SuccessMessage"] = "Đăng ký thành công! Bạn sẽ được chuyển về trang chủ sau 5 giây.";
+			}
+			catch (Exception ex)
+			{
+				TempData["ErrorMessage"] = "Có lỗi xảy ra: " + ex.Message;
+			}
+
+			return RedirectToAction("DangKy");
+		}
 		public IActionResult DangXuat()
 		{
 			// Xóa tất cả thông tin trong session
 			HttpContext.Session.Clear();
 			return RedirectToAction("Index", "Home");  // Quay lại trang chủ
 		}
-		#endregion 
+		#endregion
 
+		#region Thongtinnguoidung
 		public IActionResult ThongTinNguoiDung()
-        {
-            ViewData["Title"] = "Thông tin người dùng";
-            // Lấy ID từ session
-            var maNguoiDung = HttpContext.Session.GetInt32("UserId");
-            if (maNguoiDung == null)
-            {
-                return RedirectToAction("DangNhap", "Home"); // Chuyển hướng nếu chưa đăng nhập
-            }
+		{
+			ViewData["Title"] = "Thông tin người dùng";
+			// Lấy ID từ session
+			var maNguoiDung = HttpContext.Session.GetInt32("UserId");
+			if (maNguoiDung == null)
+			{
+				return RedirectToAction("DangNhap", "Home"); // Chuyển hướng nếu chưa đăng nhập
+			}
 
-            // Kết nối database và lấy thông tin người dùng
-            ThongTinNguoiDung nguoiDung = null;
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                string query = "SELECT MaNguoiDung, TenNguoiDung, DiaChi, SoDienThoai, Email, NgaySinh, GioiTinh " +
-                               "FROM NguoiDung WHERE MaNguoiDung = @MaNguoiDung";
+			// Kết nối database và lấy thông tin người dùng
+			ThongTinNguoiDung nguoiDung = null;
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				string query = "SELECT MaNguoiDung, TenNguoiDung, DiaChi, SoDienThoai, Email, NgaySinh, GioiTinh " +
+							   "FROM NguoiDung WHERE MaNguoiDung = @MaNguoiDung";
 
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@MaNguoiDung", maNguoiDung);
+				SqlCommand command = new SqlCommand(query, connection);
+				command.Parameters.AddWithValue("@MaNguoiDung", maNguoiDung);
 
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
+				connection.Open();
+				SqlDataReader reader = command.ExecuteReader();
 
-                if (reader.Read())
-                {
-                    nguoiDung = new ThongTinNguoiDung
-                    {
-                        MaNguoiDung = Convert.ToInt32(reader["MaNguoiDung"]),
-                        TenNguoiDung = reader["TenNguoiDung"].ToString(),
-                        DiaChi = reader["DiaChi"].ToString(),
-                        SoDienThoai = reader["SoDienThoai"].ToString(),
+				if (reader.Read())
+				{
+					nguoiDung = new ThongTinNguoiDung
+					{
+						MaNguoiDung = Convert.ToInt32(reader["MaNguoiDung"]),
+						TenNguoiDung = reader["TenNguoiDung"].ToString(),
+						DiaChi = reader["DiaChi"].ToString(),
+						SoDienThoai = reader["SoDienThoai"].ToString(),
 						Email = reader["Email"].ToString(),
 						NgaySinh = Convert.ToDateTime(reader["NgaySinh"]),
 						GioiTinh = reader["GioiTinh"].ToString()
 					};
-                }
-                connection.Close();
-            }
+				}
+				connection.Close();
+			}
 
-            if (nguoiDung == null)
-            {
-                return NotFound("Không tìm thấy người dùng.");
-            }
+			if (nguoiDung == null)
+			{
+				return NotFound("Không tìm thấy người dùng.");
+			}
 
-            return View(nguoiDung); // Truyền dữ liệu tới view
-        }
+			return View(nguoiDung); // Truyền dữ liệu tới view
+		}
 
 		[HttpPost]
 		public IActionResult ThongTinNguoiDung(string TenNguoiDung, string DiaChi, string SoDienThoai, string Email, DateTime NgaySinh, string GioiTinh)
@@ -239,17 +296,17 @@ namespace QuanLyTour.Controllers
 				return View();  // Nếu có lỗi, quay lại trang cập nhật
 			}
 		}
-
-		public IActionResult QuenMatKhau()
-        {
-            return View();
-        }
-		public IActionResult XacNhanMa()
-        {
-            return View();
-        }
+		#endregion
 
 		#region  reset password
+		public IActionResult QuenMatKhau()
+		{
+			return View();
+		}
+		public IActionResult XacNhanMa()
+		{
+			return View();
+		}
 		private bool SendVerificationCode(string toEmail, string code)
 		{
 			try
@@ -398,154 +455,76 @@ namespace QuanLyTour.Controllers
 		}
 		#endregion
 
-		#region
-		public IActionResult KhachSan()
+		public IActionResult TimKiemTour(string keyword, int page = 1, int pageSize = 6)
 		{
-			return View();
-		}
-		public IActionResult VeMayBay()
-		{
-			return View();
-		}
-		public IActionResult VeTau()
-		{
-			return View();
-		}
-		public IActionResult HoTro()
-		{
-			return View();
-		}
-		#endregion
+			var tours = new List<TourViewModel>();
 
+			try
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					connection.Open();
 
-		// Hiển thị form đăng ký
-		public IActionResult DangKy()
-        {
-            return View();
-        }
-
-        // Xử lý đăng ký
-        [HttpPost]
-        public IActionResult DangKy(string username, string password, string HoTen, string DiaChi, string SoDienthoai,string Email)
-        {
-            try
-            {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    connection.Open();
-
-                    // Kiểm tra nếu tên đăng nhập đã tồn tại
-                    string checkUserQuery = "SELECT COUNT(*) FROM NguoiDung WHERE TenDangNhap = @TenDangNhap";
-                    using (var checkCommand = new SqlCommand(checkUserQuery, connection))
-                    {
-                        checkCommand.Parameters.AddWithValue("@TenDangNhap", username);
-                        int userCount = (int)checkCommand.ExecuteScalar();
-
-                        if (userCount > 0)
-                        {
-                            TempData["ErrorMessage"] = "Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.";
-                            return RedirectToAction("DangKy");
-                        }
-                    }
-
-                    // Thêm người dùng mới vào cơ sở dữ liệu
-                    string insertQuery = @"
-                    INSERT INTO NguoiDung (TenDangNhap, MatKhau, TenNguoiDung, DiaChi, SoDienThoai, TrangThai, LoaiTaiKhoan,Email)
-                    VALUES (@TenDangNhap, @MatKhau, @TenNguoiDung, @DiaChi, @SoDienThoai, @TrangThai, @LoaiTaiKhoan,@Email)";
-                    using (var insertCommand = new SqlCommand(insertQuery, connection))
-                    {
-                        insertCommand.Parameters.AddWithValue("@TenDangNhap", username);
-                        insertCommand.Parameters.AddWithValue("@MatKhau", password); // Nên mã hóa mật khẩu trước khi lưu
-                        insertCommand.Parameters.AddWithValue("@TenNguoiDung", HoTen);
-                        insertCommand.Parameters.AddWithValue("@DiaChi", DiaChi);
-                        insertCommand.Parameters.AddWithValue("@SoDienThoai", SoDienthoai);
-                        insertCommand.Parameters.AddWithValue("@TrangThai", true); // Mặc định kích hoạt
-                        insertCommand.Parameters.AddWithValue("@LoaiTaiKhoan", false); // Mặc định tài khoản thường
-						insertCommand.Parameters.AddWithValue("@Email", Email);
-						insertCommand.ExecuteNonQuery();
-                    }
-                }
-
-                // Đặt thông báo thành công và tự động chuyển hướng sau 3 giây
-                TempData["SuccessMessage"] = "Đăng ký thành công! Bạn sẽ được chuyển về trang chủ sau 5 giây.";
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Có lỗi xảy ra: " + ex.Message;
-            }
-
-            return RedirectToAction("DangKy");
-        }
-        public IActionResult TimKiemTour(string keyword, int page = 1, int pageSize = 6)
-        {
-            var tours = new List<TourViewModel>();
-
-            try
-            {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    connection.Open();
-
-                    // Truy vấn dữ liệu Tour dựa vào từ khóa
-                    string query = @"
+					// Truy vấn dữ liệu Tour dựa vào từ khóa
+					string query = @"
                 SELECT t.MaTour, t.TenTour, t.MaLoaiTour,t.SoNgay,t.DiaDiem, t.TrangThai, t.GiaTour, t.HinhAnh1, l.TenLoaiTour
                 FROM Tour t
                 INNER JOIN LoaiTour l ON t.MaLoaiTour = l.MaLoaiTour
                 WHERE (TenTour LIKE @Keyword)";
 
-                    using (var command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Keyword", $"%{keyword}%");
+					using (var command = new SqlCommand(query, connection))
+					{
+						command.Parameters.AddWithValue("@Keyword", $"%{keyword}%");
 
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                tours.Add(new TourViewModel
-                                {
-                                    MaTour = reader.GetInt32(0),
-                                    TenTour = reader.GetString(1),
-                                    MaLoaiTour = reader.GetInt32(2),
+						using (var reader = command.ExecuteReader())
+						{
+							while (reader.Read())
+							{
+								tours.Add(new TourViewModel
+								{
+									MaTour = reader.GetInt32(0),
+									TenTour = reader.GetString(1),
+									MaLoaiTour = reader.GetInt32(2),
 									SoNgay = reader.GetString(3),
 									DiaDiem = reader.GetString(4),
 									TrangThai = reader.GetBoolean(5),
-                                    GiaTour = reader.GetDecimal(6),
-                                    HinhAnh1 = reader.GetString(7),
-                                    TenLoaiTour = reader.GetString(8)
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ViewBag.ErrorMessage = "Có lỗi xảy ra: " + ex.Message;
-            }
+									GiaTour = reader.GetDecimal(6),
+									HinhAnh1 = reader.GetString(7),
+									TenLoaiTour = reader.GetString(8)
+								});
+							}
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ViewBag.ErrorMessage = "Có lỗi xảy ra: " + ex.Message;
+			}
 
-            // Phân trang kết quả tìm kiếm
-            var pagedTours = tours.ToPagedList(page, pageSize);
+			// Phân trang kết quả tìm kiếm
+			var pagedTours = tours.ToPagedList(page, pageSize);
 
-            // Gửi từ khóa và danh sách Tour tìm được về View
-            ViewBag.Keyword = keyword;
-            return View(pagedTours);
-        }
-        public IActionResult ThongTinTourDat()
-        {
-            int maNguoiDung = (int)HttpContext.Session.GetInt32("UserId"); // Lấy mã người dùng từ session
+			// Gửi từ khóa và danh sách Tour tìm được về View
+			ViewBag.Keyword = keyword;
+			return View(pagedTours);
+		}
+		public IActionResult ThongTinTourDat()
+		{
+			int maNguoiDung = (int)HttpContext.Session.GetInt32("UserId"); // Lấy mã người dùng từ session
 
-            if (maNguoiDung == 0)
-            {
-                return RedirectToAction("DangNhap", "Home"); // Nếu chưa đăng nhập, chuyển tới trang đăng nhập
-            }
+			if (maNguoiDung == 0)
+			{
+				return RedirectToAction("DangNhap", "Home"); // Nếu chưa đăng nhập, chuyển tới trang đăng nhập
+			}
 
-            List<TourDatViewModel> danhSachTourDat = new List<TourDatViewModel>();
+			List<TourDatViewModel> danhSachTourDat = new List<TourDatViewModel>();
 
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
 
-                string sql = @"
+				string sql = @"
             SELECT 
                 t.TenTour,
                 l.TenLoaiTour,
@@ -561,32 +540,32 @@ namespace QuanLyTour.Controllers
             WHERE p.MaNguoiDung = @MaNguoiDung
             ORDER BY p.NgayDatTour DESC";
 
-                using (var command = new SqlCommand(sql, connection))
-                {
-                    command.Parameters.AddWithValue("@MaNguoiDung", maNguoiDung);
+				using (var command = new SqlCommand(sql, connection))
+				{
+					command.Parameters.AddWithValue("@MaNguoiDung", maNguoiDung);
 
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            danhSachTourDat.Add(new TourDatViewModel
-                            {
-                                TenTour = reader.GetString(0),
-                                LoaiTour = reader.GetString(1),
-                                NgayDat = reader.GetDateTime(2),
-                                SoLuong = reader.GetInt32(3),
-                                ThanhTien = reader.GetDecimal(4),
-                                NgayThanhToan = reader.IsDBNull(5) ? (DateTime?)null : reader.GetDateTime(5),
-                                NgayDi = reader.GetDateTime(6)
-                            });
-                        }
-                    }
-                }
-            }
-            return View(danhSachTourDat);
-        }
+					using (var reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							danhSachTourDat.Add(new TourDatViewModel
+							{
+								TenTour = reader.GetString(0),
+								LoaiTour = reader.GetString(1),
+								NgayDat = reader.GetDateTime(2),
+								SoLuong = reader.GetInt32(3),
+								ThanhTien = reader.GetDecimal(4),
+								NgayThanhToan = reader.IsDBNull(5) ? (DateTime?)null : reader.GetDateTime(5),
+								NgayDi = reader.GetDateTime(6)
+							});
+						}
+					}
+				}
+			}
+			return View(danhSachTourDat);
+		}
 
-        public IActionResult Privacy()
+		public IActionResult Privacy()
         {
             return View();
         }
