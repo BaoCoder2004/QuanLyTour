@@ -11,7 +11,6 @@
                 <div class="welcome-message">
                     <h2>LỰA CHỌN KỲ NGHỈ DƯỠNG TUYỆT VỜI</h2>
                     <p>
-                        💥 Bạn đang tìm kiếm một địa điểm du lịch đẹp và thú vị để khám phá? <br />
                         👉 Nhiều địa điểm du lịch đầy màu sắc, nơi bạn có thể tận hưởng thiên nhiên hoang dã, tham gia các hoạt động giải trí và thưởng thức ẩm thực đặc trưng của địa phương
                     <p> ⚡️  Hãy đến và trải nghiệm cùng HANOITOUR của chúng tôi! </p>
                     <a href="@Url.Action("DanhMucKhachSan","KhachSan")" class="btn btn-w-border">Xem ngay</a>
@@ -86,21 +85,30 @@
                                             <a href="@Url.Action("ChiTietKhachSan","KhachSan",new {maKhachSan = khachsan.MaKhachSan, maLoai = khachsan.MaLoaiKhachSan})">@khachsan.TenKhachSan</a>
                                         </h4>
                                         <div class="tour-duration-container">
-                                            <div class="tour-duration">
-                                                <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
-                                                <div>@($"{khachsan.SoNgay}")</div>
-                                            </div>
-                                            <div class="transportation-icons">
-                                                <i class="fa fa-plane" aria-hidden="true"></i>
-                                                <i class="fa fa-bus" aria-hidden="true"></i>
-                                                <i class="fa fa-train" aria-hidden="true"></i>
+                                            <div class="hotel-group">
+                                                <div class="star-icons">
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="divider"></div>
+                                                <div class="eveluate">70 đánh giá</div>
                                             </div>
                                         </div>
                                         <div class="tour-highlights">
-                                            <div>@($"Điểm đến: {khachsan.DiaDiem}")</div>
+                                            <div>Nằm tại trung tâm Hà Nội</div>
+                                            <div>Khách sạn 5 sao tuyệt vời</div>
                                         </div>
-                                        <div class="tour-price">
-                                            <div>@khachsan.GiaKhachSan.ToString("#,##0") VNĐ</div>
+                                        <div class="hotel-condition">
+                                            <div class="room-condition">
+                                                <i class="fa fa-bed" aria-hidden="true"></i>
+                                                <span>3N2Đ | Bữa Ăn</span>
+                                            </div>
+                                            <div class="tour-price">
+                                                <div>@khachsan.GiaKhachSan.ToString("#,##0") VNĐ</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -110,7 +118,7 @@
                 }
                 else
                 {
-                    <p class="text-center danger">Không có khach san mới nào để hiển thị.</p>
+                    <p class="text-center danger">Không có khách sạn mới nào để hiển thị.</p>
                 }
 
                 <div class="view-all text-center">
