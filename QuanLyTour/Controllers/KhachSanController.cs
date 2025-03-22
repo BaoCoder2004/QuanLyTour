@@ -245,5 +245,60 @@ namespace QuanLyTour.Controllers
 
 			return khachsans;
 		}
+		public IActionResult TimKiemKhachSan(string keyword, int page = 1, int pageSize = 6)
+		{
+			var khachsans = new List<KhachSanViewModel>();
+
+			try
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					connection.Open();
+
+					// Truy vấn dữ liệu KhachSan dựa vào từ khóa
+					string query = @"
+                SELECT t.MaKhachSan, t.TenKhachSan, t.MaLoaiKhachSan,t.SoNgay,t.DiaDiem, t.TrangThai, t.GiaKhachSan, t.HinhAnh1, l.TenLoaiKhachSan
+                FROM KhachSan t
+                INNER JOIN LoaiKhachSan l ON t.MaLoaiKhachSan = l.MaLoaiKhachSan
+                WHERE (TenKhachSan LIKE @Keyword)";
+
+					using (var command = new SqlCommand(query, connection))
+					{
+						command.Parameters.AddWithValue("@Keyword", $"%{keyword}%");
+
+						using (var reader = command.ExecuteReader())
+						{
+							while (reader.Read())
+							{
+								khachsans.Add(new KhachSanViewModel
+								{
+									MaKhachSan = reader.GetInt32(0),
+									TenKhachSan = reader.GetString(1),
+									MaLoaiKhachSan = reader.GetInt32(2),
+									SoNgay = reader.GetString(3),
+									DiaDiem = reader.GetString(4),
+									TrangThai = reader.GetBoolean(5),
+									GiaKhachSan = reader.GetDecimal(6),
+									HinhAnh1 = reader.GetString(7),
+									TenLoaiKhachSan = reader.GetString(8)
+								});
+							}
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ViewBag.ErrorMessage = "Có lỗi xảy ra: " + ex.Message;
+			}
+
+			// Phân trang kết quả tìm kiếm
+			var pagedKhachSans = khachsans.ToPagedList(page, pageSize);
+
+			// Gửi từ khóa và danh sách KhachSan tìm được về View
+			ViewBag.Keyword = keyword;
+			return View(pagedKhachSans);
+		}
+		
 	}
 }
