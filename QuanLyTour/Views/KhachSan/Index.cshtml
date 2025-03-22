@@ -74,17 +74,17 @@
                         @foreach (var khachsan in Model.KhachSansTrongNuoc)
                         {
                             <div class="item">
-                                <div class="tour-card">
-                                    <div class="tour-img-container">
+                                <div class="hotel-card">
+                                    <div class="hotel-img-container">
                                         <a href="@Url.Action("ChiTietKhachSan","KhachSan",new {maKhachSan = khachsan.MaKhachSan, maLoai = khachsan.MaLoaiKhachSan})">
                                             <img src="@Url.Content($"~/hinhanh/{khachsan.HinhAnh1}")" class="img-responsive" alt="@khachsan.TenKhachSan" />
                                         </a>
                                     </div>
-                                    <div class="tour-info">
+                                    <div class="hotel-info">
                                         <h4>
                                             <a href="@Url.Action("ChiTietKhachSan","KhachSan",new {maKhachSan = khachsan.MaKhachSan, maLoai = khachsan.MaLoaiKhachSan})">@khachsan.TenKhachSan</a>
                                         </h4>
-                                        <div class="tour-duration-container">
+                                        <div class="hotel-duration-container">
                                             <div class="hotel-group">
                                                 <div class="star-icons">
                                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -97,7 +97,7 @@
                                                 <div class="eveluate">70 đánh giá</div>
                                             </div>
                                         </div>
-                                        <div class="tour-highlights">
+                                        <div class="hotel-highlights">
                                             <div>Nằm tại trung tâm Hà Nội</div>
                                             <div>Khách sạn 5 sao tuyệt vời</div>
                                         </div>
@@ -106,7 +106,7 @@
                                                 <i class="fa fa-bed" aria-hidden="true"></i>
                                                 <span>3N2Đ | Bữa Ăn</span>
                                             </div>
-                                            <div class="tour-price">
+                                            <div class="hotel-price">
                                                 <div>@khachsan.GiaKhachSan.ToString("#,##0") VNĐ</div>
                                             </div>
                                         </div>

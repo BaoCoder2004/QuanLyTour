@@ -559,12 +559,93 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 		color: #333;
 	}
 
-.hotel-group {
+/* Tour Price Div */
+.tour-price {
+	text-align: right;
+	margin-top: 15px;
+}
+
+/* Strikethrough Original Price */
+.tour-price span{
+	text-decoration: line-through;
+	color: #888;
+	font-size: 14px;
+}
+
+/* Discounted Price */
+.tour-price div{
+	font-size: 20px;
+	font-weight: bold;
+	color: #ff8c00;
+}
+
+/* CSS cho Hotel Card */
+.hotel-card {
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 5px;
+    background-color: #fff;
+}
+
+.hotel-card:hover {
+    transform: translateY(-10px);
+    transition: 0.5s;
+}
+
+    .hotel-card:hover .hotel-img-container img {
+        transform: scale(1.15);
+        transition: 0.5s;
+    }
+
+.hotel-img-container {
+	position: relative;
+}
+
+    .hotel-group {
 	display: flex;
 	align-items: center;
 	gap: 10px;
 	margin: 8px 0;
 }
+
+.hotel-info {
+	padding: 15px;
+}
+
+.hotel-info h4 {
+	margin-top: 0;
+	font-weight: bold;
+	color: #003c71;
+}
+
+	.hotel-info h4 a {
+		color: #003c71;
+		text-decoration: none;
+	}
+
+.hotel-duration-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.hotel-duration {
+	display: flex;
+	align-items: center;
+}
+
+	.hotel-duration span {
+		margin-right: 5px;
+		color: #666;
+	}
+
+	.hotel-duration div {
+		font-size: 14px;
+		color: #333;
+	}
 
 .hotel-condition {
 	display: flex;
@@ -590,9 +671,6 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	font-size: 18px;
 }
 
-.tour-highlights {
-	color: #3498db;
-}
 
 .star-icons i {
 	margin-left: 5px;
@@ -600,31 +678,36 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	font-size: 18px;
 }
 
-/* Check Circle Icons in Tour Highlights */
+/* Hotel Price Div */
+.hotel-price {
+	text-align: right;
+	margin-top: 15px;
+}
+
+	/* Strikethrough Original Price */
+	.hotel-price span {
+		text-decoration: line-through;
+		color: #888;
+		font-size: 14px;
+	}
+
+	/* Discounted Price */
+	.hotel-price div {
+		font-size: 20px;
+		font-weight: bold;
+		color: #ff8c00;
+	}
+
+/* Check Circle Icons in Hotel Highlights */
+
+.hotel-highlights {
+	color: #3498db;
+}
 .fa-check-circle {
 	color: #3498db;
 	margin-right: 5px;
 }
 
-/* Tour Price Div */
-.tour-price {
-	text-align: right;
-	margin-top: 15px;
-}
-
-/* Strikethrough Original Price */
-.tour-price span{
-	text-decoration: line-through;
-	color: #888;
-	font-size: 14px;
-}
-
-/* Discounted Price */
-.tour-price div{
-	font-size: 20px;
-	font-weight: bold;
-	color: #ff8c00;
-}
 
 /*************** SIDEBAR NAV ***************/
 
