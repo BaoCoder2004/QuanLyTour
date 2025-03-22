@@ -299,6 +299,6 @@ namespace QuanLyTour.Controllers
 			ViewBag.Keyword = keyword;
 			return View(pagedKhachSans);
 		}
-		
+
 	}
 }
