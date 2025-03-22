@@ -396,8 +396,9 @@ namespace QuanLyTour.Controllers
 				return View("XacNhanMa");
 			}
 		}
-		#endregion 
+		#endregion
 
+		#region
 		public IActionResult KhachSan()
 		{
 			return View();
@@ -414,9 +415,11 @@ namespace QuanLyTour.Controllers
 		{
 			return View();
 		}
-		
-        // Hiển thị form đăng ký
-        public IActionResult DangKy()
+		#endregion
+
+
+		// Hiển thị form đăng ký
+		public IActionResult DangKy()
         {
             return View();
         }
