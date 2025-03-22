@@ -1,7 +1,7 @@
-﻿@* @using X.PagedList.Mvc.Core
+﻿@using X.PagedList.Mvc.Core
 @model QuanLyTour.Models.DetailViewModel
 @{
-    ViewData["Title"] = "Thông tin khách sạn";
+    ViewData["Title"] = "Thông tin khach san";
     Layout = "~/Views/Shared/_Detail.cshtml";
 }
 <!--===== INNERPAGE-WRAPPER ====-->
@@ -38,7 +38,7 @@
                                         @Html.TextBox("DiaChi", (string)ViewBag.DiaChi,
                                                  new { @class = "form-control", placeholder = "Địa chỉ", required = "required" })
                                     </div>
-                                   
+
                                     <div class="form-group">
                                         <label for="TongTien">Tổng tiền:</label>
                                         <input type="text" id="TongTien" class="form-control" readonly placeholder="Tổng tiền sẽ hiển thị ở đây" />
@@ -55,7 +55,15 @@
                                         <input type="text" name="ChuThe" id="ChuThe" class="form-control" placeholder="Nhập tên chủ thẻ" required />
                                     </div>
 
-                                   
+                                    <script>
+                                        var gia = @Model.KhachSanHienTai.GiaKhachSan;
+
+                                        function hienThiTongTien() {
+                                            document.getElementById("TongTien").value = gia.toLocaleString('vi-VN') + " VND";
+                                        }
+
+                                        document.addEventListener("DOMContentLoaded", hienThiTongTien);
+                                    </script>
 
                                     <div class="form-group right-icon">
                                         <select class="form-control">
@@ -66,19 +74,23 @@
 
                                     <button type="submit" class="btn btn-block btn-orange">Đặt và Thanh toán</button>
                                 }
+
+
                             </div>
+
                             <!-- end booking-form -->
                         }
                         else
                         {
                             @using (Html.BeginForm("DangNhap", "Home", FormMethod.Get))
                             {
-                                <form> 
-                                    <button class="btn btn-block btn-orange">Đăng nhập để đặt khách sạn</button>
-                                </form>  
+                                <form>
+                                    <button class="btn btn-block btn-orange">Đăng nhập để đặt khach san</button>
+                                </form>
                             }
                         }
                     </div><!-- end side-bar-block -->
+
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-12">
                             <div class="side-bar-block main-block ad-block">
@@ -88,7 +100,7 @@
                                         <div class="ad-mask">
                                             <div class="ad-text">
                                                 <span>Chất lượng</span>
-                                                <h2>Giá Khách Sạn</h2>
+                                                <h2>Giá Khach San</h2>
                                                 <span>Tốt nhất </span>
                                             </div><!-- end ad-text -->
                                         </div><!-- end columns -->
@@ -96,15 +108,10 @@
                                 </div><!-- end ad-img -->
                             </div><!-- end side-bar-block -->
                         </div><!-- end columns -->
-
-
-
                     </div><!-- end row -->
                 </div><!-- end columns -->
 
                 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 content-side">
-
-
                     <div class="detail-slider">
                         <div class="feature-slider">
                             @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh1))
@@ -170,19 +177,20 @@
                                         <a href="@Url.Action("ChiTietKhachSan","KhachSan",new { maKhachSan = item.MaKhachSan,maLoai = item.MaLoaiKhachSan })" class="btn btn-orange btn-lg">Xem thêm</a>
                                     </div><!-- end room-info -->
                                 </div>
+
                                 <!-- end list-content -->
                             </div>
+
                             <!-- end room-block -->
                         }
                     </div><!-- end available-rooms -->
-
                     <div class="text-center">
-                       @Html.PagedListPager(Model.KhachSanTuongTu, page => Url.Action("DanhMucKhachSan", new { page, maPhong = Model.KhachSanHienTai.MaKhachSan }))
+                        @Html.PagedListPager(Model.TourTuongTu, page => Url.Action("DanhMucTour", new { page, maPhong = Model.TourHienTai.MaTour }))
                     </div>
                     <!-- end pages -->
-                </div><!-- end columns -->  
+                </div><!-- end columns -->
+
             </div><!-- end row -->
         </div><!-- end container -->
     </div><!-- end hotel-details -->
 </section><!-- end innerpage-wrapper -->
- *@

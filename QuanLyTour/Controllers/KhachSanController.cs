@@ -300,5 +300,99 @@ namespace QuanLyTour.Controllers
 			return View(pagedKhachSans);
 		}
 
+		public IActionResult DatKhachSan(int MaNguoiDung, string TenNguoiDung, string SoDienThoai, string DiaChi, string SoThe, string ChuThe, int maKhachSan)
+		{
+			if (string.IsNullOrWhiteSpace(SoThe) || string.IsNullOrWhiteSpace(ChuThe))
+			{
+				ModelState.AddModelError("", "Thông tin thanh toán không được để trống.");
+				return RedirectToAction("ChiTietKhachSan", new { maKhachSan });
+			}
+
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+
+				
+
+				// Tính tổng tiền
+				decimal giaKhachSan = 0;
+				string sqlGetGiaKhachSan = "SELECT GiaKhachSan FROM KhachSan WHERE MaKhachSan = @MaKhachSan";
+				using (var command = new SqlCommand(sqlGetGiaKhachSan, connection))
+				{
+					command.Parameters.AddWithValue("@MaKhachSan", maKhachSan);
+					giaKhachSan = Convert.ToDecimal(command.ExecuteScalar());
+				}
+
+				decimal tongTien = giaKhachSan ;
+
+				// Thêm thông tin thanh toán vào bảng HoaDon
+				string sqlInsertHoaDon = "INSERT INTO HoaDonKhachSan (MaNguoiDung, TongTien, NgayThanhToan) " +
+										 "VALUES (@MaNguoiDung, @TongTien, @NgayThanhToan)";
+				using (var command = new SqlCommand(sqlInsertHoaDon, connection))
+				{
+					command.Parameters.AddWithValue("@MaNguoiDung", MaNguoiDung);
+				
+					command.Parameters.AddWithValue("@TongTien", tongTien);
+					command.Parameters.AddWithValue("@NgayThanhToan", DateTime.Now);
+
+					command.ExecuteNonQuery();
+				}
+			}
+
+			TempData["SuccessMessage"] = "Đặt KhachSan và thanh toán thành công!";
+			return RedirectToAction("ThanhCongView", "KhachSan");
+		}
+		public IActionResult ThanhCongView()
+		{
+			return View();
+		}
+		public IActionResult ThongTinKhachSanDat()
+		{
+			int maNguoiDung = HttpContext.Session.GetInt32("UserId") ?? 0; // Lấy mã người dùng từ session
+
+			if (maNguoiDung == 0)
+			{
+				return RedirectToAction("DangNhap", "Home"); // Nếu chưa đăng nhập, chuyển tới trang đăng nhập
+			}
+
+			List<KhachSanDatViewModel> danhSachKhachSanDat = new List<KhachSanDatViewModel>();
+
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+
+				string sql = @"
+				SELECT 
+					MaHoaDonKhachSan,
+				    MaNguoiDung,
+					TongTien,
+					NgayThanhToan
+					FROM HoaDonKhachSan
+            WHERE MaNguoiDung = @MaNguoiDung";
+
+				using (var command = new SqlCommand(sql, connection))
+				{
+					command.Parameters.AddWithValue("@MaNguoiDung", maNguoiDung);
+
+					using (var reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							danhSachKhachSanDat.Add(new KhachSanDatViewModel
+							{
+								MaHoaDonKhachSan = reader.GetInt32(0),
+								MaNguoiDung = reader.GetInt32(1),
+
+								TongTien = reader.GetDecimal(2),
+								NgayThanhToan = reader.IsDBNull(3) ? (DateTime?)null : reader.GetDateTime(3),
+							});
+						}
+					}
+				}
+			}
+			return View(danhSachKhachSanDat);
+		}
+
+
 	}
 }
