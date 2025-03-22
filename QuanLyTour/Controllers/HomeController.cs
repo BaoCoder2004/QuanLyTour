@@ -564,7 +564,10 @@ namespace QuanLyTour.Controllers
 			}
 			return View(danhSachTourDat);
 		}
-
+		public IActionResult HoTro()
+		{
+			return View();
+		}
 		public IActionResult Privacy()
         {
             return View();
