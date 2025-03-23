@@ -3763,6 +3763,12 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	font-size: 14px;
 }
 
+.arrow {
+	font-size: 28px;
+	color: #999;
+	line-height: 1;
+}
+
 .train-code {
 	color: #666;
 	font-size: 12px;
