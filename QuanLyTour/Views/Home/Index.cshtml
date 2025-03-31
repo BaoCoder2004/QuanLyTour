@@ -119,3 +119,231 @@
         </div><!-- end row -->
     </div><!-- end container -->
 </section><!-- end hotel-offers -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <!-- Review Container -->
+            <div class="review-container">
+                <!-- Review Header -->
+                <div class="review-header">
+                    <h2 class="review-title">Đánh giá từ khách hàng</h2>
+                    <div class="review-summary">
+                        <div class="review-rating-big">4.5</div>
+                        <div class="review-rating-details">
+                            <div class="row">
+                                <div class="col-xs-2">5 sao</div>
+                                <div class="col-xs-8">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 text-right">75%</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2">4 sao</div>
+                                <div class="col-xs-8">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 18%"></div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 text-right">18%</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2">3 sao</div>
+                                <div class="col-xs-8">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 5%"></div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 text-right">5%</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2">2 sao</div>
+                                <div class="col-xs-8">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 1%"></div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 text-right">1%</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2">1 sao</div>
+                                <div class="col-xs-8">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 1%"></div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 text-right">1%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review Form -->
+                <div class="review-form">
+                    <h4>Đánh giá của bạn</h4>
+                    <div class="rating-stars">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o"></i>
+                    </div>
+                    @using (Html.BeginForm("SubmitReview", "Reviews", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="form-group">
+                            <label for="reviewTitle">Tiêu đề:</label>
+                            <input type="text" class="form-control" id="reviewTitle" name="Title" placeholder="Nhập tiêu đề đánh giá">
+                        </div>
+                        <div class="form-group">
+                            <label for="reviewContent">Nội dung:</label>
+                            <textarea class="form-control" id="reviewContent" name="Content" rows="4" placeholder="Chia sẻ trải nghiệm của bạn..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Hình ảnh:</label>
+                            <input type="file" id="reviewImages" name="Images" multiple>
+                            <p class="help-block">Tối đa 5 hình ảnh (PNG, JPG)</p>
+                        </div>
+                        <input type="hidden" id="ratingValue" name="Rating" value="4">
+                        <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                    }
+                </div>
+
+                <!-- Sort Options -->
+                <div class="sort-options">
+                    <label>Sắp xếp theo:</label>
+                    @Html.DropDownList("SortOption", new SelectList(new[] { "Mới nhất", "Đánh giá cao nhất", "Đánh giá thấp nhất" }), new { @class = "form-control-sm", @onchange = "document.location.href = '/Reviews/Index?sort=' + this.value" })
+                </div>
+
+                <!-- Review List -->
+                <div class="review-list">
+                    <!-- Review Item 1 -->
+                    <div class="review-item">
+                        <div class="review-item-header">
+                            <div class="review-item-user">Nguyễn Văn A</div>
+                            <div class="review-item-date">20/03/2025</div>
+                        </div>
+                        <div class="review-item-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="review-item-content">
+                            <strong>Dịch vụ tuyệt vời!</strong>
+                            <p>Khách sạn rất tốt, phòng sạch sẽ và hiện đại. Nhân viên thân thiện và nhiệt tình. Vị trí thuận tiện để đi tham quan các điểm du lịch. Tôi sẽ quay lại vào lần sau.</p>
+                        </div>
+                        <div class="review-item-images">
+                            <div class="review-item-image">
+                                <img src="@Url.Content("~/Content/Images/reviews/review1-1.jpg")" alt="Hình ảnh đánh giá">
+                            </div>
+                            <div class="review-item-image">
+                                <img src="@Url.Content("~/Content/Images/reviews/review1-2.jpg")" alt="Hình ảnh đánh giá">
+                            </div>
+                        </div>
+                        <div class="review-item-actions">
+                            <a href="@Url.Action("LikeReview", "Reviews", new { id = 1 })"><i class="fa fa-thumbs-up"></i> Hữu ích (8)</a>
+                            <a href="@Url.Action("Reply", "Reviews", new { id = 1 })"><i class="fa fa-comment"></i> Phản hồi</a>
+                        </div>
+                    </div>
+
+                    <!-- Review Item 2 -->
+                    <div class="review-item">
+                        <div class="review-item-header">
+                            <div class="review-item-user">Trần Thị B</div>
+                            <div class="review-item-date">15/03/2025</div>
+                        </div>
+                        <div class="review-item-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                        </div>
+                        <div class="review-item-content">
+                            <strong>Trải nghiệm tốt</strong>
+                            <p>Phòng đẹp và thoáng mát. Bữa sáng đa dạng và ngon miệng. Chỉ tiếc là hồ bơi hơi nhỏ và đông người. Tổng thể vẫn rất hài lòng với dịch vụ.</p>
+                        </div>
+                        <div class="review-item-actions">
+                            <a href="@Url.Action("LikeReview", "Reviews", new { id = 2 })"><i class="fa fa-thumbs-up"></i> Hữu ích (3)</a>
+                            <a href="@Url.Action("Reply", "Reviews", new { id = 2 })"><i class="fa fa-comment"></i> Phản hồi</a>
+                        </div>
+                    </div>
+
+                    <!-- Review Item 3 -->
+                    <div class="review-item">
+                        <div class="review-item-header">
+                            <div class="review-item-user">Lê Văn C</div>
+                            <div class="review-item-date">10/03/2025</div>
+                        </div>
+                        <div class="review-item-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                        </div>
+                        <div class="review-item-content">
+                            <strong>Bình thường</strong>
+                            <p>Vị trí khách sạn thuận tiện nhưng phòng hơi ồn vào buổi tối. Nhân viên phục vụ tốt nhưng đôi khi hơi chậm. Giá cả hợp lý cho chất lượng.</p>
+                        </div>
+                        <div class="review-item-images">
+                            <div class="review-item-image">
+                                <img src="@Url.Content("~/Content/Images/reviews/review3-1.jpg")" alt="Hình ảnh đánh giá">
+                            </div>
+                        </div>
+                        <div class="review-item-actions">
+                            <a href="@Url.Action("LikeReview", "Reviews", new { id = 3 })"><i class="fa fa-thumbs-up"></i> Hữu ích (1)</a>
+                            <a href="@Url.Action("Reply", "Reviews", new { id = 3 })"><i class="fa fa-comment"></i> Phản hồi</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li>
+                            <a href="@Url.Action("Index", "Reviews", new { page = 1, sort = ViewBag.CurrentSort })" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="active"><a href="@Url.Action("Index", "Reviews", new { page = 1, sort = ViewBag.CurrentSort })">1</a></li>
+                        <li><a href="@Url.Action("Index", "Reviews", new { page = 2, sort = ViewBag.CurrentSort })">2</a></li>
+                        <li><a href="@Url.Action("Index", "Reviews", new { page = 3, sort = ViewBag.CurrentSort })">3</a></li>
+                        <li><a href="@Url.Action("Index", "Reviews", new { page = 4, sort = ViewBag.CurrentSort })">4</a></li>
+                        <li><a href="@Url.Action("Index", "Reviews", new { page = 5, sort = ViewBag.CurrentSort })">5</a></li>
+                        <li>
+                            <a href="@Url.Action("Index", "Reviews", new { page = 2, sort = ViewBag.CurrentSort })" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function() {
+            // Xử lý khi người dùng click vào sao đánh giá
+            $('.rating-stars i').click(function() {
+                var index = $(this).index();
+
+                // Reset tất cả các sao về trạng thái không chọn
+                $('.rating-stars i').removeClass('fa-star').addClass('fa-star-o');
+
+                // Đánh dấu các sao đã chọn
+                for (var i = 0; i <= index; i++) {
+                    $('.rating-stars i').eq(i).removeClass('fa-star-o').addClass('fa-star');
+                }
+
+                // Cập nhật giá trị rating
+                $('#ratingValue').val(index + 1);
+            });
+        });
+    </script>
+}   
