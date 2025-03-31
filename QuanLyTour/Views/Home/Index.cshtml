@@ -194,11 +194,11 @@
                     {
                         <div class="form-group">
                             <label for="reviewTitle">Tiêu đề:</label>
-                            <input type="text" class="form-control" id="reviewTitle" name="Title" placeholder="Nhập tiêu đề đánh giá">
+                            <input type="text" class="form-control" id="reviewTitle" name="Title" placeholder="Nhập tiêu đề đánh giá" required>
                         </div>
                         <div class="form-group">
                             <label for="reviewContent">Nội dung:</label>
-                            <textarea class="form-control" id="reviewContent" name="Content" rows="4" placeholder="Chia sẻ trải nghiệm của bạn..."></textarea>
+                            <textarea class="form-control" id="reviewContent" name="Content" rows="4" placeholder="Chia sẻ trải nghiệm của bạn..." required></textarea>
                         </div>
                         <div class="form-group">
                             <label>Hình ảnh:</label>
@@ -206,7 +206,7 @@
                             <p class="help-block">Tối đa 5 hình ảnh (PNG, JPG)</p>
                         </div>
                         <input type="hidden" id="ratingValue" name="Rating" value="4">
-                        <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                        <button type="submit" class="btn-form btn-primary">Gửi đánh giá</button>
                     }
                 </div>
 
@@ -244,8 +244,8 @@
                             </div>
                         </div>
                         <div class="review-item-actions">
-                            <a href="@Url.Action("LikeReview", "Reviews", new { id = 1 })"><i class="fa fa-thumbs-up"></i> Hữu ích (8)</a>
-                            <a href="@Url.Action("Reply", "Reviews", new { id = 1 })"><i class="fa fa-comment"></i> Phản hồi</a>
+                            <a href="javascript:void(0);" class="like-review" data-review-id="1"><i class="fa fa-thumbs-up"></i> Hữu ích (<span class="like-count">8</span>)</a>
+                            <a href="javascript:void(0);" class="reply-review" data-review-id="1"><i class="fa fa-comment"></i> Phản hồi</a>
                         </div>
                     </div>
 
@@ -267,8 +267,8 @@
                             <p>Phòng đẹp và thoáng mát. Bữa sáng đa dạng và ngon miệng. Chỉ tiếc là hồ bơi hơi nhỏ và đông người. Tổng thể vẫn rất hài lòng với dịch vụ.</p>
                         </div>
                         <div class="review-item-actions">
-                            <a href="@Url.Action("LikeReview", "Reviews", new { id = 2 })"><i class="fa fa-thumbs-up"></i> Hữu ích (3)</a>
-                            <a href="@Url.Action("Reply", "Reviews", new { id = 2 })"><i class="fa fa-comment"></i> Phản hồi</a>
+                            <a href="javascript:void(0);" class="like-review" data-review-id="2"><i class="fa fa-thumbs-up"></i> Hữu ích (<span class="like-count">3</span>)</a>
+                            <a href="javascript:void(0);" class="reply-review" data-review-id="2"><i class="fa fa-comment"></i> Phản hồi</a>
                         </div>
                     </div>
 
@@ -295,15 +295,15 @@
                             </div>
                         </div>
                         <div class="review-item-actions">
-                            <a href="@Url.Action("LikeReview", "Reviews", new { id = 3 })"><i class="fa fa-thumbs-up"></i> Hữu ích (1)</a>
-                            <a href="@Url.Action("Reply", "Reviews", new { id = 3 })"><i class="fa fa-comment"></i> Phản hồi</a>
+                            <a href="javascript:void(0);" class="like-review" data-review-id="3"><i class="fa fa-thumbs-up"></i> Hữu ích (<span class="like-count">1</span>)</a>
+                            <a href="javascript:void(0);" class="reply-review" data-review-id="3"><i class="fa fa-comment"></i> Phản hồi</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Pagination -->
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
+                <nav aria-label="Page navigation" class="text-center">
+                    <ul class="pagination center-block" style="display: flex; justify-content: center; margin: 0 auto;">
                         <li>
                             <a href="@Url.Action("Index", "Reviews", new { page = 1, sort = ViewBag.CurrentSort })" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
@@ -328,7 +328,7 @@
 
 @section scripts {
     <script>
-        $(document).ready(function() {
+                $(document).ready(function() {
             // Xử lý khi người dùng click vào sao đánh giá
             $('.rating-stars i').click(function() {
                 var index = $(this).index();
@@ -343,6 +343,118 @@
 
                 // Cập nhật giá trị rating
                 $('#ratingValue').val(index + 1);
+            });
+
+            // Xử lý sự kiện click vào nút "Hữu ích"
+            $('.like-review').click(function(e) {
+                e.preventDefault();
+                var $this = $(this);
+                var reviewId = $this.data('review-id');
+                var likeCountElement = $this.find('.like-count');
+                var currentLikes = parseInt(likeCountElement.text());
+
+                // Kiểm tra nếu chưa like
+                if (!$this.hasClass('liked')) {
+                    // Hiển thị hiệu ứng khi click
+                    $this.addClass('liked');
+
+                    // Cập nhật trực tiếp giao diện trước
+                    likeCountElement.text(currentLikes + 1);
+
+                    // Gửi yêu cầu AJAX để cập nhật số lượt thích
+                    $.ajax({
+                        url: '/Reviews/LikeReview',
+                        type: 'POST',
+                        data: { id: reviewId },
+                        success: function(result) {
+                            // Đã cập nhật số lượt thích lên server thành công
+                            console.log('Đã thích đánh giá #' + reviewId);
+                        },
+                        error: function(xhr, status, error) {
+                            // Xử lý lỗi: hoàn tác thay đổi trên UI
+                            console.log('Đã xảy ra lỗi khi thích đánh giá: ' + error);
+                            $this.removeClass('liked');
+                            likeCountElement.text(currentLikes);
+                        }
+                    });
+                }
+            });
+
+            // Xử lý sự kiện click vào nút "Phản hồi"
+            $('.reply-review').click(function(e) {
+                e.preventDefault();
+                var reviewId = $(this).data('review-id');
+                var reviewItem = $(this).closest('.review-item');
+
+                // Đóng các form phản hồi khác nếu có
+                $('.reply-form').remove();
+
+                // Kiểm tra xem form phản hồi đã tồn tại chưa
+                if (reviewItem.find('.reply-form').length === 0) {
+                    // Tạo form phản hồi
+                    var replyForm = $('<div class="reply-form mt-2">' +
+                        '<textarea class="form-control" rows="2" placeholder="Viết phản hồi của bạn..."></textarea>' +
+                        '<div class="reply-btn mt-2">' +
+                        '<button class="btn btn-send btn-sm btn-primary submit-reply" data-review-id="' + reviewId + '">Gửi</button> ' +
+                        '<button class="btn btn-cancel btn-sm btn-default cancel-reply">Hủy</button>' +
+                        '</div>' +
+                        '</div>');
+
+                    // Thêm form vào cuối review item
+                    reviewItem.append(replyForm);
+
+                    // Focus vào textarea
+                    replyForm.find('textarea').focus();
+
+                    // Xử lý sự kiện khi nhấn nút Hủy
+                    replyForm.find('.cancel-reply').click(function() {
+                        replyForm.remove();
+                    });
+
+                    // Xử lý sự kiện khi nhấn nút Gửi
+                    replyForm.find('.submit-reply').click(function() {
+                        var replyContent = replyForm.find('textarea').val();
+                        if (replyContent.trim() !== '') {
+                            // Hiển thị loading
+                            var submitBtn = $(this);
+                            submitBtn.prop('disabled', true).text('Đang gửi...');
+
+                            // Gửi phản hồi bằng AJAX
+                            $.ajax({
+                                url: '/Reviews/SubmitReply',
+                                type: 'POST',
+                                data: {
+                                    reviewId: reviewId,
+                                    content: replyContent
+                                },
+                                success: function(result) {
+                                    // Hiển thị phản hồi mới
+                                    var newReply = $('<div class="review-reply">' +
+                                        '<div class="review-reply-header">' +
+                                        '<div class="review-reply-user">Bạn</div>' +
+                                        '<div class="review-reply-date">Vừa xong</div>' +
+                                        '</div>' +
+                                        '<div class="review-reply-content">' + replyContent + '</div>' +
+                                        '</div>');
+
+                                    // Thêm phản hồi vào trước form
+                                    replyForm.before(newReply);
+
+                                    // Xóa form
+                                    replyForm.remove();
+                                },
+                                error: function(xhr, status, error) {
+                                    // Xử lý lỗi
+                                    alert('Đã xảy ra lỗi khi gửi phản hồi: ' + error);
+                                    submitBtn.prop('disabled', false).text('Gửi');
+                                }
+                            });
+                        } else {
+                            // Báo lỗi nếu nội dung trống
+                            alert('Vui lòng nhập nội dung phản hồi.');
+                        }
+                    });
+                }
             });
         });
     </script>
