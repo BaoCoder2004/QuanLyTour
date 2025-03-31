@@ -568,6 +568,42 @@ namespace QuanLyTour.Controllers
 		{
 			return View();
 		}
+
+		[HttpPost]
+		public IActionResult Support(string message)
+		{
+			// Kiểm tra xem người dùng đã đăng nhập chưa
+			int? userId = HttpContext.Session.GetInt32("UserId");
+
+			if (userId == null)
+			{
+				TempData["Error"] = "Vui lòng đăng nhập để gửi hỗ trợ.";
+				return RedirectToAction("DangNhap", "Home");
+			}
+
+			// Kiểm tra nội dung có hợp lệ không
+			if (string.IsNullOrWhiteSpace(message))
+			{
+				TempData["Error"] = "Nội dung hỗ trợ không được để trống.";
+				return RedirectToAction("HoTro");
+			}
+
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				string insertQuery = "INSERT INTO HoTro (MaNguoiDung, Message, NgayTao) VALUES (@MaNguoiDung, @Message, GETDATE())";
+
+				using (SqlCommand cmd = new SqlCommand(insertQuery, connection))
+				{
+					cmd.Parameters.AddWithValue("@MaNguoiDung", userId.Value);
+					cmd.Parameters.AddWithValue("@Message", message);
+					cmd.ExecuteNonQuery();
+				}
+			}
+
+			TempData["Success"] = "Yêu cầu hỗ trợ đã được gửi.";
+			return RedirectToAction("HoTro");
+		}
 		public IActionResult Privacy()
         {
             return View();
