@@ -9,7 +9,7 @@ namespace QuanLyTour.Models
 		public int MaNguoiDung { get; set; }
 
 		[Required(ErrorMessage = "Vui lòng nhập nội dung hỗ trợ.")]
-		public string Message { get; set; }
+		public string ? Message { get; set; }
 
 		[DataType(DataType.Date)]
 		public DateTime NgayTao { get; set; } = DateTime.Now;

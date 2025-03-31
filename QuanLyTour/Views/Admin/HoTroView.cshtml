@@ -1,0 +1,44 @@
+﻿@model IPagedList<QuanLyTour.Models.HoTro>
+@using X.PagedList
+@using X.PagedList.Mvc.Core;
+
+@{
+    ViewData["Title"] = "Quản Lý Hỗ Trợ";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section id="main-content">
+    <section class="wrapper">
+        <section class="panel">
+            <header class="panel-heading">
+                Quản lý hỗ trợ
+            </header>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Mã Hỗ Trợ</th>
+                            <th>Tên Người Dùng</th>
+                            <th>Nội Dung</th>
+                            <th>Ngày Gửi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.MaNguoiDung</td>
+                                <td>@item.Message</td>
+                                <td>@item.NgayTao.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="pagination-container">
+                    @Html.PagedListPager(Model, page => Url.Action("HoTroView", new { page }))
+                </div>
+            </div>
+        </section>
+    </section>
+</section>

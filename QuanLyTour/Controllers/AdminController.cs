@@ -856,5 +856,42 @@ namespace QuanLyTour.Controllers
 		}
 		#endregion
 
+		public IActionResult HoTroView(int? page)
+		{
+			List<HoTro> danhSachHoTro = new List<HoTro>();
+
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				string query = @"
+                SELECT h.Id, h.MaNguoiDung, h.Message, h.NgayTao, nd.TenNguoiDung 
+                FROM HoTro h 
+                JOIN NguoiDung nd ON h.MaNguoiDung = nd.MaNguoiDung
+                ORDER BY h.NgayTao DESC";
+
+				using (SqlCommand cmd = new SqlCommand(query, connection))
+				{
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							danhSachHoTro.Add(new HoTro
+							{
+								Id = reader.GetInt32(0),
+								MaNguoiDung = reader.GetInt32(1),
+								Message = reader.GetString(2),
+								NgayTao = reader.GetDateTime(3),
+							});
+						}
+					}
+				}
+			}
+
+			int pageSize = 10;
+			int pageNumber = (page ?? 1);
+			return View(danhSachHoTro.ToPagedList(pageNumber, pageSize));
+		}
 	}
+
 }
+
