@@ -2,8 +2,6 @@
 using Microsoft.Data.SqlClient;
 using QuanLyTour.Models;
 using QuanLyTour.Models.KhachSan;
-using QuanLyTour.Models.Tour;
-using X.PagedList;
 using X.PagedList.Extensions;
 namespace QuanLyTour.Controllers
 {

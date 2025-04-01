@@ -4,12 +4,6 @@ using QuanLyTour.Models;
 using QuanLyTour.Models.Tour;
 using X.PagedList;
 using X.PagedList.Extensions;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using QuanLyTour.Models;
-using System.Diagnostics;
-using X.PagedList.Extensions;
 using System.Data.SqlClient;
 using System.Net;
 using System.Net.Mail;
@@ -18,7 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Org.BouncyCastle.Crypto.Generators;
 using BCrypt.Net;
-using QuanLyTour.Models.Tour;
 namespace QuanLyTour.Controllers
 {
     public class TourController : Controller
