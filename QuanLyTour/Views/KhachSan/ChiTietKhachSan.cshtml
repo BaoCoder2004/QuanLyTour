@@ -162,11 +162,10 @@
                         }
                     </div><!-- end available-rooms -->
                     <div class="text-center">
-                        @Html.PagedListPager(Model.TourTuongTu, page => Url.Action("DanhMucTour", new { page, maPhong = Model.TourHienTai.MaTour }))
+                        @Html.PagedListPager(Model.KhachSanTuongTu, page => Url.Action("DanhMucKhachSan", new { page, maPhong = Model.KhachSanHienTai.MaKhachSan }))
                     </div>
                     <!-- end pages -->
                 </div><!-- end columns -->
-
             </div><!-- end row -->
         </div><!-- end container -->
     </div><!-- end hotel-details -->
