@@ -13,14 +13,22 @@
         margin-bottom: 10px;
     }
 
-        .search-container input[type=text] {
-            padding: 6px;
-            margin-right: 5px;
-        }
+    .search-container input[type=text] {
+        padding: 6px;
+        margin-right: 5px;
+    }
 
-        .search-container button {
-            padding: 6px 10px;
-        }
+    .search-container button {
+        padding: 6px 10px;
+    }
+
+    .td1 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 80px;
+    }
+
 </style>
 <section id="main-content">
     <section class="wrapper">
@@ -84,8 +92,8 @@
                                     <td>                                   
                                         <img src="@Url.Content("~/hinhanh/" +khachsan.HinhAnh3)" alt="Hình ảnh phòng" width="100" height="100" />
                                     </td>
-                                    <td>@khachsan.MoTa</td>
-                                    <td>@khachsan.LichTrinh</td>
+                                    <td class="td1">@khachsan.MoTa</td>
+                                    <td class="td1">@khachsan.LichTrinh</td>
                                     <td>
                                         <a href="@Url.Action("SuaKhachSanView","Admin", new{maKhachSan = khachsan.MaKhachSan, maLoai = khachsan.MaLoaiKhachSan})"><button type="button" class="btn btn-warning" style="margin-left:5px;"><i class="fa fa-edit"></i></button></a>
                                     </td>

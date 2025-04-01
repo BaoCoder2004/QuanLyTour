@@ -13,14 +13,20 @@
         margin-bottom: 10px;
     }
 
-        .search-container input[type=text] {
-            padding: 6px;
-            margin-right: 5px;
-        }
+    .search-container input[type=text] {
+        padding: 6px;
+        margin-right: 5px;
+    }
 
-        .search-container button {
-            padding: 6px 10px;
-        }
+    .search-container button {
+        padding: 6px 10px;
+    }
+   .td1 {
+    white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 80px;
+   }
 </style>
 <section id="main-content">
     <section class="wrapper">
@@ -84,8 +90,8 @@
                                     <td>
                                         <img src="@Url.Content("~/hinhanh/" + tour.HinhAnh3)" alt="Hình ảnh phòng" width="100" height="100" />
                                     </td>
-                                    <td>@tour.MoTa</td>
-                                    <td>@tour.LichTrinh</td>
+                                    <td class="td1">@tour.MoTa</td>
+                                    <td class="td1">@tour.LichTrinh</td>
                                     <td>
                                         <a href="@Url.Action("SuaTourView","Admin", new{maTour = tour.MaTour, maLoai = tour.MaLoaiTour})"><button type="button" class="btn btn-warning" style="margin-left:5px;"><i class="fa fa-edit"></i></button></a>
                                     </td>
