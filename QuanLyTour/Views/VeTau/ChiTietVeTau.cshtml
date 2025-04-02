@@ -1,186 +1,449 @@
 ﻿@using X.PagedList.Mvc.Core
 @model QuanLyTour.Models.DetailViewModel
 @{
-    ViewData["Title"] = "Thông tin vé tàu";
+    ViewData["Title"] = "Thông tin đặt vé";
     Layout = "~/Views/Shared/_Detail.cshtml";
 }
 <!--===== INNERPAGE-WRAPPER ====-->
-<section class="innerpage-wrapper">
-    <div id="hotel-details" class="innerpage-section-padding">
-        <div class="container">
-            <div class="row">
+<!-- Search Container -->
+<div class="search-container">
+    <div class="container">
+        <div class="search-form">
+            <div class="form-section">
+                <div class="trip-type">
+                    <div class="trip-option active" id="oneWay">Một chiều</div>
+                    <div class="trip-option" id="roundTrip">Khứ hồi</div>
+                </div>
 
-                <div class="col-xs-12 col-sm-12 col-md-3 side-bar left-side-bar">
-
-                    <div class="side-bar-block booking-form-block">
-                        <h2 class="selected-price">@Model.TourHienTai.TenTour<span></span></h2>
-                        <h2 class="selected-price">@Model.TourHienTai.GiaTour.ToString("#,##") <span>VND | 1 người</span></h2>
-                        @if (Context.Session.GetString("UserName") != null)
-                        {
-                            <div class="booking-form">
-                                <h3>BOOKING</h3>
-                                <p>Trải nghiệm ngay!</p>
-
-                                @using (Html.BeginForm("DatTour", "Tour", new { maTour = Model.TourHienTai.MaTour }, FormMethod.Post))
-                                {
-                                    <div class="form-group">
-                                        @Html.Hidden("MaNguoiDung", (int)ViewBag.MaNguoiDung)
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.TextBox("TenNguoiDung", (string)ViewBag.TenNguoiDung,
-                                                 new { @class = "form-control", placeholder = "Tên khách hàng", required = "required" })
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.TextBox("SoDienThoai", (string)ViewBag.SoDienThoai,
-                                                 new { @class = "form-control", placeholder = "Số điện thoại", required = "required" })
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.TextBox("DiaChi", (string)ViewBag.DiaChi,
-                                                 new { @class = "form-control", placeholder = "Địa chỉ", required = "required" })
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="SoLuong">Số lượng:</label>
-                                        <input type="number" name="SoLuong" id="SoLuong" class="form-control" min="1" value="1" />
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.TextBox("NgayDi", null, new { @class = "form-control dpd1", placeholder = "Chọn ngày", required = "required" })<i class="fa fa-calendar"></i>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="TongTien">Tổng tiền:</label>
-                                        <input type="text" id="TongTien" class="form-control" readonly placeholder="Tổng tiền sẽ hiển thị ở đây" />
-                                    </div>
-
-                                    <!-- Thông tin thanh toán -->
-                                    <h4>Thông tin thanh toán</h4>
-                                    <div class="form-group">
-                                        <label for="SoThe">Số thẻ thanh toán:</label>
-                                        <input type="text" name="SoThe" id="SoThe" class="form-control" placeholder="Nhập số thẻ thanh toán" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="ChuThe">Chủ thẻ:</label>
-                                        <input type="text" name="ChuThe" id="ChuThe" class="form-control" placeholder="Nhập tên chủ thẻ" required />
-                                    </div>
-
-                                    <script>
-                                        var gia = @Model.TourHienTai.GiaTour;
-
-                                        function tinhTongTien() {
-                                            var soLuong = document.getElementById("SoLuong").value || 1;
-                                            document.getElementById("TongTien").value = (gia * soLuong).toLocaleString('vi-VN') + " VND";
-                                        }
-
-                                        document.addEventListener("DOMContentLoaded", tinhTongTien);
-                                        document.getElementById("SoLuong").addEventListener("input", tinhTongTien);
-                                    </script>
-
-                                    <div class="form-group right-icon">
-                                        <select class="form-control">
-                                            <option selected>@Model.TourHienTai.TenLoaiTour</option>
-                                        </select>
-                                        <i class="fa fa-angle-down"></i>
-                                    </div>
-
-                                    <button type="submit" class="btn btn-block btn-orange">Đặt và Thanh toán</button>
-                                }
-                            </div>
-
-                            <!-- end booking-form -->
-                        }
-                        else
-                        {
-                            @using (Html.BeginForm("DangNhap", "Home", FormMethod.Get))
-                            {
-                                <form> 
-                                    <button class="btn btn-block btn-orange">Đăng nhập để đặt tour</button>
-                                </form>  
-                            }
-                        }
-                    </div><!-- end side-bar-block -->
-                </div><!-- end columns -->
-
-                <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 content-side">
-                    <div class="detail-slider">
-                        <div class="feature-slider">
-                            @if (!string.IsNullOrEmpty(Model.TourHienTai.HinhAnh1))
-                            {
-                                <div><img src="~/hinhanh/@Model.TourHienTai.HinhAnh1" class="img-responsive" alt="feature-img" /></div>
-                            }
-                            @if (!string.IsNullOrEmpty(Model.TourHienTai.HinhAnh2))
-                            {
-                                <div><img src="~/hinhanh/@Model.TourHienTai.HinhAnh2" class="img-responsive" alt="feature-img" /></div>
-                            }
-                            @if (!string.IsNullOrEmpty(Model.TourHienTai.HinhAnh3))
-                            {
-                                <div><img src="~/hinhanh/@Model.TourHienTai.HinhAnh3" class="img-responsive" alt="feature-img" /></div>
-                            }
-                        </div><!-- end feature-slider -->
-
-                        <div class="feature-slider-nav">
-                            @if (!string.IsNullOrEmpty(Model.TourHienTai.HinhAnh1))
-                            {
-                                <div><img src="~/hinhanh/@Model.TourHienTai.HinhAnh1" class="img-responsive" alt="feature-thumb" /></div>
-                            }
-                            @if (!string.IsNullOrEmpty(Model.TourHienTai.HinhAnh2))
-                            {
-                                <div><img src="~/hinhanh/@Model.TourHienTai.HinhAnh2" class="img-responsive" alt="feature-thumb" /></div>
-                            }
-                            @if (!string.IsNullOrEmpty(Model.TourHienTai.HinhAnh3))
-                            {
-                                <div><img src="~/hinhanh/@Model.TourHienTai.HinhAnh3" class="img-responsive" alt="feature-thumb" /></div>
-                            }
-                        </div><!-- end feature-slider-nav -->
-                    </div><!-- end detail-slider -->
-                    </br>
-                    </br>
-                    <div class="available-blocks" id="available-rooms">
-                        <h2>Mô tả chi tiết Tour</h2>
-                        <p>@Html.Raw(Model.TourHienTai.MoTa == null ? "" : Model.TourHienTai.MoTa.Replace("\n", "<br>").Replace("\r", ""))</p>
-                    </div>
-                    <div class="available-blocks" id="available-rooms">
-                        <h2>Lịch trình của Tour</h2>
-                        <p>@Html.Raw(Model.TourHienTai.LichTrinh == null ? "" : Model.TourHienTai.LichTrinh.Replace("\n", "<br>").Replace("\r", ""))</p>
-                    </div>
-                    <div class="available-blocks" id="available-rooms">
-                        <h2>Các Tour @Model.TourHienTai.TenLoaiTour gợi ý:</h2>
-
-                        @foreach (var item in Model.TourTuongTu)
-                        {
-                            <div class="list-block main-block room-block">
-                                <div class="list-content">
-                                    <div class="main-img list-img room-img">
-                                        <a href="#">
-                                            <img src="~/hinhanh/@item.HinhAnh1" class="img-responsive" alt="room-img" />
-                                        </a>
-                                        <div class="main-mask">
-                                            <ul class="list-unstyled list-inline offer-price-1">
-                                                <li class="price">@item.GiaTour.ToString("#,##") VND<span class="divider">|</span><span class="pkg">1 người</span></li>
-                                            </ul>
-                                        </div><!-- end main-mask -->
-                                    </div><!-- end room-img -->
-                                    <div class="list-info room-info">
-                                        <h3 class="block-title"><a href="@Url.Action("ChiTietTour","Tour",new { maTour = item.MaTour, maLoai = item.MaLoaiTour })">@item.TenTour</a></h3>
-                                        <p class="block-minor">@item.TenTour</p>
-                                        <p></p>
-                                        <a href="@Url.Action("ChiTietTour","Tour",new { maTour = item.MaTour,maLoai = item.MaLoaiTour })" class="btn btn-orange btn-lg">Xem thêm</a>
-                                    </div><!-- end room-info -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Chọn chiều đi</label>
+                            <div class="direction-selection">
+                                <div class="station-selector">
+                                    <i class="fa fa-train"></i>
+                                    <select class="form-control" id="departureStation">
+                                        <option value="HNO" selected>Hà Nội (HNO)</option>
+                                        <option value="SGO">Sài Gòn (SGO)</option>
+                                        <option value="DAG">Đà Nẵng (DAG)</option>
+                                        <option value="NTR">Nha Trang (NTR)</option>
+                                        <option value="LCA">Lào Cai (LCA)</option>
+                                    </select>
                                 </div>
-
-                                <!-- end list-content -->
+                                <button class="swap-btn" id="swapStations">
+                                    <i class="fa fa-exchange"></i>
+                                </button>
+                                <div class="station-selector">
+                                    <i class="fa fa-train"></i>
+                                    <select class="form-control" id="arrivalStation">
+                                        <option value="LCA" selected>Lào Cai (LCA)</option>
+                                        <option value="HNO">Hà Nội (HNO)</option>
+                                        <option value="SGO">Sài Gòn (SGO)</option>
+                                        <option value="DAG">Đà Nẵng (DAG)</option>
+                                        <option value="NTR">Nha Trang (NTR)</option>
+                                    </select>
+                                </div>
                             </div>
-
-                            <!-- end room-block -->
-                        }
-
-                    </div><!-- end available-rooms -->
-
-
-                    <div class="text-center">
-                       @Html.PagedListPager(Model.TourTuongTu, page => Url.Action("DanhMucTour", new { page, maPhong = Model.TourHienTai.MaTour }))
+                        </div>
                     </div>
-                    <!-- end pages -->
-                </div><!-- end columns -->
 
-            </div><!-- end row -->
-        </div><!-- end container -->
-    </div><!-- end hotel-details -->
-</section><!-- end innerpage-wrapper -->
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Ngày đi</label>
+                            <div class="date-input">
+                                <input type="date" class="form-control" id="departDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Ngày về (Khứ hồi)</label>
+                            <div class="date-input">
+                                <input type="date" class="form-control" id="returnDate" placeholder="Chọn nếu mua vé về" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Hành khách</label>
+                            <div class="passenger-selector">
+                                <button type="button" class="btn btn-default" id="decreasePassenger">-</button>
+                                <input type="text" id="passengerCount" value="1" readonly class="form-control text-center" style="width: 50px; height:34px; display: inline-block;">
+                                <button type="button" class="btn btn-default" id="increasePassenger">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-offset-10 col-md-2">
+                    <button class="btn btn-search">Tìm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Results Container -->
+<div class="results-container">
+    <div class="container">
+        <!-- Results Header -->
+        <div class="results-header">
+            <h2 class="results-title">Chọn chiều đi</h2>
+            <div class="route-display">Hà Nội → Lào Cai</div>
+        </div>
+
+        <!-- Month/Year Selector -->
+        <div class="month-year-selector">
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Tháng</label>
+                    <select id="monthSelector" class="form-control">
+                        <!-- Options will be added by JavaScript -->
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Năm</label>
+                    <select id="yearSelector" class="form-control">
+                        <!-- Options will be added by JavaScript -->
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>&nbsp;</label>
+                    <button id="goToDateBtn" class="btn btn-default form-control">Đi đến tháng được chọn</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Date Navigation -->
+        <div class="date-navigation">
+            <div class="date-scroll-wrapper">
+                <button class="date-scroll-btn left">
+                    <i class="fa fa-chevron-left"></i>
+                </button>
+                <div class="date-options" id="dateOptions">
+                    <!-- Date options will be added dynamically by JavaScript -->
+                </div>
+                <button class="date-scroll-btn right">
+                    <i class="fa fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Train Options -->
+        <!-- SP3 Train Option -->
+        <div class="train-option">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="train-details">
+                        <div class="train-type">Tàu chất lượng cao</div>
+                        <div class="train-code">SP3</div>
+                        <div class="seats-available">Còn 86 chỗ</div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="station-info">
+                        <div class="station-name">Ga Hà Nội</div>
+                        <div class="time">06:00</div>
+                        <div class="date-display">24 tháng 03</div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="journey-visualization">
+                        <div class="duration">8h10p</div>
+                        <div class="arrow">→</div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="station-info">
+                        <div class="station-name">Ga Lào Cai</div>
+                        <div class="time">14:10</div>
+                        <div class="date-display">24 tháng 03</div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="price-section">
+                        <div class="price-label">Từ</div>
+                        <div class="price">225.000 VND</div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <button class="btn btn-select-seat">Chọn chỗ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SP1 Train Option -->
+        <div class="train-option">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="train-details">
+                        <div class="train-type">Tàu chất lượng cao</div>
+                        <div class="train-code">SP1</div>
+                        <div class="seats-available">Còn 92 chỗ</div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="station-info">
+                        <div class="station-name">Ga Hà Nội</div>
+                        <div class="time">21:35</div>
+                        <div class="date-display">24 tháng 03</div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="journey-visualization">
+                        <div class="duration">7h55p</div>
+                        <div class="arrow">→</div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="station-info">
+                        <div class="station-name">Ga Lào Cai</div>
+                        <div class="time">05:30</div>
+                        <div class="date-display">25 tháng 03</div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="price-section">
+                        <div class="price-label">Từ</div>
+                        <div class="price">279.000 VND</div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <button class="btn btn-select-seat">Chọn chỗ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Trip type toggle
+                const oneWayBtn = document.getElementById('oneWay');
+                const roundTripBtn = document.getElementById('roundTrip');
+                const returnDateInput = document.getElementById('returnDate');
+
+                oneWayBtn.addEventListener('click', function() {
+                    oneWayBtn.classList.add('active');
+                    roundTripBtn.classList.remove('active');
+                    returnDateInput.disabled = true;
+                    returnDateInput.placeholder = 'Chọn nếu mua vé về';
+                });
+
+                roundTripBtn.addEventListener('click', function() {
+                    roundTripBtn.classList.add('active');
+                    oneWayBtn.classList.remove('active');
+                    returnDateInput.disabled = false;
+                    returnDateInput.placeholder = 'Chọn ngày về';
+                });
+
+                // Swap stations
+                const swapStationsBtn = document.getElementById('swapStations');
+                swapStationsBtn.addEventListener('click', function() {
+                    const departureStation = document.getElementById('departureStation');
+                    const arrivalStation = document.getElementById('arrivalStation');
+                    const tempValue = departureStation.value;
+
+                    departureStation.value = arrivalStation.value;
+                    arrivalStation.value = tempValue;
+                });
+
+                // Initialize date selector
+                initializeDateSelector();
+
+                // Date scrolling
+                const leftScrollBtn = document.querySelector('.date-scroll-btn.left');
+                const rightScrollBtn = document.querySelector('.date-scroll-btn.right');
+                const dateOptionsContainer = document.querySelector('.date-options');
+
+                leftScrollBtn.addEventListener('click', function() {
+                    dateOptionsContainer.scrollBy({ left: -360, behavior: 'smooth' });
+                });
+
+                rightScrollBtn.addEventListener('click', function() {
+                    dateOptionsContainer.scrollBy({ left: 360, behavior: 'smooth' });
+                });
+
+                // Go to selected month/year
+                const goToDateBtn = document.getElementById('goToDateBtn');
+                goToDateBtn.addEventListener('click', function() {
+                    const selectedMonth = parseInt(document.getElementById('monthSelector').value);
+                    const selectedYear = parseInt(document.getElementById('yearSelector').value);
+                    scrollToMonthYear(selectedMonth, selectedYear);
+                });
+            });
+
+            // Initialize date selector with full year of dates
+            function initializeDateSelector() {
+                const dateContainer = document.getElementById('dateOptions');
+                const today = new Date();
+
+                // Fill month selector
+                const monthSelector = document.getElementById('monthSelector');
+                const months = [
+                    'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
+                    'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+                ];
+
+                monthSelector.innerHTML = '';
+                for (let i = 0; i < months.length; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = months[i];
+                    if (i === today.getMonth()) {
+                        option.selected = true;
+                    }
+                    monthSelector.appendChild(option);
+                }
+
+                // Fill year selector
+                const yearSelector = document.getElementById('yearSelector');
+                yearSelector.innerHTML = '';
+                const currentYear = today.getFullYear();
+
+                for (let year = currentYear; year <= currentYear + 2; year++) {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    if (year === currentYear) {
+                        option.selected = true;
+                    }
+                    yearSelector.appendChild(option);
+                }
+
+                // Create date options for the full year
+                createDatesForYear(dateContainer, today);
+
+                // Scroll to today's date
+                const todayElement = dateContainer.querySelector('.date-option.active');
+                if (todayElement) {
+                    todayElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }
+
+            // Create date options for the full year
+            function createDatesForYear(container, today) {
+                container.innerHTML = '';
+                const currentYear = today.getFullYear();
+
+                // Get the selected depart date to highlight
+                const departDate = document.getElementById('departDate').value;
+                const [day, month, year] = departDate.split('-').map(Number);
+
+                // Get the days of the week in Vietnamese
+                const days = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+
+                // Create date options for the entire year
+                // Start from first day of current year
+                const startDate = new Date(currentYear, 0, 1);
+
+                // End on last day of next year
+                const endDate = new Date(currentYear + 1, 11, 31);
+
+                const dateToMatch = new Date(year, month - 1, day);
+                dateToMatch.setHours(0, 0, 0, 0);
+
+                const current = new Date(startDate);
+                current.setHours(0, 0, 0, 0);
+
+                while (current <= endDate) {
+                    const dateOption = document.createElement('div');
+                    dateOption.className = 'date-option';
+
+                    // Convert date to dd-mm-yyyy format
+                    const formattedDate = formatDate(current);
+
+                    // Get day name in Vietnamese
+                    const dayName = days[current.getDay()];
+
+                    dateOption.innerHTML = `
+                        <div class="date">${formattedDate}</div>
+                        <div class="day">${dayName}</div>
+                    `;
+
+                    // Set data attribute for date
+                    dateOption.dataset.date = current.toISOString();
+
+                    // Check if this is the selected date
+                    if (current.toDateString() === dateToMatch.toDateString()) {
+                        dateOption.classList.add('active');
+                    }
+
+                    // Set click event
+                    dateOption.addEventListener('click', function() {
+                        // Remove active class from all dates
+                        const activeDates = container.querySelectorAll('.date-option.active');
+                        activeDates.forEach(date => date.classList.remove('active'));
+
+                        // Add active class to clicked date
+                        this.classList.add('active');
+
+                        // Update depart date input
+                        document.getElementById('departDate').value = formattedDate;
+                    });
+
+                    // Add to container
+                    container.appendChild(dateOption);
+
+                    // Move to next day
+                    current.setDate(current.getDate() + 1);
+                }
+            }
+
+            // Format date as dd-mm-yyyy
+            function formatDate(date) {
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}-${month}-${year}`;
+            }
+
+            // Scroll to a specific month and year
+            function scrollToMonthYear(month, year) {
+                const dateOptions = document.querySelectorAll('.date-option');
+
+                for (let i = 0; i < dateOptions.length; i++) {
+                    const dateStr = dateOptions[i].dataset.date;
+                    const date = new Date(dateStr);
+
+                    if (date.getMonth() === month && date.getFullYear() === year) {
+                        dateOptions[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                        break;
+                    }
+                }
+            }
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const passengerInput = document.getElementById('passengerCount');
+        const increaseBtn = document.getElementById('increasePassenger');
+        const decreaseBtn = document.getElementById('decreasePassenger');
+
+        increaseBtn.addEventListener('click', function() {
+            let currentValue = parseInt(passengerInput.value);
+            if (currentValue < 10) {
+                passengerInput.value = currentValue + 1;
+            }
+        });
+
+        decreaseBtn.addEventListener('click', function() {
+            let currentValue = parseInt(passengerInput.value);
+            if (currentValue > 1) {
+                passengerInput.value = currentValue - 1;
+            }
+        });
+    });
+</script>

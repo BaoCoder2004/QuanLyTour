@@ -1,266 +1,380 @@
-﻿//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.Data.SqlClient;
-//using QuanLyTour.Models;
-//using QuanLyTour.Models.Tour;
-//using X.PagedList;
-//using X.PagedList.Extensions;
-//using System.Data.SqlClient;
-//using System.Net;
-//using System.Net.Mail;
-//using Microsoft.AspNetCore.Http;
-//using Microsoft.Extensions.Configuration;
-//using Microsoft.Extensions.Logging;
-//using Org.BouncyCastle.Crypto.Generators;
-//using BCrypt.Net;
-//namespace QuanLyTour.Controllers
-//{
-//    public class VeTauController : Controller
-//    {
-//        private readonly string _connectionString;
-//        private readonly ILogger<VeTauController> _logger;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using QuanLyTour.Models;
+using QuanLyTour.Models.VeTau;
+using X.PagedList;
+using X.PagedList.Extensions;
 
-//        public VeTauController(ILogger<VeTauController> logger, IConfiguration configuration)
-//        {
-//            _logger = logger;
-//            _connectionString = configuration.GetConnectionString("DefaultConnection");
-//        }
-//        public IActionResult ChiTietTour(string maTour, string maLoai, int? page)
-//        {
-//            int pageSize = 10;
-//            int pageNumber = page ?? 1;
-//            TourViewModel tour = null;
-//            List<TourViewModel> tourtt = new List<TourViewModel>();
+namespace QuanLyTour.Controllers
+{
+    public class VeTauController : Controller
+    {
+        private readonly string _connectionString;
+        private readonly ILogger<VeTauController> _logger;
 
-//            // Lấy thông tin người dùng từ session
-//            var tenNguoiDung = HttpContext.Session.GetString("UserName");
-//            var soDienThoai = HttpContext.Session.GetString("UserPhone");
-//            var diaChi = HttpContext.Session.GetString("UserAd");
-//            var maNguoiDung = HttpContext.Session.GetInt32("UserId");
+        public VeTauController(ILogger<VeTauController> logger, IConfiguration configuration)
+        {
+            _logger = logger;
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
+        }
 
-//            ViewBag.TenNguoiDung = tenNguoiDung;
-//            ViewBag.SoDienThoai = soDienThoai;
-//            ViewBag.DiaChi = diaChi;
-//            ViewBag.MaNguoiDung = maNguoiDung;
+        public IActionResult Index()
+        {
+            // Kiểm tra thông tin người dùng từ Session
+            var tenNguoiDung = HttpContext.Session.GetString("UserName");
+            ViewBag.TenNguoiDung = tenNguoiDung;
 
-//            using (var connection = new SqlConnection(_connectionString))
-//            {
-//                connection.Open();
+            var veTaus = new List<VeTauViewModel>();
 
-//                // Truy vấn thông tin tour hiện tại
-//                string sql = "SELECT p.MaTour, p.TenTour, p.MaLoaiTour, p.TrangThai, p.SoNgay, p.DiaDiem, p.GiaTour, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, l.TenLoaiTour, p.MoTa, p.LichTrinh " +
-//                    "FROM Tour p " +
-//                    "INNER JOIN LoaiTour l ON p.MaLoaiTour = l.MaLoaiTour " +
-//                    "WHERE p.MaTour = @maTour";
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
 
+                    string query = @"
+                    SELECT ChuyenTauID, TenTau, GaDi, GaDen, NgayDi, NgayDen, SoLuongVe, GiaVe 
+                    FROM ChuyenTau 
+                    WHERE NgayDi > GETDATE()";
 
-//                using (var command = new SqlCommand(sql, connection))
-//                {
-//                    command.Parameters.AddWithValue("@maTour", maTour);
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                veTaus.Add(new VeTauViewModel
+                                {
+                                    ChuyenTauID = reader.GetInt32(0),
+                                    TenTau = reader.GetString(1),
+                                    GaDi = reader.GetString(2),
+                                    GaDen = reader.GetString(3),
+                                    NgayDi = reader.GetDateTime(4),
+                                    NgayDen = reader.GetDateTime(5),
+                                    GiaVe = reader.GetDecimal(7)
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Có lỗi xảy ra: " + ex.Message;
+            }
 
-//                    using (var reader = command.ExecuteReader())
-//                    {
-//                        if (reader.Read())
-//                        {
-//                            tour = new TourViewModel
-//                            {
-//                                MaTour = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0,
-//                                TenTour = !reader.IsDBNull(1) ? reader.GetString(1) : string.Empty,
-//                                MaLoaiTour = !reader.IsDBNull(2) ? reader.GetInt32(2) : 0,
-//                                TrangThai = !reader.IsDBNull(3) && reader.GetBoolean(3),
-//                                SoNgay = !reader.IsDBNull(4) ? reader.GetString(4) : string.Empty,
-//                                DiaDiem = !reader.IsDBNull(5) ? reader.GetString(5) : string.Empty,
-//                                GiaTour = !reader.IsDBNull(6) ? reader.GetDecimal(6) : 0,
-//                                HinhAnh1 = !reader.IsDBNull(7) ? reader.GetString(7) : string.Empty,
-//                                HinhAnh2 = !reader.IsDBNull(8) ? reader.GetString(8) : string.Empty,
-//                                HinhAnh3 = !reader.IsDBNull(9) ? reader.GetString(9) : string.Empty,
-//                                TenLoaiTour = !reader.IsDBNull(10) ? reader.GetString(10) : string.Empty,
-//                                MoTa = !reader.IsDBNull(11) ? reader.GetString(11) : string.Empty,
-//                                LichTrinh = !reader.IsDBNull(12) ? reader.GetString(12) : string.Empty,
-//                            };
-//                        }
-//                    }
-//                }
-//                // Truy vấn các tour tương tự
-//                string sqlTourtt = "SELECT p.MaTour, p.TenTour, p.MaLoaiTour, p.TrangThai, p.SoNgay, p.DiaDiem, p.GiaTour, p.HinhAnh1, p.HinhAnh2, p.HinhAnh3, l.TenLoaiTour " +
-//                                   "FROM Tour p " +
-//                                   "INNER JOIN LoaiTour l ON p.MaLoaiTour = l.MaLoaiTour " +
-//                                   "WHERE  p.MaTour != @maTour AND p.MaLoaiTour = @maLoaiTour";
+            // Tạo ViewModel tổng hợp
+            var viewModel = new VeTauSearchViewModel
+            {
+                VeTaus = veTaus.ToPagedList(1, 10)
+            };
 
-//                using (var command = new SqlCommand(sqlTourtt, connection))
-//                {
-//                    command.Parameters.AddWithValue("@maTour", maTour);
-//                    command.Parameters.AddWithValue("@maLoaiTour", tour?.MaLoaiTour ?? 0); // Sử dụng `MaLoaiTour` từ tour hiện tại
+            return View(viewModel);
+        }
 
-//                    using (var reader = command.ExecuteReader())
-//                    {
-//                        while (reader.Read())
-//                        {
-//                            tourtt.Add(new TourViewModel
-//                            {
-//                                MaTour = reader.GetInt32(0),
-//                                TenTour = reader.GetString(1),
-//                                MaLoaiTour = reader.GetInt32(2),
-//                                TrangThai = reader.GetBoolean(3),
-//                                SoNgay = reader.IsDBNull(4) ? "Không xác định" : reader.GetString(4),  // Xử lý NULL
-//                                DiaDiem = reader.IsDBNull(5) ? "Không có địa điểm" : reader.GetString(5),  // Xử lý NULL
-//                                GiaTour = reader.GetDecimal(6),
-//                                HinhAnh1 = reader.GetString(7),
-//                                HinhAnh2 = reader.GetString(8),
-//                                HinhAnh3 = reader.GetString(9),
-//                                TenLoaiTour = reader.GetString(10)
-//                            });
-//                        }
-//                    }
-//                }
-//            }
+        public IActionResult ChiTietVeTau(int chuyenTauID, int? page)
+        {
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
+            VeTauViewModel chuyenTau = null;
+            List<VeTauViewModel> chuyenTauTuongTu = new List<VeTauViewModel>();
 
-//            if (tour == null)
-//            {
-//                return NotFound();
-//            }
+            // Lấy thông tin người dùng từ session
+            var tenNguoiDung = HttpContext.Session.GetString("UserName");
+            var soDienThoai = HttpContext.Session.GetString("UserPhone");
+            var email = HttpContext.Session.GetString("UserEmail");
+            var maNguoiDung = HttpContext.Session.GetInt32("UserId");
 
-//            // Sử dụng PagedList để phân trang danh sách tour tương tự
-//            var pagedAvailableTours = tourtt.ToPagedList(pageNumber, pageSize);
+            ViewBag.TenNguoiDung = tenNguoiDung;
+            ViewBag.SoDienThoai = soDienThoai;
+            ViewBag.Email = email;
+            ViewBag.MaNguoiDung = maNguoiDung;
 
-//            var viewModel = new DetailViewModel
-//            {
-//                TourHienTai = tour,
-//                TourTuongTu = pagedAvailableTours
-//            };
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
 
-//            return View(viewModel);
+                // Truy vấn thông tin chuyến tàu hiện tại
+                string sql = "SELECT ChuyenTauID, TenTau, GaDi, GaDen, NgayDi, NgayDen, SoLuongVe, GiaVe " +
+                             "FROM ChuyenTau " +
+                             "WHERE ChuyenTauID = @ChuyenTauID";
 
-//        }
-//        public IActionResult DanhMucTour(int pageTrongNuoc = 1, int pageNuocNgoai = 1, int pageSize = 12)
-//        {
-//            var model = new TourTabsViewModel();
-//            try
-//            {
-//                using (var connection = new SqlConnection(_connectionString))
-//                {
-//                    connection.Open();
+                using (var command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@ChuyenTauID", chuyenTauID);
 
-//                    // Lấy danh sách Tour Trong Nước
-//                    string queryTrongNuoc = @"
-//            SELECT p.MaTour, p.TenTour, p.MaLoaiTour, p.TrangThai, p.SoNgay, p.DiaDiem, p.GiaTour, p.HinhAnh1, l.TenLoaiTour 
-//            FROM Tour p 
-//            INNER JOIN LoaiTour l ON p.MaLoaiTour = l.MaLoaiTour 
-//            WHERE p.MaLoaiTour = 1";
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            chuyenTau = new VeTauViewModel
+                            {
+                                ChuyenTauID = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0,
+                                TenTau = !reader.IsDBNull(1) ? reader.GetString(1) : string.Empty,
+                                GaDi = !reader.IsDBNull(2) ? reader.GetString(2) : string.Empty,
+                                GaDen = !reader.IsDBNull(3) ? reader.GetString(3) : string.Empty,
+                                NgayDi = !reader.IsDBNull(4) ? reader.GetDateTime(4) : DateTime.MinValue,
+                                NgayDen = !reader.IsDBNull(5) ? reader.GetDateTime(5) : DateTime.MinValue,
+                              
+                                GiaVe = !reader.IsDBNull(7) ? reader.GetDecimal(7) : 0
+                            };
+                        }
+                    }
+                }
 
-//                    var tourTrongNuoc = GetTours(connection, queryTrongNuoc);
-//                    model.TourTrongNuoc = tourTrongNuoc.ToPagedList(pageTrongNuoc, pageSize);
+                // Truy vấn các chuyến tàu tương tự (cùng ga đi và ga đến)
+                string sqlTuongTu = "SELECT ChuyenTauID, TenTau, GaDi, GaDen, NgayDi, NgayDen, SoLuongVe, GiaVe " +
+                                   "FROM ChuyenTau " +
+                                   "WHERE ChuyenTauID != @ChuyenTauID AND GaDi = @GaDi AND GaDen = @GaDen";
 
-//                    // Lấy danh sách Tour Nước Ngoài
-//                    string queryNuocNgoai = @"
-//            SELECT p.MaTour, p.TenTour, p.MaLoaiTour, p.TrangThai, p.SoNgay, p.DiaDiem, p.GiaTour, p.HinhAnh1, l.TenLoaiTour 
-//            FROM Tour p 
-//            INNER JOIN LoaiTour l ON p.MaLoaiTour = l.MaLoaiTour 
-//            WHERE p.MaLoaiTour = 2";
+                using (var command = new SqlCommand(sqlTuongTu, connection))
+                {
+                    command.Parameters.AddWithValue("@ChuyenTauID", chuyenTauID);
+                    command.Parameters.AddWithValue("@GaDi", chuyenTau?.GaDi ?? string.Empty);
+                    command.Parameters.AddWithValue("@GaDen", chuyenTau?.GaDen ?? string.Empty);
 
-//                    var tourNuocNgoai = GetTours(connection, queryNuocNgoai);
-//                    model.TourNuocNgoai = tourNuocNgoai.ToPagedList(pageNuocNgoai, pageSize);
-//                }
-//            }
-//            catch (Exception ex)
-//            {
-//                ViewBag.ErrorMessage = "Có lỗi xảy ra: " + ex.Message;
-//            }
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            chuyenTauTuongTu.Add(new VeTauViewModel
+                            {
+                                ChuyenTauID = reader.GetInt32(0),
+                                TenTau = reader.GetString(1),
+                                GaDi = reader.GetString(2),
+                                GaDen = reader.GetString(3),
+                                NgayDi = reader.GetDateTime(4),
+                                NgayDen = reader.GetDateTime(5),
+                               
+                                GiaVe = reader.GetDecimal(7)
+                            });
+                        }
+                    }
+                }
+            }
 
-//            return View(model);
-//        }
+            if (chuyenTau == null)
+            {
+                return NotFound();
+            }
 
-//        // Hàm lấy danh sách tour
-//        private List<TourViewModel> GetTours(SqlConnection connection, string query)
-//        {
-//            var tours = new List<TourViewModel>();
+            return View();
+        }      
 
-//            using (var command = new SqlCommand(query, connection))
-//            {
-//                using (var reader = command.ExecuteReader())
-//                {
-//                    while (reader.Read())
-//                    {
-//                        tours.Add(new TourViewModel
-//                        {
-//                            MaTour = reader.GetInt32(0),
-//                            TenTour = reader.GetString(1),
-//                            MaLoaiTour = reader.GetInt32(2),
-//                            TrangThai = reader.GetBoolean(3),
-//                            SoNgay = reader.IsDBNull(4) ? "Không xác định" : reader.GetString(4),  // Xử lý NULL
-//                            DiaDiem = reader.IsDBNull(5) ? "Không có địa điểm" : reader.GetString(5),  // Xử lý NULL
-//                            GiaTour = reader.GetDecimal(6),
-//                            HinhAnh1 = reader.IsDBNull(7) ? "" : reader.GetString(7), // Xử lý NULL
-//                            TenLoaiTour = reader.GetString(8)
-//                        });
-//                    }
-//                }
-//            }
+        // Hàm lấy danh sách vé tàu
+        private List<VeTauViewModel> GetVeTau(SqlConnection connection, string query)
+        {
+            var veTauList = new List<VeTauViewModel>();
 
-//            return tours;
-//        }
+            using (var command = new SqlCommand(query, connection))
+            {
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        veTauList.Add(new VeTauViewModel
+                        {
+                            ChuyenTauID = reader.GetInt32(0),
+                            TenTau = reader.GetString(1),
+                            GaDi = reader.GetString(2),
+                            GaDen = reader.GetString(3),
+                            NgayDi = reader.GetDateTime(4),
+                            NgayDen = reader.GetDateTime(5),
+                           
+                            GiaVe = reader.GetDecimal(7)
+                        });
+                    }
+                }
+            }
 
-//        [HttpPost]
-//        public IActionResult DatTour(int MaNguoiDung, string TenNguoiDung, string SoDienThoai, string DiaChi, int SoLuong, string SoThe, string ChuThe, int maTour, DateTime NgayDi)
-//        {
-//            if (string.IsNullOrWhiteSpace(SoThe) || string.IsNullOrWhiteSpace(ChuThe))
-//            {
-//                ModelState.AddModelError("", "Thông tin thanh toán không được để trống.");
-//                return RedirectToAction("ChiTietTour", new { maTour });
-//            }
+            return veTauList;
+        }
 
-//            using (var connection = new SqlConnection(_connectionString))
-//            {
-//                connection.Open();
+        [HttpPost]
+        public IActionResult DatVeTau(int MaNguoiDung, string HoTen, string SoDienThoaiLienHe, string EmailLienHe, int ChuyenTauID, string HinhThucThanhToan)
+        {
+            if (string.IsNullOrWhiteSpace(SoDienThoaiLienHe) || string.IsNullOrWhiteSpace(EmailLienHe))
+            {
+                ModelState.AddModelError("", "Thông tin liên hệ không được để trống.");
+                return RedirectToAction("ChiTietChuyenTau", new { chuyenTauID = ChuyenTauID });
+            }
 
-//                // Thêm thông tin đặt tour vào bảng PhieuDatTour
-//                string sqlInsertPhieu = "INSERT INTO PhieuDatTour (MaNguoiDung, NgayDatTour, MaTour, SoLuong, NgayDi) " +
-//                                        "VALUES (@MaNguoiDung, @NgayDatTour, @MaTour, @SoLuong, @NgayDi); SELECT SCOPE_IDENTITY();";
-//                int maPhieu;
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
 
-//                using (var command = new SqlCommand(sqlInsertPhieu, connection))
-//                {
-//                    command.Parameters.AddWithValue("@MaNguoiDung", MaNguoiDung);
-//                    command.Parameters.AddWithValue("@NgayDatTour", DateTime.Now);
-//                    command.Parameters.AddWithValue("@MaTour", maTour);
-//                    command.Parameters.AddWithValue("@SoLuong", SoLuong);
-//                    command.Parameters.AddWithValue("@NgayDi", NgayDi);
+                // Tạo mã đặt vé
+                string maDatVe = $"VT{DateTime.Now:yyyyMMddHHmmss}{MaNguoiDung}";
 
-//                    maPhieu = Convert.ToInt32(command.ExecuteScalar());
-//                }
+                // Thêm thông tin đặt vé vào bảng DatVeTau
+                string sqlInsertDatVe = @"
+                INSERT INTO DatVeTau (MaNguoiDung, ChuyenTauID, MaDatVe, NgayDatVe, HinhThucThanhToan, 
+                                      TrangThaiThanhToan, TrangThaiVe, NgayHetHanVe, SoDienThoaiLienHe, EmailLienHe) 
+                VALUES (@MaNguoiDung, @ChuyenTauID, @MaDatVe, @NgayDatVe, @HinhThucThanhToan, 
+                        @TrangThaiThanhToan, @TrangThaiVe, @NgayHetHanVe, @SoDienThoaiLienHe, @EmailLienHe); 
+                SELECT SCOPE_IDENTITY();";
 
-//                // Tính tổng tiền
-//                decimal giaTour = 0;
-//                string sqlGetGiaTour = "SELECT GiaTour FROM Tour WHERE MaTour = @MaTour";
-//                using (var command = new SqlCommand(sqlGetGiaTour, connection))
-//                {
-//                    command.Parameters.AddWithValue("@MaTour", maTour);
-//                    giaTour = Convert.ToDecimal(command.ExecuteScalar());
-//                }
+                int datVeID;
 
-//                decimal tongTien = giaTour * SoLuong;
+                using (var command = new SqlCommand(sqlInsertDatVe, connection))
+                {
+                    command.Parameters.AddWithValue("@MaNguoiDung", MaNguoiDung);
+                    command.Parameters.AddWithValue("@ChuyenTauID", ChuyenTauID);
+                    command.Parameters.AddWithValue("@MaDatVe", maDatVe);
+                    command.Parameters.AddWithValue("@NgayDatVe", DateTime.Now);
+                    command.Parameters.AddWithValue("@HinhThucThanhToan", HinhThucThanhToan);
+                    command.Parameters.AddWithValue("@TrangThaiThanhToan", "Đã thanh toán");
+                    command.Parameters.AddWithValue("@TrangThaiVe", "Đã đặt");
+                    command.Parameters.AddWithValue("@NgayHetHanVe", DateTime.Now.AddDays(30));
+                    command.Parameters.AddWithValue("@SoDienThoaiLienHe", SoDienThoaiLienHe);
+                    command.Parameters.AddWithValue("@EmailLienHe", EmailLienHe);
 
-//                // Thêm thông tin thanh toán vào bảng HoaDon
-//                string sqlInsertHoaDon = "INSERT INTO HoaDon (MaNguoiDung, MaPhieu, TongTien, NgayThanhToan) " +
-//                                         "VALUES (@MaNguoiDung, @MaPhieu, @TongTien, @NgayThanhToan)";
-//                using (var command = new SqlCommand(sqlInsertHoaDon, connection))
-//                {
-//                    command.Parameters.AddWithValue("@MaNguoiDung", MaNguoiDung);
-//                    command.Parameters.AddWithValue("@MaPhieu", maPhieu);
-//                    command.Parameters.AddWithValue("@TongTien", tongTien);
-//                    command.Parameters.AddWithValue("@NgayThanhToan", DateTime.Now);
+                    datVeID = Convert.ToInt32(command.ExecuteScalar());
+                }
 
-//                    command.ExecuteNonQuery();
-//                }
-//            }
+                // Cập nhật số lượng vé còn lại
+                string sqlUpdateVeTau = "UPDATE ChuyenTau SET SoLuongVe = SoLuongVe - 1 WHERE ChuyenTauID = @ChuyenTauID";
+                using (var command = new SqlCommand(sqlUpdateVeTau, connection))
+                {
+                    command.Parameters.AddWithValue("@ChuyenTauID", ChuyenTauID);
+                    command.ExecuteNonQuery();
+                }
 
-//            TempData["SuccessMessage"] = "Đặt tour và thanh toán thành công!";
-//            return RedirectToAction("ThanhCongView", "Tour");
-//        }
-//        public IActionResult ThanhCongView()
-//        {
-//            return View();
-//        }
+                // Tính tổng tiền
+                decimal giaVe = 0;
+                string sqlGetGiaVe = "SELECT GiaVe FROM ChuyenTau WHERE ChuyenTauID = @ChuyenTauID";
+                using (var command = new SqlCommand(sqlGetGiaVe, connection))
+                {
+                    command.Parameters.AddWithValue("@ChuyenTauID", ChuyenTauID);
+                    giaVe = Convert.ToDecimal(command.ExecuteScalar());
+                }
 
+                // Thêm hóa đơn
+                string sqlInsertHoaDon = @"
+                INSERT INTO HoaDonVeTau (MaNguoiDung, ChuyenTauID, TenNguoiDung, NgayDatVe, TongTien, NgayThanhToan)
+                VALUES (@MaNguoiDung, @ChuyenTauID, @TenNguoiDung, @NgayDatVe, @TongTien, @NgayThanhToan)";
 
-//    }
-//}
+                using (var command = new SqlCommand(sqlInsertHoaDon, connection))
+                {
+                    command.Parameters.AddWithValue("@MaNguoiDung", MaNguoiDung);
+                    command.Parameters.AddWithValue("@ChuyenTauID", ChuyenTauID);
+                    command.Parameters.AddWithValue("@TenNguoiDung", HoTen);
+                    command.Parameters.AddWithValue("@NgayDatVe", DateTime.Now);
+                    command.Parameters.AddWithValue("@TongTien", giaVe);
+                    command.Parameters.AddWithValue("@NgayThanhToan", DateTime.Now);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            TempData["SuccessMessage"] = "Đặt vé tàu và thanh toán thành công!";
+            return RedirectToAction("ThanhCongView", "VeTau");
+        }
+
+        public IActionResult TimKiemVeTau(string keyword, int page = 1, int pageSize = 6)
+        {
+            var veTaus = new List<VeTauViewModel>();
+
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    // Truy vấn dữ liệu vé tàu dựa vào từ khóa
+                    string query = @"
+                    SELECT ChuyenTauID, TenTau, GaDi, GaDen, NgayDi, NgayDen, SoLuongVe, GiaVe
+                    FROM ChuyenTau
+                    WHERE (TenTau LIKE @Keyword OR GaDi LIKE @Keyword OR GaDen LIKE @Keyword)";
+
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Keyword", $"%{keyword}%");
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                veTaus.Add(new VeTauViewModel
+                                {
+                                    ChuyenTauID = reader.GetInt32(0),
+                                    TenTau = reader.GetString(1),
+                                    GaDi = reader.GetString(2),
+                                    GaDen = reader.GetString(3),
+                                    NgayDi = reader.GetDateTime(4),
+                                    NgayDen = reader.GetDateTime(5),
+                                 
+                                    GiaVe = reader.GetDecimal(7)
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Có lỗi xảy ra: " + ex.Message;
+            }
+
+            // Phân trang kết quả tìm kiếm
+            var pagedVeTaus = veTaus.ToPagedList(page, pageSize);
+
+            // Gửi từ khóa và danh sách vé tàu tìm được về View
+            ViewBag.Keyword = keyword;
+            return View(pagedVeTaus);
+        }
+
+        public IActionResult ThanhCongView()
+        {
+            return View();
+        }
+
+        public IActionResult ThongTinVeTauDat()
+        {
+            int maNguoiDung = HttpContext.Session.GetInt32("UserId") ?? 0; // Lấy mã người dùng từ session
+
+            if (maNguoiDung == 0)
+            {
+                return RedirectToAction("DangNhap", "Home"); // Nếu chưa đăng nhập, chuyển tới trang đăng nhập
+            }
+
+            List<HoaDonVeTau> danhSachVeDat = new List<HoaDonVeTau>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                string sql = @"
+                SELECT hd.MaHoaDon, hd.MaNguoiDung, hd.ChuyenTauID, ct.TenTau, 
+                       hd.TenNguoiDung, hd.NgayDatVe, hd.TongTien, hd.NgayThanhToan
+                FROM HoaDonVeTau hd
+                JOIN ChuyenTau ct ON hd.ChuyenTauID = ct.ChuyenTauID
+                WHERE hd.MaNguoiDung = @MaNguoiDung";
+
+                using (var command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@MaNguoiDung", maNguoiDung);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            danhSachVeDat.Add(new HoaDonVeTau
+                            {
+                                MaHoaDon = reader.GetInt32(0),
+                                MaNguoiDung = reader.GetInt32(1),
+                                ChuyenTauID = reader.GetInt32(2),
+                              
+                                TenNguoiDung = !reader.IsDBNull(4) ? reader.GetString(4) : string.Empty,
+                                NgayDatVe = reader.GetDateTime(5),
+                                TongTien = reader.GetDecimal(6),
+                                NgayThanhToan = reader.GetDateTime(7)
+                            });
+                        }
+                    }
+                }
+            }
+            return View(danhSachVeDat);
+        }
+    }
+}

@@ -52,7 +52,6 @@ namespace QuanLyTour.Controllers
 									GiaKhachSan = reader.GetDecimal(6),
 									HinhAnh1 = reader.GetString(7)
 								});
-
 							}
 						}
 					}
@@ -390,7 +389,5 @@ namespace QuanLyTour.Controllers
 			}
 			return View(danhSachKhachSanDat);
 		}
-
-
 	}
 }

@@ -4112,3 +4112,378 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 		margin-bottom: 15px;
 	}
 }
+
+.header {
+	background-color: #fff;
+	box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+	padding: 10px 0;
+	position: sticky;
+	top: 0;
+	z-index: 100;
+}
+
+.logo {
+	max-height: 40px;
+}
+
+/* Search form styles */
+.search-container {
+	background-color: #f9f9f9;
+	padding: 20px 0;
+	border-bottom: 1px solid #eee;
+}
+
+.search-form {
+	background-color: white;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	padding: 15px;
+}
+
+.form-section {
+	margin-bottom: 15px;
+}
+
+.form-group {
+	margin-bottom: 10px;
+}
+
+	.form-group label {
+		display: block;
+		margin-bottom: 5px;
+		font-weight: 500;
+		color: #555;
+	}
+
+.form-control {
+	height: 40px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 6px 12px;
+	width: 100%;
+}
+
+.btn-search {
+	background-color: #ff8800;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	padding: 10px 20px;
+	font-weight: bold;
+	height: 40px;
+	text-transform: uppercase;
+	width: 100%;
+}
+
+	.btn-search:hover {
+		background-color: #e67a00;
+	}
+
+/* Direction selection styles */
+.direction-selection {
+	display: flex;
+	align-items: center;
+}
+
+.station-selector {
+	flex: 1;
+	position: relative;
+}
+
+	.station-selector .fa {
+		position: absolute;
+		left: 10px;
+		top: 13px;
+		color: #666;
+	}
+
+	.station-selector select {
+		padding-left: 30px;
+	}
+
+.swap-btn {
+	width: 36px;
+	height: 36px;
+	background-color: #f0f0f0;
+	border-radius: 50%;
+	border: none;
+	color: #666;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 10px;
+	cursor: pointer;
+}
+
+	.swap-btn:hover {
+		background-color: #e0e0e0;
+	}
+
+/* Date selection styles */
+.date-input {
+	position: relative;
+}
+
+	.date-input .fa {
+		position: absolute;
+		right: 10px;
+		top: 13px;
+		color: #666;
+	}
+
+/* Trip type selection */
+.trip-type {
+	display: flex;
+	margin-bottom: 15px;
+}
+
+.trip-option {
+	flex: 1;
+	text-align: center;
+	padding: 10px 0;
+	cursor: pointer;
+	border-bottom: 2px solid transparent;
+	font-weight: 500;
+}
+
+	.trip-option.active {
+		border-bottom: 2px solid #ff8800;
+		color: #ff8800;
+	}
+
+/* Passenger selection */
+.passenger-selector {
+	position: relative;
+}
+
+/* Results container styles */
+.results-container {
+	padding: 20px 0;
+}
+
+.results-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 15px;
+}
+
+.results-title {
+	font-size: 18px;
+	font-weight: bold;
+	margin: 0;
+}
+
+.route-display {
+	font-weight: bold;
+	color: #333;
+}
+
+/* Month/Year selector styles */
+.month-year-selector {
+	background-color: white;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	margin-bottom: 15px;
+	padding: 15px;
+}
+
+/* Date navigation styles */
+.date-navigation {
+	background-color: white;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	margin-bottom: 20px;
+	position: relative;
+}
+
+.date-scroll-wrapper {
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+	position: relative;
+}
+
+.date-scroll-btn {
+	background: none;
+	border: none;
+	color: #666;
+	font-size: 16px;
+	padding: 0 15px;
+	height: 60px;
+	z-index: 2;
+	position: absolute;
+}
+
+	.date-scroll-btn.left {
+		left: 0;
+		background: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0.5));
+	}
+
+	.date-scroll-btn.right {
+		right: 0;
+		background: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0.5));
+	}
+
+.date-options {
+	display: flex;
+	overflow-x: auto;
+	scrollbar-width: thin;
+	padding: 0 40px;
+	width: 100%;
+	scroll-behavior: smooth;
+}
+
+	.date-options::-webkit-scrollbar {
+		height: 6px;
+		display: block;
+	}
+
+	.date-options::-webkit-scrollbar-track {
+		background: #f1f1f1;
+		border-radius: 10px;
+	}
+
+	.date-options::-webkit-scrollbar-thumb {
+		background: #888;
+		border-radius: 10px;
+	}
+
+		.date-options::-webkit-scrollbar-thumb:hover {
+			background: #555;
+		}
+
+.date-option {
+	flex: 0 0 auto;
+	text-align: center;
+	padding: 15px 25px;
+	cursor: pointer;
+	border-bottom: 3px solid transparent;
+	transition: all 0.2s;
+	min-width: 120px;
+}
+
+	.date-option .date {
+		font-weight: 500;
+		margin-bottom: 3px;
+	}
+
+	.date-option .day {
+		color: #777;
+		font-size: 13px;
+	}
+
+	.date-option.active {
+		border-bottom: 3px solid #ff8800;
+		background-color: #fff9f0;
+	}
+
+		.date-option.active .date {
+			color: #ff8800;
+			font-weight: bold;
+		}
+
+/* Train option styles */
+.train-option {
+	background-color: white;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	margin-bottom: 15px;
+	padding: 20px;
+}
+
+.train-details {
+	margin-bottom: 10px;
+}
+
+.train-type {
+	font-size: 14px;
+	font-weight: 500;
+	margin-bottom: 5px;
+	color: #555;
+}
+
+.train-code {
+	font-size: 22px;
+	font-weight: bold;
+	color: #333;
+	margin-bottom: 5px;
+}
+
+.seats-available {
+	color: #ff8800;
+	font-size: 14px;
+}
+
+.station-info {
+	text-align: center;
+}
+
+.station-name {
+	color: #666;
+	font-size: 14px;
+	margin-bottom: 5px;
+}
+
+.time {
+	font-size: 22px;
+	font-weight: bold;
+	margin-bottom: 3px;
+}
+
+.date-display {
+	color: #666;
+	font-size: 13px;
+}
+
+.journey-visualization {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
+
+.duration {
+	color: #666;
+	margin-bottom: 5px;
+	font-size: 14px;
+}
+
+.arrow {
+	font-size: 24px;
+	color: #999;
+	line-height: 1;
+}
+
+.price-section {
+	text-align: center;
+}
+
+.price-label {
+	color: #666;
+	font-size: 13px;
+	margin-bottom: 5px;
+}
+
+.price {
+	font-size: 20px;
+	font-weight: bold;
+	color: #333;
+}
+
+.btn-select-seat {
+	background-color: #ff8800;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	padding: 10px 20px;
+	font-weight: bold;
+	transition: background-color 0.3s;
+	width: 100%;
+}
+
+	.btn-select-seat:hover {
+		background-color: #e67a00;
+		color: white;
+	}

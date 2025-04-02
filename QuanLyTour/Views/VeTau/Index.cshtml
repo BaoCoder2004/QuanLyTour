@@ -1,7 +1,7 @@
-﻿@using QuanLyTour.Models.Tour
-@model TourIndexViewModel
+﻿@using QuanLyTour.Models.VeTau
+@model VeTauSearchViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Trang chủ - Vé tàu";
 }
 
 <div class="search-tabs" id="search-tabs-3">
@@ -9,22 +9,22 @@
         <div class="row">
             <div class="hidden-xs hidden-sm col-md-12 no-pd-l">
                 <div class="welcome-message">
-                    <h2>LỰA CHỌN KỲ NGHỈ DƯỠNG TUYỆT VỜI</h2>
+                    <h2>LỰA CHỌN CHUYẾN TÀU PHÙ HỢP NHẤT</h2>
                     <p>
-                        💥 Bạn đang tìm kiếm một địa điểm du lịch đẹp và thú vị để khám phá? <br />
-                        👉 Nhiều địa điểm du lịch đầy màu sắc, nơi bạn có thể tận hưởng thiên nhiên hoang dã, tham gia các hoạt động giải trí và thưởng thức ẩm thực đặc trưng của địa phương
-                    <p> ⚡️  Hãy đến và trải nghiệm cùng HANOITOUR của chúng tôi! </p>
+                        💥 Bạn đang tìm kiếm một chuyến tàu thuận tiện để di chuyển? <br />
+                        👉 Nhiều tuyến tàu đến các địa điểm du lịch hấp dẫn, với giá vé tốt và lịch trình đa dạng
+                    <p> ⚡️ Hãy đặt vé tàu cùng HANOITOUR ngay hôm nay! </p>
 
                     <div class="search-form-container" style="margin-top:20px">
                         <div class="row">
-                            <form id="search-form" class="search-container">
+                            <form id="search-form" class="search-container" method="post" action="@Url.Action("TimKiemVeTau", "VeTau")">
                                 <div class="trip-type">
                                     <label class="trip-option">
-                                        <input type="radio" name="trip-type" id="round-trip" checked>
+                                        <input type="radio" name="tripType" id="round-trip" checked>
                                         <span class="radio-label">Khứ hồi</span>
                                     </label>
                                     <label class="trip-option">
-                                        <input type="radio" name="trip-type" id="one-way">
+                                        <input type="radio" name="tripType" id="one-way">
                                         <span class="radio-label">Một chiều</span>
                                     </label>
                                 </div>
@@ -36,22 +36,18 @@
                                                 <i class="fa fa-train"></i>
                                                 <div class="station-details">
                                                     <div class="label">Ga đi</div>
-                                                    <select id="from-station" name="from-station" class="station-dropdown">
-                                                        <option value="SGO">Sài Gòn (SGO)</option>
-                                                        <option value="HNO">Hà Nội (HNO)</option>
-                                                        <option value="DNA">Đà Nẵng (DNA)</option>
-                                                        <option value="HUE">Huế (HUE)</option>
-                                                        <option value="NTR">Nha Trang (NTR)</option>
-                                                        <option value="PTH">Phan Thiết (PTH)</option>
-                                                        <option value="HPH">Hải Phòng (HPH)</option>
-                                                        <option value="DLT">Đà Lạt (DLT)</option>
-                                                        <option value="VTU">Vũng Tàu (VTU)</option>
-                                                        <option value="DHI">Đồng Hới (DHI)</option>
-                                                        <option value="LCA">Lào Cai (LCA)</option>
-                                                        <option value="TMT">Trại Mát (TMT)</option>
-                                                        <option value="HGI">Hà Giang (HGI)</option>
-                                                        <option value="VIN">Vinh (VIN)</option>
-                                                        <option value="BMT">Buôn Ma Thuột (BMT)</option>
+                                                    <select id="from-station" name="GaDi" class="station-dropdown">
+                                                        <option value="Hà Nội">Hà Nội (HNO)</option>
+                                                        <option value="Sài Gòn">Sài Gòn (SGO)</option>
+                                                        <option value="Đà Nẵng">Đà Nẵng (DNA)</option>
+                                                        <option value="Huế">Huế (HUE)</option>
+                                                        <option value="Nha Trang">Nha Trang (NTR)</option>
+                                                        <option value="Phan Thiết">Phan Thiết (PTH)</option>
+                                                        <option value="Hải Phòng">Hải Phòng (HPH)</option>
+                                                        <option value="Đà Lạt">Đà Lạt (DLT)</option>
+                                                        <option value="Vũng Tàu">Vũng Tàu (VTU)</option>
+                                                        <option value="Đồng Hới">Đồng Hới (DHI)</option>
+                                                        <option value="Lào Cai">Lào Cai (LCA)</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -64,22 +60,18 @@
                                                 <i class="fa fa-train"></i>
                                                 <div class="station-details">
                                                     <div class="label">Ga đến</div>
-                                                    <select id="to-station" name="to-station" class="station-dropdown">
-                                                        <option value="PTH">Phan Thiết (PTH)</option>
-                                                        <option value="SGO">Sài Gòn (SGO)</option>
-                                                        <option value="HNO">Hà Nội (HNO)</option>
-                                                        <option value="DNA">Đà Nẵng (DNA)</option>
-                                                        <option value="HUE">Huế (HUE)</option>
-                                                        <option value="NTR">Nha Trang (NTR)</option>
-                                                        <option value="HPH">Hải Phòng (HPH)</option>
-                                                        <option value="DLT">Đà Lạt (DLT)</option>
-                                                        <option value="VTU">Vũng Tàu (VTU)</option>
-                                                        <option value="DHI">Đồng Hới (DHI)</option>
-                                                        <option value="LCA">Lào Cai (LCA)</option>
-                                                        <option value="TMT">Trại Mát (TMT)</option>
-                                                        <option value="HGI">Hà Giang (HGI)</option>
-                                                        <option value="VIN">Vinh (VIN)</option>
-                                                        <option value="BMT">Buôn Ma Thuột (BMT)</option>
+                                                    <select id="to-station" name="GaDen" class="station-dropdown">
+                                                        <option value="Sài Gòn">Sài Gòn (SGO)</option>
+                                                        <option value="Hà Nội">Hà Nội (HNO)</option>
+                                                        <option value="Đà Nẵng">Đà Nẵng (DNA)</option>
+                                                        <option value="Huế">Huế (HUE)</option>
+                                                        <option value="Nha Trang">Nha Trang (NTR)</option>
+                                                        <option value="Phan Thiết">Phan Thiết (PTH)</option>
+                                                        <option value="Hải Phòng">Hải Phòng (HPH)</option>
+                                                        <option value="Đà Lạt">Đà Lạt (DLT)</option>
+                                                        <option value="Vũng Tàu">Vũng Tàu (VTU)</option>
+                                                        <option value="Đồng Hới">Đồng Hới (DHI)</option>
+                                                        <option value="Lào Cai">Lào Cai (LCA)</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -93,7 +85,7 @@
                                                     <button type="button" id="decrease-tickets" class="quantity-btn">-</button>
                                                     <span id="ticket-count-display" class="quantity">1 vé</span>
                                                     <button type="button" id="increase-tickets" class="quantity-btn">+</button>
-                                                    <input type="hidden" id="ticket-count" name="ticket-count" value="1">
+                                                    <input type="hidden" id="ticket-count" name="SoLuongVe" value="1">
                                                 </div>
                                             </div>
                                         </div>
@@ -103,14 +95,14 @@
                                         <div class="date-picker">
                                             <div class="date-details">
                                                 <label for="depart-date" class="form-label">Ngày đi</label>
-                                                <input type="date" id="depart-date" name="depart-date" class="form-control">
+                                                <input type="date" id="depart-date" name="NgayDi" class="form-control">
                                             </div>
                                         </div>
-                                    
+
                                         <div id="return-date-container" class="date-picker">
                                             <div class="date-details">
                                                 <label for="return-date" class="form-label">Ngày về</label>
-                                                <input type="date" id="return-date" name="return-date" class="form-control">
+                                                <input type="date" id="return-date" name="NgayVe" class="form-control">
                                             </div>
                                         </div>
 
@@ -125,7 +117,6 @@
         </div><!-- end row -->
     </div><!-- end container -->
 </div><!-- end search-tabs -->
-
 <!-- Phần hiển thị bản đồ ga tàu -->
 <div class="map-train">
     <div class="page-heading white-heading">
@@ -142,110 +133,222 @@
             <h2 style="color:black;">DANH MỤC VÉ TÀU</h2>
             <hr class="heading-line" />
         </div><!-- end page-heading -->
+        <!-- Hiển thị thông báo lỗi nếu có -->
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
+
         <div class="ticket-grid">
-            <!-- Hàng 1 -->
-            <div class="ticket-card">
-                <div class="route">
-                    <div class="origin">Sài Gòn</div>
-                    <div class="trip-info">
-                        <div class="time">8h20p</div>
-                        <div class="arrow">→</div>
-                        <div class="train-code">SNT2</div>
+            @try
+            {
+                @if (Model != null && Model.VeTaus != null && Model.VeTaus.Any())
+                {
+                    @foreach (var veTau in Model.VeTaus)
+                    {
+                        <div class="ticket-card">
+                            <div class="route">
+                                <div class="origin">@veTau.GaDi</div>
+                                <div class="trip-info">
+                                    <div class="time">@veTau.NgayDi.ToString("HH:mm")</div>
+                                    <div class="arrow">→</div>
+                                    <div class="train-code">@veTau.TenTau</div>
+                                </div>
+                                <div class="destination">@veTau.GaDen</div>
+                            </div>
+                            <div class="ticket-group">
+                                <div class="price">@string.Format("{0:N0}", veTau.GiaVe)<span>VNĐ</span></div>
+                                <a href="@Url.Action("ChiTietVeTau", "VeTau", new { id = veTau.ChuyenTauID })" class="view-button">Xem</a>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <!-- Hiển thị dữ liệu mẫu khi không có dữ liệu thực -->
+                    <div class="ticket-card">
+                        <div class="route">
+                            <div class="origin">Hà Nội</div>
+                            <div class="trip-info">
+                                <div class="time">6:00</div>
+                                <div class="arrow">→</div>
+                                <div class="train-code">SE1</div>
+                            </div>
+                            <div class="destination">Sài Gòn</div>
+                        </div>
+                        <div class="ticket-group">
+                            <div class="price">935.000<span>VNĐ</span></div>
+                            <a href="#" class="view-button">Xem</a>
+                        </div>
                     </div>
-                    <div class="destination">Nha Trang</div>
-                </div>
-                <div class="ticket-group">
-                    <div class="price">385.000<span>VNĐ</span></div>
-                    <button class="view-button">Xem</button>
-                </div>
-            </div>
-            <div class="ticket-card">
-                <div class="route">
-                    <div class="origin">Sài Gòn</div>
-                    <div class="trip-info">
-                        <div class="time">8h20p</div>
-                        <div class="arrow">→</div>
-                        <div class="train-code">SNT2</div>
+                    <div class="ticket-card">
+                        <div class="route">
+                            <div class="origin">Hà Nội</div>
+                            <div class="trip-info">
+                                <div class="time">9:25</div>
+                                <div class="arrow">→</div>
+                                <div class="train-code">SE3</div>
+                            </div>
+                            <div class="destination">Đà Nẵng</div>
+                        </div>
+                        <div class="ticket-group">
+                            <div class="price">750.000<span>VNĐ</span></div>
+                            <a href="#" class="view-button">Xem</a>
+                        </div>
                     </div>
-                    <div class="destination">Nha Trang</div>
-                </div>
-                <div class="ticket-group">
-                    <div class="price">385.000<span>VNĐ</span></div>
-                    <button class="view-button">Xem</button>
-                </div>
-            </div>
-            <div class="ticket-card">
-                <div class="route">
-                    <div class="origin">Sài Gòn</div>
-                    <div class="trip-info">
-                        <div class="time">8h20p</div>
-                        <div class="arrow">→</div>
-                        <div class="train-code">SNT2</div>
+                    <div class="ticket-card">
+                        <div class="route">
+                            <div class="origin">Sài Gòn</div>
+                            <div class="trip-info">
+                                <div class="time">8:20</div>
+                                <div class="arrow">→</div>
+                                <div class="train-code">SNT2</div>
+                            </div>
+                            <div class="destination">Nha Trang</div>
+                        </div>
+                        <div class="ticket-group">
+                            <div class="price">385.000<span>VNĐ</span></div>
+                            <a href="#" class="view-button">Xem</a>
+                        </div>
                     </div>
-                    <div class="destination">Nha Trang</div>
+                }
+            }
+            catch (Exception ex)
+            {
+                <div class="alert alert-danger">Có lỗi xảy ra: @ex.Message</div>
+
+                <!-- Hiển thị dữ liệu mẫu khi có lỗi -->
+                <div class="ticket-card">
+                    <div class="route">
+                        <div class="origin">Hà Nội</div>
+                        <div class="trip-info">
+                            <div class="time">6:00</div>
+                            <div class="arrow">→</div>
+                            <div class="train-code">SE1</div>
+                        </div>
+                        <div class="destination">Sài Gòn</div>
+                    </div>
+                    <div class="ticket-group">
+                        <div class="price">935.000<span>VNĐ</span></div>
+                        <a href="#" class="view-button">Xem</a>
+                    </div>
                 </div>
-                <div class="ticket-group">
-                    <div class="price">385.000<span>VNĐ</span></div>
-                    <button class="view-button">Xem</button>
+                <div class="ticket-card">
+                    <div class="route">
+                        <div class="origin">Hà Nội</div>
+                        <div class="trip-info">
+                            <div class="time">9:25</div>
+                            <div class="arrow">→</div>
+                            <div class="train-code">SE3</div>
+                        </div>
+                        <div class="destination">Đà Nẵng</div>
+                    </div>
+                    <div class="ticket-group">
+                        <div class="price">750.000<span>VNĐ</span></div>
+                        <a href="#" class="view-button">Xem</a>
+                    </div>
                 </div>
-            </div>
+                <div class="ticket-card">
+                    <div class="route">
+                        <div class="origin">Sài Gòn</div>
+                        <div class="trip-info">
+                            <div class="time">8:20</div>
+                            <div class="arrow">→</div>
+                            <div class="train-code">SNT2</div>
+                        </div>
+                        <div class="destination">Nha Trang</div>
+                    </div>
+                    <div class="ticket-group">
+                        <div class="price">385.000<span>VNĐ</span></div>
+                        <a href="#" class="view-button">Xem</a>
+                    </div>
+                </div>
+            }
         </div>
+
+       
     </div>
 </section>
 
 <!-- JavaScript for station swapping functionality -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Thiết lập ngày mặc định cho lịch
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+
+        const formatDate = (date) => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
+        const departDate = document.getElementById('depart-date');
+        const returnDate = document.getElementById('return-date');
+
+        if (departDate && returnDate) {
+            departDate.value = formatDate(today);
+            returnDate.value = formatDate(tomorrow);
+        }
+
         // Swap stations functionality
         const swapButton = document.getElementById('swap-stations');
         const fromStation = document.getElementById('from-station');
         const toStation = document.getElementById('to-station');
-        
-        swapButton.addEventListener('click', function() {
-            const tempValue = fromStation.value;
-            fromStation.value = toStation.value;
-            toStation.value = tempValue;
-        });
-        
+
+        if (swapButton && fromStation && toStation) {
+            swapButton.addEventListener('click', function() {
+                const tempValue = fromStation.value;
+                fromStation.value = toStation.value;
+                toStation.value = tempValue;
+            });
+        }
+
         // Show/hide return date based on trip type
         const roundTrip = document.getElementById('round-trip');
         const oneWay = document.getElementById('one-way');
         const returnDateContainer = document.getElementById('return-date-container');
-        
-        roundTrip.addEventListener('change', function() {
-            if(this.checked) {
-                returnDateContainer.style.display = 'block';
-            }
-        });
-        
-        oneWay.addEventListener('change', function() {
-            if(this.checked) {
-                returnDateContainer.style.display = 'none';
-            }
-        });
-        
+
+        if (roundTrip && oneWay && returnDateContainer) {
+            roundTrip.addEventListener('change', function() {
+                if(this.checked) {
+                    returnDateContainer.style.display = 'block';
+                }
+            });
+
+            oneWay.addEventListener('change', function() {
+                if(this.checked) {
+                    returnDateContainer.style.display = 'none';
+                }
+            });
+        }
+
         // Ticket quantity control
         const decreaseBtn = document.getElementById('decrease-tickets');
         const increaseBtn = document.getElementById('increase-tickets');
         const ticketCount = document.getElementById('ticket-count');
         const ticketCountDisplay = document.getElementById('ticket-count-display');
-        
-        decreaseBtn.addEventListener('click', function() {
-            let count = parseInt(ticketCount.value);
-            if(count > 1) {
-                count--;
-                ticketCount.value = count;
-                ticketCountDisplay.textContent = count + ' vé';
-            }
-        });
-        
-        increaseBtn.addEventListener('click', function() {
-            let count = parseInt(ticketCount.value);
-            if(count < 10) {
-                count++;
-                ticketCount.value = count;
-                ticketCountDisplay.textContent = count + ' vé';
-            }
-        });
+
+        if (decreaseBtn && increaseBtn && ticketCount && ticketCountDisplay) {
+            decreaseBtn.addEventListener('click', function() {
+                let count = parseInt(ticketCount.value);
+                if(count > 1) {
+                    count--;
+                    ticketCount.value = count;
+                    ticketCountDisplay.textContent = count + ' vé';
+                }
+            });
+
+            increaseBtn.addEventListener('click', function() {
+                let count = parseInt(ticketCount.value);
+                if(count < 10) {
+                    count++;
+                    ticketCount.value = count;
+                    ticketCountDisplay.textContent = count + ' vé';
+                }
+            });
+        }
     });
 </script>
