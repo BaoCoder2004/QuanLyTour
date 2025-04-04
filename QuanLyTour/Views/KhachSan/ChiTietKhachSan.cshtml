@@ -1,172 +1,172 @@
-﻿@* @using X.PagedList.Mvc.Core *@
-@* @model QuanLyTour.Models.DetailViewModel *@
-@* @{ *@
-@*     ViewData["Title"] = "Thông tin khach san"; *@
-@*     Layout = "~/Views/Shared/_Detail.cshtml"; *@
-@* } *@
-@* <!--===== INNERPAGE-WRAPPER ====--> *@
-@* <section class="innerpage-wrapper"> *@
-@*     <div id="hotel-details" class="innerpage-section-padding"> *@
-@*         <div class="container"> *@
-@*             <div class="row"> *@
+﻿@using X.PagedList.Mvc.Core 
+@model QuanLyTour.Models.DetailViewModel 
+@{ 
+    ViewData["Title"] = "Thông tin khách sạn"; 
+   Layout = "~/Views/Shared/_Detail.cshtml"; 
+ } 
+<!--===== INNERPAGE-WRAPPER ====--> 
+ <section class="innerpage-wrapper"> 
+     <div id="hotel-details" class="innerpage-section-padding"> 
+         <div class="container"> 
+             <div class="row"> 
 
-@*                 <div class="col-xs-12 col-sm-12 col-md-3 side-bar left-side-bar"> *@
+                 <div class="col-xs-12 col-sm-12 col-md-3 side-bar left-side-bar"> 
 
-@*                     <div class="side-bar-block booking-form-block"> *@
-@*                         <h2 class="selected-price">@Model.KhachSanHienTai.TenKhachSan<span></span></h2> *@
-@*                         <h2 class="selected-price">@Model.KhachSanHienTai.GiaKhachSan.ToString("#,##") <span>VND | 1 người</span></h2> *@
-@*                         @if (Context.Session.GetString("UserName") != null) *@
-@*                         { *@
-@*                             <div class="booking-form"> *@
-@*                                 <h3>BOOKING</h3> *@
-@*                                 <p>Trải nghiệm ngay!</p> *@
+                     <div class="side-bar-block booking-form-block"> 
+                         <h2 class="selected-price">@Model.KhachSanHienTai.TenKhachSan<span></span></h2> 
+                         <h2 class="selected-price">@Model.KhachSanHienTai.GiaKhachSan.ToString("#,##") <span>VND | 1 người</span></h2> 
+                         @if (Context.Session.GetString("UserName") != null) 
+                         { 
+                             <div class="booking-form"> 
+                                 <h3>BOOKING</h3> 
+                                 <p>Trải nghiệm ngay!</p> 
 
-@*                                 @using (Html.BeginForm("DatKhachSan", "KhachSan", new { maKhachSan = Model.KhachSanHienTai.MaKhachSan }, FormMethod.Post)) *@
-@*                                 { *@
-@*                                     <div class="form-group"> *@
-@*                                         @Html.Hidden("MaNguoiDung", (int)ViewBag.MaNguoiDung) *@
-@*                                     </div> *@
-@*                                     <div class="form-group"> *@
-@*                                         @Html.TextBox("TenNguoiDung", (string)ViewBag.TenNguoiDung, *@
-@*                                                  new { @class = "form-control", placeholder = "Tên khách hàng", required = "required" }) *@
-@*                                     </div> *@
-@*                                     <div class="form-group"> *@
-@*                                         @Html.TextBox("SoDienThoai", (string)ViewBag.SoDienThoai, *@
-@*                                                  new { @class = "form-control", placeholder = "Số điện thoại", required = "required" }) *@
-@*                                     </div> *@
-@*                                     <div class="form-group"> *@
-@*                                         @Html.TextBox("DiaChi", (string)ViewBag.DiaChi, *@
-@*                                                  new { @class = "form-control", placeholder = "Địa chỉ", required = "required" }) *@
-@*                                     </div> *@
+                                 @using (Html.BeginForm("DatKhachSan", "KhachSan", new { maKhachSan = Model.KhachSanHienTai.MaKhachSan }, FormMethod.Post)) 
+                                 { 
+                                     <div class="form-group"> 
+                                         @Html.Hidden("MaNguoiDung", (int)ViewBag.MaNguoiDung) 
+                                     </div> 
+                                     <div class="form-group"> 
+                                         @Html.TextBox("TenNguoiDung", (string)ViewBag.TenNguoiDung, 
+                                                  new { @class = "form-control", placeholder = "Tên khách hàng", required = "required" }) 
+                                     </div> 
+                                     <div class="form-group"> 
+                                         @Html.TextBox("SoDienThoai", (string)ViewBag.SoDienThoai, 
+                                                  new { @class = "form-control", placeholder = "Số điện thoại", required = "required" }) 
+                                     </div> 
+                                     <div class="form-group"> 
+                                         @Html.TextBox("DiaChi", (string)ViewBag.DiaChi, 
+                                                  new { @class = "form-control", placeholder = "Địa chỉ", required = "required" }) 
+                                     </div> 
 
-@*                                     <div class="form-group"> *@
-@*                                         <label for="TongTien">Tổng tiền:</label> *@
-@*                                         <input type="text" id="TongTien" class="form-control" readonly placeholder="Tổng tiền sẽ hiển thị ở đây" /> *@
-@*                                     </div> *@
+                                     <div class="form-group"> 
+                                         <label for="TongTien">Tổng tiền:</label> 
+                                         <input type="text" id="TongTien" class="form-control" readonly placeholder="Tổng tiền sẽ hiển thị ở đây" /> 
+                                     </div> 
 
-@*                                     <!-- Thông tin thanh toán --> *@
-@*                                     <h4>Thông tin thanh toán</h4> *@
-@*                                     <div class="form-group"> *@
-@*                                         <label for="SoThe">Số thẻ thanh toán:</label> *@
-@*                                         <input type="text" name="SoThe" id="SoThe" class="form-control" placeholder="Nhập số thẻ thanh toán" required /> *@
-@*                                     </div> *@
-@*                                     <div class="form-group"> *@
-@*                                         <label for="ChuThe">Chủ thẻ:</label> *@
-@*                                         <input type="text" name="ChuThe" id="ChuThe" class="form-control" placeholder="Nhập tên chủ thẻ" required /> *@
-@*                                     </div> *@
+                                     <!-- Thông tin thanh toán --> 
+                                     <h4>Thông tin thanh toán</h4> 
+                                     <div class="form-group"> 
+                                         <label for="SoThe">Số thẻ thanh toán:</label> 
+                                         <input type="text" name="SoThe" id="SoThe" class="form-control" placeholder="Nhập số thẻ thanh toán" required /> 
+                                     </div> 
+                                     <div class="form-group"> 
+                                         <label for="ChuThe">Chủ thẻ:</label> 
+                                         <input type="text" name="ChuThe" id="ChuThe" class="form-control" placeholder="Nhập tên chủ thẻ" required /> 
+                                     </div> 
 
                                    
 
-@*                                     <div class="form-group right-icon"> *@
-@*                                         <select class="form-control"> *@
-@*                                             <option selected>@Model.KhachSanHienTai.TenLoaiKhachSan</option> *@
-@*                                         </select> *@
-@*                                         <i class="fa fa-angle-down"></i> *@
-@*                                     </div> *@
+                                     <div class="form-group right-icon"> 
+                                         <select class="form-control"> 
+                                             <option selected>@Model.KhachSanHienTai.TenLoaiKhachSan</option> 
+                                         </select> 
+                                         <i class="fa fa-angle-down"></i> 
+                                     </div> 
 
-@*                                     <button type="submit" class="btn btn-block btn-orange">Đặt và Thanh toán</button> *@
-@*                                 } *@
-
-
-@*                             </div> *@
-
-@*                             <!-- end booking-form --> *@
-@*                         } *@
-@*                         else *@
-@*                         { *@
-@*                             @using (Html.BeginForm("DangNhap", "Home", FormMethod.Get)) *@
-@*                             { *@
-@*                                 <form> *@
-@*                                     <button class="btn btn-block btn-orange">Đăng nhập để đặt khach san</button> *@
-@*                                 </form> *@
-@*                             } *@
-@*                         } *@
-@*                     </div><!-- end side-bar-block --> *@
+                                     <button type="submit" class="btn btn-block btn-orange">Đặt và Thanh toán</button> 
+                                 } 
 
 
+                             </div> 
+
+                             <!-- end booking-form --> 
+                         } 
+                         else 
+                         { 
+                             @using (Html.BeginForm("DangNhap", "Home", FormMethod.Get)) 
+                             { 
+                                 <form> 
+                                     <butto class="btn btn-block btn-orange">Đăng nhập để đặt khách sạn</butto n> 
+                                 </form> 
+                             } 
+                         } 
+                     </div><!-- end side-bar-block --> 
 
 
-@*                 </div><!-- end columns --> *@
 
-@*                 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 content-side"> *@
-@*                     <div class="detail-slider"> *@
-@*                         <div class="feature-slider"> *@
-@*                             @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh1)) *@
-@*                             { *@
-@*                                 <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh1" class="img-responsive" alt="feature-img" /></div> *@
-@*                             } *@
-@*                             @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh2)) *@
-@*                             { *@
-@*                                 <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh2" class="img-responsive" alt="feature-img" /></div> *@
-@*                             } *@
-@*                             @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh3)) *@
-@*                             { *@
-@*                                 <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh3" class="img-responsive" alt="feature-img" /></div> *@
-@*                             } *@
-@*                         </div><!-- end feature-slider --> *@
 
-@*                         <div class="feature-slider-nav"> *@
-@*                             @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh1)) *@
-@*                             { *@
-@*                                 <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh1" class="img-responsive" alt="feature-thumb" /></div> *@
-@*                             } *@
-@*                             @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh2)) *@
-@*                             { *@
-@*                                 <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh2" class="img-responsive" alt="feature-thumb" /></div> *@
-@*                             } *@
-@*                             @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh3)) *@
-@*                             { *@
-@*                                 <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh3" class="img-responsive" alt="feature-thumb" /></div> *@
-@*                             } *@
-@*                         </div><!-- end feature-slider-nav --> *@
-@*                     </div><!-- end detail-slider --> *@
-@*                     </br> *@
-@*                     </br> *@
-@*                     <div class="available-blocks" id="available-rooms"> *@
-@*                         <h2>Mô tả chi tiết khách sạn</h2> *@
-@*                         <p>@Html.Raw(Model.KhachSanHienTai.MoTa == null ? "" : Model.KhachSanHienTai.MoTa.Replace("\n", "<br>").Replace("\r", ""))</p> *@
-@*                     </div> *@
-@*                     <div class="available-blocks" id="available-rooms"> *@
-@*                         <h2>Ưu đãi của khách sạn</h2> *@
-@*                         <p>@Html.Raw(Model.KhachSanHienTai.LichTrinh == null ? "" : Model.KhachSanHienTai.LichTrinh.Replace("\n", "<br>").Replace("\r", ""))</p> *@
-@*                     </div> *@
-@*                     <div class="available-blocks" id="available-rooms"> *@
-@*                         <h2>Các khách sạn @Model.KhachSanHienTai.TenLoaiKhachSan gợi ý:</h2> *@
+                 </div><!-- end columns --> 
 
-@*                         @foreach (var item in Model.KhachSanTuongTu) *@
-@*                         { *@
-@*                             <div class="list-block main-block room-block"> *@
-@*                                 <div class="list-content"> *@
-@*                                     <div class="main-img list-img room-img"> *@
-@*                                         <a href="#"> *@
-@*                                             <img src="~/hinhanh/@item.HinhAnh1" class="img-responsive" alt="room-img" /> *@
-@*                                         </a> *@
-@*                                         <div class="main-mask"> *@
-@*                                             <ul class="list-unstyled list-inline offer-price-1"> *@
-@*                                                 <li class="price">@item.GiaKhachSan.ToString("#,##") VND<span class="divider">|</span><span class="pkg">1 người</span></li> *@
-@*                                             </ul> *@
-@*                                         </div><!-- end main-mask --> *@
-@*                                     </div><!-- end room-img --> *@
-@*                                     <div class="list-info room-info"> *@
-@*                                         <h3 class="block-title"><a href="@Url.Action("ChiTietKhachSan","KhachSan",new { maKhachSan = item.MaKhachSan, maLoai = item.MaLoaiKhachSan })">@item.TenKhachSan</a></h3> *@
-@*                                         <p class="block-minor">@item.TenKhachSan</p> *@
-@*                                         <p></p> *@
-@*                                         <a href="@Url.Action("ChiTietKhachSan","KhachSan",new { maKhachSan = item.MaKhachSan,maLoai = item.MaLoaiKhachSan })" class="btn btn-orange btn-lg">Xem thêm</a> *@
-@*                                     </div><!-- end room-info --> *@
-@*                                 </div> *@
+                 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 content-side"> 
+                     <div class="detail-slider"> 
+                         <div class="feature-slider"> 
+                             @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh1)) 
+                             { 
+                                 <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh1" class="img-responsive" alt="feature-img" /></div> 
+                             } 
+                             @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh2)) 
+                             { 
+                                 <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh2" class="img-responsive" alt="feature-img" /></div> 
+                             } 
+                             @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh3)) 
+                             { 
+                                 <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh3" class="img-responsive" alt="feature-img" /></div> 
+                             } 
+                         </div><!-- end feature-slider --> 
 
-@*                                 <!-- end list-content --> *@
-@*                             </div> *@
+                         <div class="feature-slider-nav"> 
+                             @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh1)) 
+                             { 
+                                 <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh1" class="img-responsive" alt="feature-thumb" /></div> 
+                             } 
+                             @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh2)) 
+                             { 
+                                 <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh2" class="img-responsive" alt="feature-thumb" /></div> 
+                             } 
+                             @if (!string.IsNullOrEmpty(Model.KhachSanHienTai.HinhAnh3)) 
+                             { 
+                                 <div><img src="~/hinhanh/@Model.KhachSanHienTai.HinhAnh3" class="img-responsive" alt="feature-thumb" /></div> 
+                             } 
+                         </div><!-- end feature-slider-nav --> 
+                     </div><!-- end detail-slider --> 
+                     </br> 
+                     </br> 
+                     <div class="available-blocks" id="available-rooms"> 
+                         <h2>Mô tả chi tiết khách sạn</h2> 
+                         <p>@Html.Raw(Model.KhachSanHienTai.MoTa == null ? "" : Model.KhachSanHienTai.MoTa.Replace("\n", "<br>").Replace("\r", ""))</p> 
+                     </div> 
+                     <div class="available-blocks" id="available-rooms"> 
+                         <h2>Ưu đãi của khách sạn</h2> 
+                         <p>@Html.Raw(Model.KhachSanHienTai.LichTrinh == null ? "" : Model.KhachSanHienTai.LichTrinh.Replace("\n", "<br>").Replace("\r", ""))</p> 
+                     </div> 
+                     <div class="available-blocks" id="available-rooms"> 
+                         <h2>Các khách sạn @Model.KhachSanHienTai.TenLoaiKhachSan gợi ý:</h2> 
 
-@*                             <!-- end room-block --> *@
-@*                         } *@
-@*                     </div><!-- end available-rooms --> *@
-@*                     <div class="text-center"> *@
-@*                         @Html.PagedListPager(Model.KhachSanTuongTu, page => Url.Action("DanhMucKhachSan", new { page, maPhong = Model.KhachSanHienTai.MaKhachSan })) *@
-@*                     </div> *@
-@*                     <!-- end pages --> *@
-@*                 </div><!-- end columns --> *@
-@*             </div><!-- end row --> *@
-@*         </div><!-- end container --> *@
-@*     </div><!-- end hotel-details --> *@
-@* </section><!-- end innerpage-wrapper --> *@
+                         @foreach (var item in Model.KhachSanTuongTu) 
+                         { 
+                             <div class="list-block main-block room-block"> 
+                                 <div class="list-content"> 
+                                     <div class="main-img list-img room-img"> 
+                                         <a href="#"> 
+                                             <img src="~/hinhanh/@item.HinhAnh1" class="img-responsive" alt="room-img" /> 
+                                         </a> 
+                                         <div class="main-mask"> 
+                                             <ul class="list-unstyled list-inline offer-price-1"> 
+                                                 <li class="price">@item.GiaKhachSan.ToString("#,##") VND<span class="divider">|</span><span class="pkg">1 người</span></li> 
+                                             </ul> 
+                                         </div><!-- end main-mask --> 
+                                     </div><!-- end room-img --> 
+                                     <div class="list-info room-info"> 
+                                         <h3 class="block-title"><a href="@Url.Action("ChiTietKhachSan","KhachSan",new { maKhachSan = item.MaKhachSan, maLoai = item.MaLoaiKhachSan })">@item.TenKhachSan</a></h3> 
+                                         <p class="block-minor">@item.TenKhachSan</p> 
+                                         <p></p> 
+                                         <a href="@Url.Action("ChiTietKhachSan","KhachSan",new { maKhachSan = item.MaKhachSan,maLoai = item.MaLoaiKhachSan })" class="btn btn-orange btn-lg">Xem thêm</a> 
+                                     </div><!-- end room-info --> 
+                                 </div> 
+
+                                 <!-- end list-content --> 
+                             </div> 
+
+                             <!-- end room-block --> 
+                         } 
+                     </div><!-- end available-rooms --> 
+                     <div class="text-center"> 
+                         @Html.PagedListPager(Model.KhachSanTuongTu, page => Url.Action("DanhMucKhachSan", new { page, maPhong = Model.KhachSanHienTai.MaKhachSan })) 
+                     </div> 
+                     <!-- end pages --> 
+                 </div><!-- end columns --> 
+             </div><!-- end row --> 
+         </div><!-- end container --> 
+     </div><!-- end hotel-details --> 
+ </section><!-- end innerpage-wrapper --> 
