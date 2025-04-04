@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "Thông tin tour";
     Layout = "~/Views/Shared/_Detail.cshtml";
+
+    // Lấy thông tin đánh giá từ ViewBag hoặc Model
+    var reviews = ViewBag.Reviews as IEnumerable<Review> ?? new List<Review>();
+    var ratingStats = ViewBag.RatingStats as Dictionary<int, int> ?? new Dictionary<int, int>();
+    var totalReviews = ratingStats.Sum(x => x.Value);
+    var averageRating = totalReviews > 0 ? ratingStats.Sum(x => x.Key * x.Value) / (double)totalReviews : 0;
 }
 
 <!--===== INNERPAGE-WRAPPER ====-->
@@ -182,342 +188,183 @@
         </div><!-- end container -->
     </div><!-- end hotel-details -->
 </section><!-- end innerpage-wrapper -->
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <!-- Review Container -->
-            <div class="review-container">
-                <!-- Review Header -->
-                <div class="review-header">
-                    <h2 class="review-title">Đánh giá từ khách hàng</h2>
-                    <div class="review-summary">
-                        <div class="review-rating-big">4.5</div>
-                        <div class="review-rating-details">
-                            <div class="row">
-                                <div class="col-xs-2">5 sao</div>
-                                <div class="col-xs-8">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-2 text-right">75%</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-2">4 sao</div>
-                                <div class="col-xs-8">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 18%"></div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-2 text-right">18%</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-2">3 sao</div>
-                                <div class="col-xs-8">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 5%"></div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-2 text-right">5%</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-2">2 sao</div>
-                                <div class="col-xs-8">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 1%"></div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-2 text-right">1%</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-2">1 sao</div>
-                                <div class="col-xs-8">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 1%"></div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-2 text-right">1%</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Review Form -->
-                <div class="review-form">
-                    <h4>Đánh giá của bạn</h4>
-                    <div class="rating-stars">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-o"></i>
-                    </div>
-                    @using (Html.BeginForm("SubmitReview", "Reviews", FormMethod.Post, new { enctype = "multipart/form-data" }))
+<!-- Phần đánh giá -->
+<div class="available-blocks" id="reviews-section">
+    <div class="review-container">
+        <!-- Review Header -->
+        <div class="review-header">
+            <h2>Đánh giá từ khách hàng</h2>
+            <div class="review-summary">
+                <div class="review-rating-big">@averageRating.ToString("0.0")</div>
+                <div class="review-rating-details">
+                    @for (int i = 5; i >= 1; i--)
                     {
-                        <div class="form-group">
-                            <label for="reviewTitle">Tiêu đề:</label>
-                            <input type="text" class="form-control" id="reviewTitle" name="Title" placeholder="Nhập tiêu đề đánh giá" required>
+                        var count = ratingStats.ContainsKey(i) ? ratingStats[i] : 0;
+                        var percentage = totalReviews > 0 ? (count * 100 / totalReviews) : 0;
+
+                        <div class="row">
+                            <div class="col-xs-2">@i sao</div>
+                            <div class="col-xs-8">
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: @percentage%"></div>
+                                </div>
+                            </div>
+                            <div class="col-xs-2 text-right">@percentage%</div>
                         </div>
-                        <div class="form-group">
-                            <label for="reviewContent">Nội dung:</label>
-                            <textarea class="form-control" id="reviewContent" name="Content" rows="4" placeholder="Chia sẻ trải nghiệm của bạn..." required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Hình ảnh:</label>
-                            <input type="file" id="reviewImages" name="Images" multiple>
-                            <p class="help-block">Tối đa 5 hình ảnh (PNG, JPG)</p>
-                        </div>
-                        <input type="hidden" id="ratingValue" name="Rating" value="4">
-                        <button type="submit" class="btn-form btn-primary">Gửi đánh giá</button>
                     }
                 </div>
-
-                <!-- Sort Options -->
-                <div class="sort-options">
-                    <label>Sắp xếp theo:</label>
-                    @Html.DropDownList("SortOption", new SelectList(new[] { "Mới nhất", "Đánh giá cao nhất", "Đánh giá thấp nhất" }), new { @class = "form-control-sm", @onchange = "document.location.href = '/Reviews/Index?sort=' + this.value" })
-                </div>
-
-                <!-- Review List -->
-                <div class="review-list">
-                    <!-- Review Item 1 -->
-                    <div class="review-item">
-                        <div class="review-item-header">
-                            <div class="review-item-user">Nguyễn Văn A</div>
-                            <div class="review-item-date">20/03/2025</div>
-                        </div>
-                        <div class="review-item-rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="review-item-content">
-                            <strong>Dịch vụ tuyệt vời!</strong>
-                            <p>Khách sạn rất tốt, phòng sạch sẽ và hiện đại. Nhân viên thân thiện và nhiệt tình. Vị trí thuận tiện để đi tham quan các điểm du lịch. Tôi sẽ quay lại vào lần sau.</p>
-                        </div>
-                        <div class="review-item-images">
-                            <div class="review-item-image">
-                                <img src="@Url.Content("~/Content/Images/reviews/review1-1.jpg")" alt="Hình ảnh đánh giá">
-                            </div>
-                            <div class="review-item-image">
-                                <img src="@Url.Content("~/Content/Images/reviews/review1-2.jpg")" alt="Hình ảnh đánh giá">
-                            </div>
-                        </div>
-                        <div class="review-item-actions">
-                            <a href="javascript:void(0);" class="like-review" data-review-id="1"><i class="fa fa-thumbs-up"></i> Hữu ích (<span class="like-count">8</span>)</a>
-                            <a href="javascript:void(0);" class="reply-review" data-review-id="1"><i class="fa fa-comment"></i> Phản hồi</a>
-                        </div>
-                    </div>
-
-                    <!-- Review Item 2 -->
-                    <div class="review-item">
-                        <div class="review-item-header">
-                            <div class="review-item-user">Trần Thị B</div>
-                            <div class="review-item-date">15/03/2025</div>
-                        </div>
-                        <div class="review-item-rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-o"></i>
-                        </div>
-                        <div class="review-item-content">
-                            <strong>Trải nghiệm tốt</strong>
-                            <p>Phòng đẹp và thoáng mát. Bữa sáng đa dạng và ngon miệng. Chỉ tiếc là hồ bơi hơi nhỏ và đông người. Tổng thể vẫn rất hài lòng với dịch vụ.</p>
-                        </div>
-                        <div class="review-item-actions">
-                            <a href="javascript:void(0);" class="like-review" data-review-id="2"><i class="fa fa-thumbs-up"></i> Hữu ích (<span class="like-count">3</span>)</a>
-                            <a href="javascript:void(0);" class="reply-review" data-review-id="2"><i class="fa fa-comment"></i> Phản hồi</a>
-                        </div>
-                    </div>
-
-                    <!-- Review Item 3 -->
-                    <div class="review-item">
-                        <div class="review-item-header">
-                            <div class="review-item-user">Lê Văn C</div>
-                            <div class="review-item-date">10/03/2025</div>
-                        </div>
-                        <div class="review-item-rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-o"></i>
-                            <i class="fa fa-star-o"></i>
-                        </div>
-                        <div class="review-item-content">
-                            <strong>Bình thường</strong>
-                            <p>Vị trí khách sạn thuận tiện nhưng phòng hơi ồn vào buổi tối. Nhân viên phục vụ tốt nhưng đôi khi hơi chậm. Giá cả hợp lý cho chất lượng.</p>
-                        </div>
-                        <div class="review-item-images">
-                            <div class="review-item-image">
-                                <img src="@Url.Content("~/Content/Images/reviews/review3-1.jpg")" alt="Hình ảnh đánh giá">
-                            </div>
-                        </div>
-                        <div class="review-item-actions">
-                            <a href="javascript:void(0);" class="like-review" data-review-id="3"><i class="fa fa-thumbs-up"></i> Hữu ích (<span class="like-count">1</span>)</a>
-                            <a href="javascript:void(0);" class="reply-review" data-review-id="3"><i class="fa fa-comment"></i> Phản hồi</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pagination -->
-                <nav aria-label="Page navigation" class="text-center">
-                    <ul class="pagination center-block" style="display: flex; justify-content: center; margin: 0 auto;">
-                        <li>
-                            <a href="@Url.Action("Index", "Reviews", new { page = 1, sort = ViewBag.CurrentSort })" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="active"><a href="@Url.Action("Index", "Reviews", new { page = 1, sort = ViewBag.CurrentSort })">1</a></li>
-                        <li><a href="@Url.Action("Index", "Reviews", new { page = 2, sort = ViewBag.CurrentSort })">2</a></li>
-                        <li><a href="@Url.Action("Index", "Reviews", new { page = 3, sort = ViewBag.CurrentSort })">3</a></li>
-                        <li><a href="@Url.Action("Index", "Reviews", new { page = 4, sort = ViewBag.CurrentSort })">4</a></li>
-                        <li><a href="@Url.Action("Index", "Reviews", new { page = 5, sort = ViewBag.CurrentSort })">5</a></li>
-                        <li>
-                            <a href="@Url.Action("Index", "Reviews", new { page = 2, sort = ViewBag.CurrentSort })" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </div>
-    </div>
-</div>
 
+        <!-- Review Form -->
+        @if (Context.Session.GetString("UserName") != null)
+        {
+            <div class="review-form">
+                <h4>Đánh giá của bạn</h4>
+                <div class="rating-stars" id="ratingStars">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <i class="fa fa-star-o" data-rating="@i"></i>
+                    }
+                </div>
+                <form asp-action="SubmitReview" asp-controller="DanhGia" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="MaTour" value="@Model.TourHienTai.MaTour" />
+                    <div class="form-group">
+                        <label for="reviewTitle">Tiêu đề:</label>
+                        <input type="text" class="form-control" id="reviewTitle" name="Title" placeholder="Nhập tiêu đề đánh giá" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewContent">Nội dung:</label>
+                        <textarea class="form-control" id="reviewContent" name="Content" rows="4" placeholder="Chia sẻ trải nghiệm của bạn..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Hình ảnh:</label>
+                        <input type="file" id="reviewImages" name="Images" multiple accept="image/*">
+                        <p class="help-block">Tối đa 5 hình ảnh (PNG, JPG)</p>
+                    </div>
+                    <input type="hidden" id="ratingValue" name="Rating" value="0">
+                    <button type="submit" class="btn btn-orange">Gửi đánh giá</button>
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                Vui lòng <a asp-controller="Home" asp-action="DangNhap">đăng nhập</a> để đánh giá.
+            </div>
+        }
+
+        <!-- Review List -->
+        <div class="review-list">
+            @foreach (var review in reviews)
+            {
+                <div class="review-item">
+                    <div class="review-item-header">
+                        <div class="review-item-user">@review.UserName</div>
+                        <div class="review-item-date">@review.ReviewDate.ToString("dd/MM/yyyy")</div>
+                    </div>
+                    <div class="review-item-rating">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <i class="fa @(i <= review.Rating ? "fa-star" : "fa-star-o")"></i>
+                        }
+                    </div>
+                    <div class="review-item-content">
+                        <strong>@review.Title</strong>
+                        <p>@review.Content</p>
+                    </div>
+                    @if (review.ImageUrls != null && review.ImageUrls.Any())
+                    {
+                        <div class="review-item-images">
+                            @foreach (var imageUrl in review.ImageUrls)
+                            {
+                                <div class="review-item-image">
+                                    <img src="@Url.Content(imageUrl)" alt="Hình ảnh đánh giá">
+                                </div>
+                            }
+                        </div>
+                    }
+                    <div class="review-item-actions">
+                        <a href="javascript:void(0);" class="like-review" data-review-id="@review.Id">
+                            <i class="fa fa-thumbs-up"></i> Hữu ích (<span class="like-count">@review.HelpfulCount</span>)
+                        </a>
+                        @if (Context.Session.GetString("UserName") != null)
+                        {
+                            <a href="javascript:void(0);" class="reply-review" data-review-id="@review.Id">
+                                <i class="fa fa-comment"></i> Phản hồi
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Pagination -->
+        @if (ViewBag.TotalPages > 1)
+        {
+            <nav aria-label="Page navigation" class="text-center">
+                <ul class="pagination center-block" style="display: flex; justify-content: center; margin: 0 auto;">
+                    <li>
+                        <a href="@Url.Action("ChiTietTour", new { maTour = Model.TourHienTai.MaTour, page = 1 })" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="@(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a href="@Url.Action("ChiTietTour", new { maTour = Model.TourHienTai.MaTour, page = i })">@i</a>
+                        </li>
+                    }
+                    <li>
+                        <a href="@Url.Action("ChiTietTour", new { maTour = Model.TourHienTai.MaTour, page = ViewBag.TotalPages })" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        }
+    </div>
+</div><!-- end reviews-section -->
+                </div><!-- end columns -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end hotel-details -->
+</section><!-- end innerpage-wrapper -->
 @section scripts {
     <script>
-                $(document).ready(function() {
-            // Xử lý khi người dùng click vào sao đánh giá
-            $('.rating-stars i').click(function() {
-                var index = $(this).index();
-
-                // Reset tất cả các sao về trạng thái không chọn
-                $('.rating-stars i').removeClass('fa-star').addClass('fa-star-o');
-
-                // Đánh dấu các sao đã chọn
-                for (var i = 0; i <= index; i++) {
-                    $('.rating-stars i').eq(i).removeClass('fa-star-o').addClass('fa-star');
-                }
-
-                // Cập nhật giá trị rating
-                $('#ratingValue').val(index + 1);
+        $(document).ready(function() {
+            // Xử lý rating stars
+            $('#ratingStars i').hover(function() {
+                var rating = $(this).data('rating');
+                $('#ratingStars i').each(function(index) {
+                    if (index < rating) {
+                        $(this).removeClass('fa-star-o').addClass('fa-star');
+                    } else {
+                        $(this).removeClass('fa-star').addClass('fa-star-o');
+                    }
+                });
+            }).click(function() {
+                var rating = $(this).data('rating');
+                $('#ratingValue').val(rating);
             });
 
-            // Xử lý sự kiện click vào nút "Hữu ích"
-            $('.like-review').click(function(e) {
-                e.preventDefault();
-                var $this = $(this);
-                var reviewId = $this.data('review-id');
-                var likeCountElement = $this.find('.like-count');
-                var currentLikes = parseInt(likeCountElement.text());
-
-                // Kiểm tra nếu chưa like
-                if (!$this.hasClass('liked')) {
-                    // Hiển thị hiệu ứng khi click
-                    $this.addClass('liked');
-
-                    // Cập nhật trực tiếp giao diện trước
-                    likeCountElement.text(currentLikes + 1);
-
-                    // Gửi yêu cầu AJAX để cập nhật số lượt thích
-                    $.ajax({
-                        url: '/Reviews/LikeReview',
-                        type: 'POST',
-                        data: { id: reviewId },
-                        success: function(result) {
-                            // Đã cập nhật số lượt thích lên server thành công
-                            console.log('Đã thích đánh giá #' + reviewId);
-                        },
-                        error: function(xhr, status, error) {
-                            // Xử lý lỗi: hoàn tác thay đổi trên UI
-                            console.log('Đã xảy ra lỗi khi thích đánh giá: ' + error);
-                            $this.removeClass('liked');
-                            likeCountElement.text(currentLikes);
-                        }
-                    });
-                }
-            });
-
-            // Xử lý sự kiện click vào nút "Phản hồi"
-            $('.reply-review').click(function(e) {
-                e.preventDefault();
+            // Xử lý like review
+            $('.like-review').click(function() {
                 var reviewId = $(this).data('review-id');
-                var reviewItem = $(this).closest('.review-item');
+                var likeElement = $(this).find('.like-count');
 
-                // Đóng các form phản hồi khác nếu có
-                $('.reply-form').remove();
+                $.post('@Url.Action("LikeReview", "DanhGia")', { id: reviewId }, function(data) {
+                    likeElement.text(data.likes);
+                });
+            });
 
-                // Kiểm tra xem form phản hồi đã tồn tại chưa
-                if (reviewItem.find('.reply-form').length === 0) {
-                    // Tạo form phản hồi
-                    var replyForm = $('<div class="reply-form mt-2">' +
-                        '<textarea class="form-control" rows="2" placeholder="Viết phản hồi của bạn..."></textarea>' +
-                        '<div class="reply-btn mt-2">' +
-                        '<button class="btn btn-send btn-sm btn-primary submit-reply" data-review-id="' + reviewId + '">Gửi</button> ' +
-                        '<button class="btn btn-cancel btn-sm btn-default cancel-reply">Hủy</button>' +
-                        '</div>' +
-                        '</div>');
-
-                    // Thêm form vào cuối review item
-                    reviewItem.append(replyForm);
-
-                    // Focus vào textarea
-                    replyForm.find('textarea').focus();
-
-                    // Xử lý sự kiện khi nhấn nút Hủy
-                    replyForm.find('.cancel-reply').click(function() {
-                        replyForm.remove();
-                    });
-
-                    // Xử lý sự kiện khi nhấn nút Gửi
-                    replyForm.find('.submit-reply').click(function() {
-                        var replyContent = replyForm.find('textarea').val();
-                        if (replyContent.trim() !== '') {
-                            // Hiển thị loading
-                            var submitBtn = $(this);
-                            submitBtn.prop('disabled', true).text('Đang gửi...');
-
-                            // Gửi phản hồi bằng AJAX
-                            $.ajax({
-                                url: '/Reviews/SubmitReply',
-                                type: 'POST',
-                                data: {
-                                    reviewId: reviewId,
-                                    content: replyContent
-                                },
-                                success: function(result) {
-                                    // Hiển thị phản hồi mới
-                                    var newReply = $('<div class="review-reply">' +
-                                        '<div class="review-reply-header">' +
-                                        '<div class="review-reply-user">Bạn</div>' +
-                                        '<div class="review-reply-date">Vừa xong</div>' +
-                                        '</div>' +
-                                        '<div class="review-reply-content">' + replyContent + '</div>' +
-                                        '</div>');
-
-                                    // Thêm phản hồi vào trước form
-                                    replyForm.before(newReply);
-
-                                    // Xóa form
-                                    replyForm.remove();
-                                },
-                                error: function(xhr, status, error) {
-                                    // Xử lý lỗi
-                                    alert('Đã xảy ra lỗi khi gửi phản hồi: ' + error);
-                                    submitBtn.prop('disabled', false).text('Gửi');
-                                }
-                            });
-                        } else {
-                            // Báo lỗi nếu nội dung trống
-                            alert('Vui lòng nhập nội dung phản hồi.');
-                        }
-                    });
+            // Xử lý form submit
+            $('form').submit(function() {
+                if ($('#ratingValue').val() == '0') {
+                    alert('Vui lòng chọn số sao đánh giá');
+                    return false;
                 }
+                return true;
             });
         });
     </script>
