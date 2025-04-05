@@ -3632,6 +3632,7 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	margin-right: 15px;
 }
 
+
 .station-input {
 	display: flex;
 	align-items: center;
@@ -3642,6 +3643,9 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	background-color: white;
 }
 
+.icon-change{
+	margin-right: 8px;
+}
 .datepicker-dropdown {
 	padding: 20px !important; /* Tăng khoảng cách trong popup */
 	min-width: 300px !important; /* Đặt kích thước tối thiểu */
@@ -4211,6 +4215,12 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 		
 		color: #666;
 	}
+
+.station-selector-change {
+	flex: 1;
+	position: relative;
+	margin: 0;
+}
 
 .swap-btn {
 	width: 36px;
