@@ -158,14 +158,14 @@
                             </div>
                             <div class="ticket-group">
                                 <div class="price">@string.Format("{0:N0}", veTau.GiaVe)<span>VNĐ</span></div>
-                                <a href="@Url.Action("ChiTietVeTau", "VeTau", new { id = veTau.ChuyenTauID })" class="view-button">Xem</a>
+                                <a href="@Url.Action("ChiTietVeTau", "VeTau", new { chuyenTauID = veTau.ChuyenTauID })" class="view-button">Xem</a>
                             </div>
                         </div>
                     }
                 }
                 else
                 {
-                    <!-- Hiển thị dữ liệu mẫu khi không có dữ liệu thực -->
+                    <!-- Hiển thị dữ liệu mẫu với link giả định -->
                     <div class="ticket-card">
                         <div class="route">
                             <div class="origin">Hà Nội</div>
@@ -178,7 +178,7 @@
                         </div>
                         <div class="ticket-group">
                             <div class="price">935.000<span>VNĐ</span></div>
-                            <a href="#" class="view-button">Xem</a>
+                            <a href="@Url.Action("ChiTietVeTau", "VeTau", new { chuyenTauID = 1 })" class="view-button">Xem</a>
                         </div>
                     </div>
                     <div class="ticket-card">
@@ -193,7 +193,7 @@
                         </div>
                         <div class="ticket-group">
                             <div class="price">750.000<span>VNĐ</span></div>
-                            <a href="#" class="view-button">Xem</a>
+                            <a href="@Url.Action("ChiTietVeTau", "VeTau", new { chuyenTauID = 2 })" class="view-button">Xem</a>
                         </div>
                     </div>
                     <div class="ticket-card">
@@ -208,7 +208,7 @@
                         </div>
                         <div class="ticket-group">
                             <div class="price">385.000<span>VNĐ</span></div>
-                            <a href="#" class="view-button">Xem</a>
+                            <a href="@Url.Action("ChiTietVeTau", "VeTau", new { chuyenTauID = 3 })" class="view-button">Xem</a>
                         </div>
                     </div>
                 }
@@ -216,8 +216,7 @@
             catch (Exception ex)
             {
                 <div class="alert alert-danger">Có lỗi xảy ra: @ex.Message</div>
-
-                <!-- Hiển thị dữ liệu mẫu khi có lỗi -->
+                <!-- Dữ liệu mẫu với link giả định khi có lỗi -->
                 <div class="ticket-card">
                     <div class="route">
                         <div class="origin">Hà Nội</div>
@@ -230,67 +229,53 @@
                     </div>
                     <div class="ticket-group">
                         <div class="price">935.000<span>VNĐ</span></div>
-                        <a href="#" class="view-button">Xem</a>
+                        <a href="@Url.Action("ChiTietVeTau", "VeTau", new { chuyenTauID = 1 })" class="view-button">Xem</a>
                     </div>
                 </div>
                 <div class="ticket-card">
-                    <div class="route">
-                        <div class="origin">Hà Nội</div>
-                        <div class="trip-info">
-                            <div class="time">9:25</div>
-                            <div class="arrow">→</div>
-                            <div class="train-code">SE3</div>
+                        <div class="route">
+                            <div class="origin">Hà Nội</div>
+                            <div class="trip-info">
+                                <div class="time">9:25</div>
+                                <div class="arrow">→</div>
+                                <div class="train-code">SE3</div>
+                            </div>
+                            <div class="destination">Đà Nẵng</div>
                         </div>
-                        <div class="destination">Đà Nẵng</div>
-                    </div>
-                    <div class="ticket-group">
-                        <div class="price">750.000<span>VNĐ</span></div>
-                        <a href="#" class="view-button">Xem</a>
-                    </div>
-                </div>
-                <div class="ticket-card">
-                    <div class="route">
-                        <div class="origin">Sài Gòn</div>
-                        <div class="trip-info">
-                            <div class="time">8:20</div>
-                            <div class="arrow">→</div>
-                            <div class="train-code">SNT2</div>
+                        <div class="ticket-group">
+                            <div class="price">750.000<span>VNĐ</span></div>
+                            <a href="@Url.Action("ChiTietVeTau", "VeTau", new { chuyenTauID = 2 })" class="view-button">Xem</a>
                         </div>
-                        <div class="destination">Nha Trang</div>
                     </div>
-                    <div class="ticket-group">
-                        <div class="price">385.000<span>VNĐ</span></div>
-                        <a href="#" class="view-button">Xem</a>
+                    <div class="ticket-card">
+                        <div class="route">
+                            <div class="origin">Sài Gòn</div>
+                            <div class="trip-info">
+                                <div class="time">8:20</div>
+                                <div class="arrow">→</div>
+                                <div class="train-code">SNT2</div>
+                            </div>
+                            <div class="destination">Nha Trang</div>
+                        </div>
+                        <div class="ticket-group">
+                            <div class="price">385.000<span>VNĐ</span></div>
+                            <a href="@Url.Action("ChiTietVeTau", "VeTau", new { chuyenTauID = 3 })" class="view-button">Xem</a>
+                        </div>
                     </div>
-                </div>
             }
         </div>
-
-       
     </div>
 </section>
 
 <!-- JavaScript for station swapping functionality -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+       document.addEventListener('DOMContentLoaded', function() {
         // Thiết lập ngày mặc định cho lịch
-        const today = new Date();
-        const tomorrow = new Date(today);
-        tomorrow.setDate(today.getDate() + 1);
-
-        const formatDate = (date) => {
+        function formatDate(date) {
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const day = String(date.getDate()).padStart(2, '0');
             return `${year}-${month}-${day}`;
-        };
-
-        const departDate = document.getElementById('depart-date');
-        const returnDate = document.getElementById('return-date');
-
-        if (departDate && returnDate) {
-            departDate.value = formatDate(today);
-            returnDate.value = formatDate(tomorrow);
         }
 
         // Swap stations functionality
@@ -310,18 +295,26 @@
         const roundTrip = document.getElementById('round-trip');
         const oneWay = document.getElementById('one-way');
         const returnDateContainer = document.getElementById('return-date-container');
+        const returnDateInput = document.getElementById('return-date');
 
-        if (roundTrip && oneWay && returnDateContainer) {
+        if (roundTrip && oneWay && returnDateContainer && returnDateInput) {
+            // Set initial state
+            if (oneWay.checked) {
+                returnDateContainer.style.display = 'none';
+            }
+
             roundTrip.addEventListener('change', function() {
-                if(this.checked) {
-                    returnDateContainer.style.display = 'block';
+                returnDateContainer.style.display = 'block';
+                if (!returnDateInput.value) {
+                    const today = new Date();
+                    const tomorrow = new Date(today);
+                    tomorrow.setDate(today.getDate() + 1);
+                    returnDateInput.value = formatDate(tomorrow);
                 }
             });
 
             oneWay.addEventListener('change', function() {
-                if(this.checked) {
-                    returnDateContainer.style.display = 'none';
-                }
+                returnDateContainer.style.display = 'none';
             });
         }
 
@@ -332,24 +325,31 @@
         const ticketCountDisplay = document.getElementById('ticket-count-display');
 
         if (decreaseBtn && increaseBtn && ticketCount && ticketCountDisplay) {
-            decreaseBtn.addEventListener('click', function() {
+            decreaseBtn.addEventListener('click', function(e) {
+                e.preventDefault();
                 let count = parseInt(ticketCount.value);
-                if(count > 1) {
+                if (count > 1) {
                     count--;
                     ticketCount.value = count;
                     ticketCountDisplay.textContent = count + ' vé';
                 }
             });
 
-            increaseBtn.addEventListener('click', function() {
+            increaseBtn.addEventListener('click', function(e) {
+                e.preventDefault();
                 let count = parseInt(ticketCount.value);
-                if(count < 10) {
+                if (count < 10) {
                     count++;
                     ticketCount.value = count;
                     ticketCountDisplay.textContent = count + ' vé';
                 }
             });
         }
-    });
 
+        // Set default dates
+        const departDate = document.getElementById('depart-date');
+        if (departDate && !departDate.value) {
+            departDate.value = formatDate(new Date());
+        }
+    });
 </script>

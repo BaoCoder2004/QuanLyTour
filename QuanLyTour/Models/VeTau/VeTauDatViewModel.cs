@@ -14,6 +14,6 @@
         public string SoDienThoaiLienHe { get; set; } 
         public string EmailLienHe { get; set; } 
         public string? GhiChu { get; set; }
-        public virtual VeTauViewModel? ChuyenTau { get; set; }
+        public virtual VeTauViewModel? ThongTinChuyenTau { get; set; }
     }
 }

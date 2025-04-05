@@ -34,7 +34,7 @@ namespace QuanLyTour.Controllers
 
                     string query = @"
                     SELECT ChuyenTauID, TenTau, GaDi, GaDen, NgayDi, NgayDen, SoLuongVe, GiaVe 
-                    FROM ChuyenTau 
+                    FROM ThongTinChuyenTau 
                     WHERE NgayDi > GETDATE()";
 
                     using (var command = new SqlCommand(query, connection))
@@ -96,7 +96,7 @@ namespace QuanLyTour.Controllers
 
                 // Truy vấn thông tin chuyến tàu hiện tại
                 string sql = "SELECT ChuyenTauID, TenTau, GaDi, GaDen, NgayDi, NgayDen, SoLuongVe, GiaVe " +
-                             "FROM ChuyenTau " +
+                             "FROM ThongTinChuyenTau " +
                              "WHERE ChuyenTauID = @ChuyenTauID";
 
                 using (var command = new SqlCommand(sql, connection))
@@ -115,7 +115,6 @@ namespace QuanLyTour.Controllers
                                 GaDen = !reader.IsDBNull(3) ? reader.GetString(3) : string.Empty,
                                 NgayDi = !reader.IsDBNull(4) ? reader.GetDateTime(4) : DateTime.MinValue,
                                 NgayDen = !reader.IsDBNull(5) ? reader.GetDateTime(5) : DateTime.MinValue,
-                              
                                 GiaVe = !reader.IsDBNull(7) ? reader.GetDecimal(7) : 0
                             };
                         }
@@ -124,7 +123,7 @@ namespace QuanLyTour.Controllers
 
                 // Truy vấn các chuyến tàu tương tự (cùng ga đi và ga đến)
                 string sqlTuongTu = "SELECT ChuyenTauID, TenTau, GaDi, GaDen, NgayDi, NgayDen, SoLuongVe, GiaVe " +
-                                   "FROM ChuyenTau " +
+                                   "FROM ThongTinChuyenTau " +
                                    "WHERE ChuyenTauID != @ChuyenTauID AND GaDi = @GaDi AND GaDen = @GaDen";
 
                 using (var command = new SqlCommand(sqlTuongTu, connection))
@@ -145,7 +144,6 @@ namespace QuanLyTour.Controllers
                                 GaDen = reader.GetString(3),
                                 NgayDi = reader.GetDateTime(4),
                                 NgayDen = reader.GetDateTime(5),
-                               
                                 GiaVe = reader.GetDecimal(7)
                             });
                         }
@@ -180,13 +178,11 @@ namespace QuanLyTour.Controllers
                             GaDen = reader.GetString(3),
                             NgayDi = reader.GetDateTime(4),
                             NgayDen = reader.GetDateTime(5),
-                           
                             GiaVe = reader.GetDecimal(7)
                         });
                     }
                 }
             }
-
             return veTauList;
         }
 
@@ -233,7 +229,7 @@ namespace QuanLyTour.Controllers
                 }
 
                 // Cập nhật số lượng vé còn lại
-                string sqlUpdateVeTau = "UPDATE ChuyenTau SET SoLuongVe = SoLuongVe - 1 WHERE ChuyenTauID = @ChuyenTauID";
+                string sqlUpdateVeTau = "UPDATE ThongTinChuyenTau SET SoLuongVe = SoLuongVe - 1 WHERE ChuyenTauID = @ChuyenTauID";
                 using (var command = new SqlCommand(sqlUpdateVeTau, connection))
                 {
                     command.Parameters.AddWithValue("@ChuyenTauID", ChuyenTauID);
@@ -242,7 +238,7 @@ namespace QuanLyTour.Controllers
 
                 // Tính tổng tiền
                 decimal giaVe = 0;
-                string sqlGetGiaVe = "SELECT GiaVe FROM ChuyenTau WHERE ChuyenTauID = @ChuyenTauID";
+                string sqlGetGiaVe = "SELECT GiaVe FROM ThongTinChuyenTau WHERE ChuyenTauID = @ChuyenTauID";
                 using (var command = new SqlCommand(sqlGetGiaVe, connection))
                 {
                     command.Parameters.AddWithValue("@ChuyenTauID", ChuyenTauID);
@@ -284,7 +280,7 @@ namespace QuanLyTour.Controllers
                     // Truy vấn dữ liệu vé tàu dựa vào từ khóa
                     string query = @"
                     SELECT ChuyenTauID, TenTau, GaDi, GaDen, NgayDi, NgayDen, SoLuongVe, GiaVe
-                    FROM ChuyenTau
+                    FROM ThongTinChuyenTau
                     WHERE (TenTau LIKE @Keyword OR GaDi LIKE @Keyword OR GaDen LIKE @Keyword)";
 
                     using (var command = new SqlCommand(query, connection))
@@ -303,7 +299,6 @@ namespace QuanLyTour.Controllers
                                     GaDen = reader.GetString(3),
                                     NgayDi = reader.GetDateTime(4),
                                     NgayDen = reader.GetDateTime(5),
-                                 
                                     GiaVe = reader.GetDecimal(7)
                                 });
                             }
@@ -348,7 +343,7 @@ namespace QuanLyTour.Controllers
                 SELECT hd.MaHoaDon, hd.MaNguoiDung, hd.ChuyenTauID, ct.TenTau, 
                        hd.TenNguoiDung, hd.NgayDatVe, hd.TongTien, hd.NgayThanhToan
                 FROM HoaDonVeTau hd
-                JOIN ChuyenTau ct ON hd.ChuyenTauID = ct.ChuyenTauID
+                JOIN ThongTinChuyenTau ct ON hd.ChuyenTauID = ct.ChuyenTauID
                 WHERE hd.MaNguoiDung = @MaNguoiDung";
 
                 using (var command = new SqlCommand(sql, connection))
@@ -364,7 +359,6 @@ namespace QuanLyTour.Controllers
                                 MaHoaDon = reader.GetInt32(0),
                                 MaNguoiDung = reader.GetInt32(1),
                                 ChuyenTauID = reader.GetInt32(2),
-                              
                                 TenNguoiDung = !reader.IsDBNull(4) ? reader.GetString(4) : string.Empty,
                                 NgayDatVe = reader.GetDateTime(5),
                                 TongTien = reader.GetDecimal(6),
