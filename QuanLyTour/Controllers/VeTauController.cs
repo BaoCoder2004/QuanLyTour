@@ -24,7 +24,7 @@ namespace QuanLyTour.Controllers
             var tenNguoiDung = HttpContext.Session.GetString("UserName");
             ViewBag.TenNguoiDung = tenNguoiDung;
 
-            var veTaus = new List<VeTauViewModel>();
+            var veTaus = new List<VeMayBayViewModel>();
 
             try
             {
@@ -43,7 +43,7 @@ namespace QuanLyTour.Controllers
                         {
                             while (reader.Read())
                             {
-                                veTaus.Add(new VeTauViewModel
+                                veTaus.Add(new VeMayBayViewModel
                                 {
                                     ChuyenTauID = reader.GetInt32(0),
                                     TenTau = reader.GetString(1),
@@ -64,7 +64,7 @@ namespace QuanLyTour.Controllers
             }
 
             // Tạo ViewModel tổng hợp
-            var viewModel = new VeTauSearchViewModel
+            var viewModel = new VeMayBaySearchViewModel
             {
                 VeTaus = veTaus.ToPagedList(1, 10)
             };
@@ -76,8 +76,8 @@ namespace QuanLyTour.Controllers
         {
             int pageSize = 10;
             int pageNumber = page ?? 1;
-            VeTauViewModel chuyenTau = null;
-            List<VeTauViewModel> chuyenTauTuongTu = new List<VeTauViewModel>();
+            VeMayBayViewModel chuyenTau = null;
+            List<VeMayBayViewModel> chuyenTauTuongTu = new List<VeMayBayViewModel>();
 
             // Lấy thông tin người dùng từ session
             var tenNguoiDung = HttpContext.Session.GetString("UserName");
@@ -107,7 +107,7 @@ namespace QuanLyTour.Controllers
                     {
                         if (reader.Read())
                         {
-                            chuyenTau = new VeTauViewModel
+                            chuyenTau = new VeMayBayViewModel
                             {
                                 ChuyenTauID = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0,
                                 TenTau = !reader.IsDBNull(1) ? reader.GetString(1) : string.Empty,
@@ -136,7 +136,7 @@ namespace QuanLyTour.Controllers
                     {
                         while (reader.Read())
                         {
-                            chuyenTauTuongTu.Add(new VeTauViewModel
+                            chuyenTauTuongTu.Add(new VeMayBayViewModel
                             {
                                 ChuyenTauID = reader.GetInt32(0),
                                 TenTau = reader.GetString(1),
@@ -160,9 +160,9 @@ namespace QuanLyTour.Controllers
         }      
 
         // Hàm lấy danh sách vé tàu
-        private List<VeTauViewModel> GetVeTau(SqlConnection connection, string query)
+        private List<VeMayBayViewModel> GetVeTau(SqlConnection connection, string query)
         {
-            var veTauList = new List<VeTauViewModel>();
+            var veTauList = new List<VeMayBayViewModel>();
 
             using (var command = new SqlCommand(query, connection))
             {
@@ -170,7 +170,7 @@ namespace QuanLyTour.Controllers
                 {
                     while (reader.Read())
                     {
-                        veTauList.Add(new VeTauViewModel
+                        veTauList.Add(new VeMayBayViewModel
                         {
                             ChuyenTauID = reader.GetInt32(0),
                             TenTau = reader.GetString(1),
@@ -269,7 +269,7 @@ namespace QuanLyTour.Controllers
 
         public IActionResult TimKiemVeTau(string keyword, int page = 1, int pageSize = 6)
         {
-            var veTaus = new List<VeTauViewModel>();
+            var veTaus = new List<VeMayBayViewModel>();
 
             try
             {
@@ -291,7 +291,7 @@ namespace QuanLyTour.Controllers
                         {
                             while (reader.Read())
                             {
-                                veTaus.Add(new VeTauViewModel
+                                veTaus.Add(new VeMayBayViewModel
                                 {
                                     ChuyenTauID = reader.GetInt32(0),
                                     TenTau = reader.GetString(1),
