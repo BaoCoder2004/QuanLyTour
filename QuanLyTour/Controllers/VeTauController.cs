@@ -2,7 +2,6 @@
 using Microsoft.Data.SqlClient;
 using QuanLyTour.Models;
 using QuanLyTour.Models.VeTau;
-using X.PagedList;
 using X.PagedList.Extensions;
 
 namespace QuanLyTour.Controllers
@@ -24,7 +23,7 @@ namespace QuanLyTour.Controllers
             var tenNguoiDung = HttpContext.Session.GetString("UserName");
             ViewBag.TenNguoiDung = tenNguoiDung;
 
-            var veTaus = new List<VeMayBayViewModel>();
+            var veTaus = new List<VeTauViewModel>();
 
             try
             {
@@ -43,7 +42,7 @@ namespace QuanLyTour.Controllers
                         {
                             while (reader.Read())
                             {
-                                veTaus.Add(new VeMayBayViewModel
+                                veTaus.Add(new VeTauViewModel
                                 {
                                     ChuyenTauID = reader.GetInt32(0),
                                     TenTau = reader.GetString(1),
@@ -64,7 +63,7 @@ namespace QuanLyTour.Controllers
             }
 
             // Tạo ViewModel tổng hợp
-            var viewModel = new VeMayBaySearchViewModel
+            var viewModel = new VeTauSearchViewModel
             {
                 VeTaus = veTaus.ToPagedList(1, 10)
             };
@@ -76,8 +75,8 @@ namespace QuanLyTour.Controllers
         {
             int pageSize = 10;
             int pageNumber = page ?? 1;
-            VeMayBayViewModel chuyenTau = null;
-            List<VeMayBayViewModel> chuyenTauTuongTu = new List<VeMayBayViewModel>();
+            VeTauViewModel chuyenTau = null;
+            List<VeTauViewModel> chuyenTauTuongTu = new List<VeTauViewModel>();
 
             // Lấy thông tin người dùng từ session
             var tenNguoiDung = HttpContext.Session.GetString("UserName");
@@ -107,7 +106,7 @@ namespace QuanLyTour.Controllers
                     {
                         if (reader.Read())
                         {
-                            chuyenTau = new VeMayBayViewModel
+                            chuyenTau = new VeTauViewModel
                             {
                                 ChuyenTauID = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0,
                                 TenTau = !reader.IsDBNull(1) ? reader.GetString(1) : string.Empty,
@@ -136,7 +135,7 @@ namespace QuanLyTour.Controllers
                     {
                         while (reader.Read())
                         {
-                            chuyenTauTuongTu.Add(new VeMayBayViewModel
+                            chuyenTauTuongTu.Add(new VeTauViewModel
                             {
                                 ChuyenTauID = reader.GetInt32(0),
                                 TenTau = reader.GetString(1),
@@ -160,9 +159,9 @@ namespace QuanLyTour.Controllers
         }      
 
         // Hàm lấy danh sách vé tàu
-        private List<VeMayBayViewModel> GetVeTau(SqlConnection connection, string query)
+        private List<VeTauViewModel> GetVeTau(SqlConnection connection, string query)
         {
-            var veTauList = new List<VeMayBayViewModel>();
+            var veTauList = new List<VeTauViewModel>();
 
             using (var command = new SqlCommand(query, connection))
             {
@@ -170,7 +169,7 @@ namespace QuanLyTour.Controllers
                 {
                     while (reader.Read())
                     {
-                        veTauList.Add(new VeMayBayViewModel
+                        veTauList.Add(new VeTauViewModel
                         {
                             ChuyenTauID = reader.GetInt32(0),
                             TenTau = reader.GetString(1),
@@ -269,7 +268,7 @@ namespace QuanLyTour.Controllers
 
         public IActionResult TimKiemVeTau(string keyword, int page = 1, int pageSize = 6)
         {
-            var veTaus = new List<VeMayBayViewModel>();
+            var veTaus = new List<VeTauViewModel>();
 
             try
             {
@@ -291,7 +290,7 @@ namespace QuanLyTour.Controllers
                         {
                             while (reader.Read())
                             {
-                                veTaus.Add(new VeMayBayViewModel
+                                veTaus.Add(new VeTauViewModel
                                 {
                                     ChuyenTauID = reader.GetInt32(0),
                                     TenTau = reader.GetString(1),

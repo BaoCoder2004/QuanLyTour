@@ -3665,7 +3665,7 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 	cursor: pointer;
 }
 
-.fa-train, .fa-exchange, .fa-user, .fa-calendar {
+.fa-train, .fa-exchange, .fa-user, .fa-calendar, .fa-plane {
 	color: #666;
 	font-size: 20px;
 }
@@ -4212,7 +4212,7 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 }
 
 	.station-selector .fa {
-		
+		font-size: 20px;
 		color: #666;
 	}
 
@@ -4507,3 +4507,101 @@ h1,h2,h3,h4,h5,h6,.main-title a, .flight-info h3 .flight-destination,.blog-post-
 		background-color: #e67a00;
 		color: white;
 	}
+
+
+/* Card styling */
+.flights-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+	margin-top: 20px;
+}
+.flight-card {
+	background-color: white;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	border: 1px solid #e6e6e6;
+	display: flex;
+	flex-direction: column;
+}
+	.flight-card:hover {
+		transition: box-shadow .5s ease-in-out;
+		box-shadow: 2px 4px 6px 2px #0003, 0 2px 4px -1px #0003 !important;
+		box-shadow: 2px 4px 6px 2px #0003, 0 2px 4px -1px #0003 !important;
+	}
+
+.flight-route {
+	padding: 15px;
+	border-bottom: 1px solid #f0f0f0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.cities {
+	font-size: 15px;
+	font-weight: 600;
+	color: #222;
+	display: flex;
+	align-items: center;
+}
+
+.arrow {
+	margin: 0 6px;
+	color: #666;
+}
+
+.airline-logo {
+	height: 20px;
+	width: auto;
+}
+
+.flight-dates {
+	padding: 12px 15px;
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 1px solid #f0f0f0;
+	background-color: #fafafa;
+}
+
+.date {
+	font-size: 14px;
+	color: #555;
+}
+
+.flight-price {
+	padding: 15px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.price {
+	font-size: 18px;
+	font-weight: 700;
+	color: #00B9F2;
+}
+
+.currency {
+	font-size: 14px;
+	color: #00B9F2;
+	font-weight: normal;
+}
+
+
+/* Responsive design */
+@media (max-width: 992px) {
+	.flights-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 576px) {
+	.flights-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+
+

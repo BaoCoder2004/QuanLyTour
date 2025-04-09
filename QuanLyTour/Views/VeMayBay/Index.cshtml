@@ -14,464 +14,259 @@
                         💥 Bạn đang tìm kiếm một địa điểm du lịch đẹp và thú vị để khám phá? <br />
                         👉 Nhiều địa điểm du lịch đầy màu sắc, nơi bạn có thể tận hưởng thiên nhiên hoang dã, tham gia các hoạt động giải trí và thưởng thức ẩm thực đặc trưng của địa phương
                     <p> ⚡️  Hãy đến và trải nghiệm cùng HANOITOUR của chúng tôi! </p>
-                    <a href="@Url.Action("DanhMucTour","Tour")" class="btn btn-w-border">Xem ngay</a>
 
                     <div class="search-form-container" style="margin-top:20px">
                         <div class="row">
-                            <form id="search-form" action="@Url.Action("TimKiemTour", "Home")" method="get">
-                                <!-- Ô nhập địa điểm -->
-                                <div class="col-xs-12 col-md-4" style="padding-right: 5px; margin-bottom: 10px;">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" style="background-color: white; border-right: none;"><i class="fa fa-map-marker"></i></span>
-                                        <input type="text" name="keyword" class="form-control input-lg" placeholder="Bạn muốn đi đâu?" style="height: 46px; border-left: none;" required>
-                                    </div>
+                            <form id="search-form" class="search-container" method="post" action="@Url.Action("TimKiemVeMayBay", "VeMayBay")">
+                                <div class="trip-type">
+                                    <label class="trip-option">
+                                        <input type="radio" name="tripType" id="round-trip" checked>
+                                        <span class="radio-label">Khứ hồi</span>
+                                    </label>
+                                    <label class="trip-option">
+                                        <input type="radio" name="tripType" id="one-way">
+                                        <span class="radio-label">Một chiều</span>
+                                    </label>
                                 </div>
 
-                                <!-- Ô chọn ngày -->
-                                <div class="col-xs-12 col-md-3" style="padding-right: 5px; padding-left: 5px; margin-bottom: 10px;">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" style="background-color: white; border-right: none;"><i class="fa fa-calendar"></i></span>
-                                        <input type="date" class="form-control input-lg" placeholder="Ngày khởi hành" style="height: 46px; border-left: none;">
-                                    </div>
-                                </div>
+                                <div class="search-form">
+                                    <div class="form-row">
+                                        <div class="station-selector">
+                                            <div class="station-input">
+                                                <i class="fa fa-plane"></i>
+                                                <div class="station-details">
+                                                    <div class="label">Chiều đi</div>
+                                                    <select id="from-station" name="GaDi" class="station-dropdown">
+                                                        <option value="Hà Nội">Hà Nội (HNO)</option>
+                                                        <option value="Sài Gòn">Sài Gòn (SGO)</option>
+                                                        <option value="Đà Nẵng">Đà Nẵng (DNA)</option>
+                                                        <option value="Huế">Huế (HUE)</option>
+                                                        <option value="Nha Trang">Nha Trang (NTR)</option>
+                                                        <option value="Phan Thiết">Phan Thiết (PTH)</option>
+                                                        <option value="Hải Phòng">Hải Phòng (HPH)</option>
+                                                        <option value="Đà Lạt">Đà Lạt (DLT)</option>
+                                                        <option value="Vũng Tàu">Vũng Tàu (VTU)</option>
+                                                        <option value="Đồng Hới">Đồng Hới (DHI)</option>
+                                                        <option value="Lào Cai">Lào Cai (LCA)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
-                                <!-- Ô chọn nơi khởi hành -->
-                                <div class="col-xs-12 col-md-3" style="padding-right: 5px; padding-left: 5px; margin-bottom: 10px;">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" style="background-color: white; border-right: none;"><i class="fa fa-plane"></i></span>
-                                        <select class="form-control input-lg" style="height: 46px; border-left: none;">
-                                            <option selected>Khởi hành từ</option>
-                                            <option>Hồ Chí Minh</option>
-                                            <option>Hà Nội</option>
-                                            <option>Đà Nẵng</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                            <div id="swap-stations" class="swap-button">
+                                                <i class="fa fa-exchange"></i>
+                                            </div>
 
-                                <!-- Nút tìm kiếm -->
-                                <div class="col-xs-12 col-md-2" style="padding-left: 5px; margin-top: -10px;">
-                                    <button type="submit" class="btn btn-warning btn-lg" style="background-color: #ff8c00; border-color: #ff8c00; height: 46px; width: 100%; font-weight: bold;">TÌM</button>
+                                            <div class="station-input">
+                                                <i class="fa fa-plane"></i>
+                                                <div class="station-details">
+                                                    <div class="label">Chiều đến</div>
+                                                    <select id="to-station" name="GaDen" class="station-dropdown">
+                                                        <option value="Sài Gòn">Sài Gòn (SGO)</option>
+                                                        <option value="Hà Nội">Hà Nội (HNO)</option>
+                                                        <option value="Đà Nẵng">Đà Nẵng (DNA)</option>
+                                                        <option value="Huế">Huế (HUE)</option>
+                                                        <option value="Nha Trang">Nha Trang (NTR)</option>
+                                                        <option value="Phan Thiết">Phan Thiết (PTH)</option>
+                                                        <option value="Hải Phòng">Hải Phòng (HPH)</option>
+                                                        <option value="Đà Lạt">Đà Lạt (DLT)</option>
+                                                        <option value="Vũng Tàu">Vũng Tàu (VTU)</option>
+                                                        <option value="Đồng Hới">Đồng Hới (DHI)</option>
+                                                        <option value="Lào Cai">Lào Cai (LCA)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="ticket-quantity">
+                                            <i class="fa fa-user"></i>
+                                            <div class="quantity-details">
+                                                <div class="label">Số lượng vé</div>
+                                                <div class="quantity-control">
+                                                    <button type="button" id="decrease-tickets" class="quantity-btn">-</button>
+                                                    <span id="ticket-count-display" class="quantity">1 vé</span>
+                                                    <button type="button" id="increase-tickets" class="quantity-btn">+</button>
+                                                    <input type="hidden" id="ticket-count" name="SoLuongVe" value="1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="date-picker">
+                                            <div class="date-details">
+                                                <label for="depart-date" class="form-label">Ngày đi</label>
+                                                <input type="date" id="depart-date" name="NgayDi" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div id="return-date-container" class="date-picker">
+                                            <div class="date-details-">
+                                                <label for="return-date" class="form-label">Ngày về</label>
+                                                <input type="date" id="return-date" name="NgayVe" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="search-button">TÌM KIẾM</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div><!-- end row -->
     </div><!-- end container -->
 </div><!-- end search-tabs -->
 <!-- Thêm phần đặt vé máy bay -->
-<section class="section-padding flight-booking-section">
+<section class="flight-booking-section">
     <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="page-heading white-heading">
-                    <h2 style="color:black;">ĐẶT VÉ MÁY BAY</h2>
-                    <hr class="heading-line" />
+        <div class="page-heading white-heading">
+            <h2 style="color:black;">DANH MỤC VÉ MÁY BAY</h2>
+            <hr class="heading-line" />
+        </div><!-- end page-heading -->
+
+        <!-- Row 1 - Three flight cards per row -->
+        <div class="flights-grid">
+            <!-- Flight 1 -->
+            <div class="flight-card">
+                <div class="flight-route">
+                    <div class="cities">
+                        Quy Nhơn <span class="arrow">⇄</span> Hồ Chí Minh
+                    </div>
+                    <img class="airline-logo" src="/hinhanh/VietravelAirlines.png" alt="Vietravel Airlines">
                 </div>
-
-                <div class="flight-booking-container">
-                    <!-- Form tìm kiếm chuyến bay -->
-                    <div class="flight-search-form">
-                        <!-- Loại hành trình -->
-                        <div class="trip-type-selector">
-                            <label class="radio-container">
-                                <input type="radio" name="TripType" value="RoundTrip" checked id="roundtripRadio">
-                                <span class="radio-label">Khứ hồi</span>
-                            </label>
-                            <label class="radio-container">
-                                <input type="radio" name="TripType" value="OneWay" id="onewayRadio">
-                                <span class="radio-label">Một chiều</span>
-                            </label>
-                        </div>
-
-                        <!-- Các ô input tìm kiếm -->
-                        <div class="search-inputs">
-                            <!-- Điểm đi -->
-                            <div class="input-group flight-input">
-                                <label for="fromLocation">Điểm đi</label>
-                                <div class="input-with-icon">
-                                    <i class="fa fa-map-marker"></i>
-                                    <input type="text"
-                                           id="fromLocation"
-                                           name="FromLocation"
-                                           value="Hồ Chí Minh (SGN)"
-                                           placeholder="Chọn điểm đi"
-                                           autocomplete="off"
-                                           required />
-                                </div>
-                                <div class="location-suggestions" id="fromLocationSuggestions"></div>
-                            </div>
-
-                            <!-- Điểm đến -->
-                            <div class="input-group flight-input">
-                                <label for="toLocation">Điểm đến</label>
-                                <div class="input-with-icon">
-                                    <i class="fa fa-map-marker"></i>
-                                    <input type="text"
-                                           id="toLocation"
-                                           name="ToLocation"
-                                           value="Hà Nội (HAN)"
-                                           placeholder="Chọn điểm đến"
-                                           autocomplete="off"
-                                           required />
-                                </div>
-                                <div class="location-suggestions" id="toLocationSuggestions"></div>
-                            </div>
-
-                            <!-- Ngày đi và về -->
-                            <div class="dates-container">
-                                <!-- Ngày đi -->
-                                <div class="input-group flight-input">
-                                    <label for="departDate">Ngày đi</label>
-                                    <div class="input-with-icon">
-                                        <i class="fa fa-calendar"></i>
-                                        <input type="text"
-                                               id="departDate"
-                                               name="DepartDate"
-                                               class="datepicker"
-                                               placeholder="Chọn ngày đi"
-                                               autocomplete="off"
-                                               required />
-                                    </div>
-                                </div>
-
-                                <!-- Ngày về -->
-                                <div class="input-group flight-input return-date">
-                                    <label for="returnDate">Ngày về</label>
-                                    <div class="input-with-icon">
-                                        <i class="fa fa-calendar"></i>
-                                        <input type="text"
-                                               id="returnDate"
-                                               name="ReturnDate"
-                                               class="datepicker"
-                                               placeholder="Chọn ngày về"
-                                               autocomplete="off" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Số lượng hành khách -->
-                            <div class="input-group flight-input">
-                                <label for="passengerDropdown">Hành khách</label>
-                                <div class="input-with-icon dropdown">
-                                    <i class="fa fa-users"></i>
-                                    <input type="text"
-                                           id="passengerDisplay"
-                                           readonly
-                                           value="1 Người lớn"
-                                           data-toggle="dropdown" />
-                                    <i class="fa fa-chevron-down"></i>
-
-                                    <div class="dropdown-menu" id="passengerDropdown">
-                                        <div class="passenger-selector">
-                                            <div class="passenger-type">
-                                                <span>Người lớn</span>
-                                                <div class="quantity-selector">
-                                                    <button type="button" class="quantity-btn minus" data-type="adult">-</button>
-                                                    <input type="number" name="AdultCount" id="adultCount" value="1" min="1" max="9" readonly />
-                                                    <button type="button" class="quantity-btn plus" data-type="adult">+</button>
-                                                </div>
-                                            </div>
-                                            <div class="passenger-type">
-                                                <span>Trẻ em (2-11 tuổi)</span>
-                                                <div class="quantity-selector">
-                                                    <button type="button" class="quantity-btn minus" data-type="child">-</button>
-                                                    <input type="number" name="ChildCount" id="childCount" value="0" min="0" max="9" readonly />
-                                                    <button type="button" class="quantity-btn plus" data-type="child">+</button>
-                                                </div>
-                                            </div>
-                                            <div class="passenger-type">
-                                                <span>Em bé (< 2 tuổi)</span>
-                                                <div class="quantity-selector">
-                                                    <button type="button" class="quantity-btn minus" data-type="infant">-</button>
-                                                    <input type="number" name="InfantCount" id="infantCount" value="0" min="0" max="4" readonly />
-                                                    <button type="button" class="quantity-btn plus" data-type="infant">+</button>
-                                                </div>
-                                            </div>
-                                            <button type="button" class="apply-btn">Áp dụng</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Nút tìm kiếm chuyến bay -->
-                        <div class="search-btn-container">
-                            <button type="submit" class="search-flights-btn">
-                                <i class="fa fa-search"></i>
-                                Tìm chuyến bay
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Các tuyến bay phổ biến -->
-                    <div class="popular-routes">
-                        <h3>Các tuyến bay phổ biến</h3>
-                        <div class="routes-grid">
-                            <div class="route-card">
-                                <div class="route-info">
-                                    <h4>Hồ Chí Minh → Hà Nội</h4>
-                                    <p>Chỉ từ <strong>699,000 đ</strong></p>
-                                </div>
-                                <a href="#" class="book-now-btn">Đặt ngay</a>
-                            </div>
-                            <div class="route-card">
-                                <div class="route-info">
-                                    <h4>Hồ Chí Minh → Đà Nẵng</h4>
-                                    <p>Chỉ từ <strong>599,000 đ</strong></p>
-                                </div>
-                                <a href="#" class="book-now-btn">Đặt ngay</a>
-                            </div>
-                            <div class="route-card">
-                                <div class="route-info">
-                                    <h4>Hà Nội → Đà Nẵng</h4>
-                                    <p>Chỉ từ <strong>499,000 đ</strong></p>
-                                </div>
-                                <a href="#" class="book-now-btn">Đặt ngay</a>
-                            </div>
-                            <div class="route-card">
-                                <div class="route-info">
-                                    <h4>Hà Nội → Phú Quốc</h4>
-                                    <p>Chỉ từ <strong>899,000 đ</strong></p>
-                                </div>
-                                <a href="#" class="book-now-btn">Đặt ngay</a>
-                            </div>
-                        </div>
-                    </div>
+                <div class="flight-dates">
+                    <div class="date">07 thg 10</div>
+                    <div class="date">08 thg 10</div>
+                </div>
+                <div class="flight-price">
+                    <div class="price">1.376.000 <span class="currency">VND</span></div>
+                    <a href="@Url.Action("ChiTietVeMayBay", "VeMayBay", new { chuyenTauID = 1 })" class="view-button">Xem</a>
                 </div>
             </div>
+
+            <!-- Flight 2 -->
+            <div class="flight-card">
+                <div class="flight-route">
+                    <div class="cities">
+                        Hồ Chí Minh <span class="arrow">⇄</span> Đà Nẵng
+                    </div>
+                    <img class="airline-logo" src="/hinhanh/VietravelAirlines.png" alt="Vietravel Airlines">
+                </div>
+                <div class="flight-dates">
+                    <div class="date">16 thg 09</div>
+                    <div class="date">19 thg 09</div>
+                </div>
+                <div class="flight-price">
+                    <div class="price">1.396.000 <span class="currency">VND</span></div>
+                    <a href="@Url.Action("ChiTietVeMayBay", "VeMayBay", new { chuyenTauID = 1 })" class="view-button">Xem</a>
+                </div>
+            </div>
+
+            <!-- Flight 3 -->
+            <div class="flight-card">
+                <div class="flight-route">
+                    <div class="cities">
+                        Hà Nội <span class="arrow">⇄</span> Đà Nẵng
+                    </div>
+                    <img class="airline-logo" src="~/hinhanh/VietravelAirlines.png" alt="Vietravel Airlines">
+                </div>
+                <div class="flight-dates">
+                    <div class="date">09 thg 09</div>
+                    <div class="date">18 thg 09</div>
+                </div>
+                <div class="flight-price">
+                    <div class="price">1.504.000 <span class="currency">VND</span></div>
+                    <a href="@Url.Action("ChiTietVeMayBay", "VeMayBay", new { chuyenTauID = 1 })" class="view-button">Xem</a>
+                </div>
+            </div>
+
         </div>
     </div>
 </section>
 
-<section class="section-padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="page-heading white-heading">
-                    <h2 style="color:black;">DANH MỤC TOUR DU LỊCH</h2>
-                    <hr class="heading-line" />
-                </div><!-- end page-heading -->
-                @if (Model != null && Model.ToursTrongNuoc.Any())
-                {
-                    <div class="owl-carousel owl-theme owl-custom-arrow" id="owl-hotel-offers">
-                        @foreach (var tour in Model.ToursTrongNuoc)
-                        {
-                            <div class="item">
-                                <div class="tour-card">
-                                    <div class="tour-img-container">
-                                        <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">
-                                            <img src="@Url.Content($"~/hinhanh/{tour.HinhAnh1}")" class="img-responsive" alt="@tour.TenTour" />
-                                        </a>
-                                    </div>
-                                    <div class="tour-info">
-                                        <h4>
-                                            <a href="@Url.Action("ChiTietTour","Tour",new {maTour = tour.MaTour, maLoai = tour.MaLoaiTour})">@tour.TenTour</a>
-                                        </h4>
-                                        <div class="tour-duration-container">
-                                            <div class="tour-duration">
-                                                <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
-                                                <div>@($"{tour.SoNgay}")</div>
-                                            </div>
-                                            <div class="transportation-icons">
-                                                <i class="fa fa-plane" aria-hidden="true"></i>
-                                                <i class="fa fa-bus" aria-hidden="true"></i>
-                                                <i class="fa fa-train" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                        <div class="tour-highlights">
-                                            <div>@($"Điểm đến: {tour.DiaDiem}")</div>
-                                        </div>
-                                        <div class="tour-price">
-                                            <div>@tour.GiaTour.ToString("#,##0") VNĐ</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <p class="text-center danger">Không có tour mới nào để hiển thị.</p>
-                }
+<script>
+       document.addEventListener('DOMContentLoaded', function() {
+        // Thiết lập ngày mặc định cho lịch
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
 
-                <div class="view-all text-center">
-                    <a href="@Url.Action("DanhMucTour","Tour")" class="btn btn-orange">Xem nhiều hơn</a>
-                </div><!-- end view-all -->
-            </div><!-- end columns -->
-        </div><!-- end row -->
-    </div><!-- end container -->
-</section><!-- end hotel-offers -->
-@section Scripts {
-    <script>
-        $(document).ready(function() {
-            // Toggle one-way/round-trip
-            $('#onewayRadio').change(function() {
-                if ($(this).is(':checked')) {
-                    $('.return-date').addClass('disabled');
-                    $('#returnDate').prop('disabled', true);
-                }
+        // Swap stations functionality
+        const swapButton = document.getElementById('swap-stations');
+        const fromStation = document.getElementById('from-station');
+        const toStation = document.getElementById('to-station');
+
+        if (swapButton && fromStation && toStation) {
+            swapButton.addEventListener('click', function() {
+                const tempValue = fromStation.value;
+                fromStation.value = toStation.value;
+                toStation.value = tempValue;
             });
+        }
 
-            $('#roundtripRadio').change(function() {
-                if ($(this).is(':checked')) {
-                    $('.return-date').removeClass('disabled');
-                    $('#returnDate').prop('disabled', false);
-                }
-            });
+        // Show/hide return date based on trip type
+        const roundTrip = document.getElementById('round-trip');
+        const oneWay = document.getElementById('one-way');
+        const returnDateContainer = document.getElementById('return-date-container');
+        const returnDateInput = document.getElementById('return-date');
 
-            // Initialize datepickers
-            $('.datepicker').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-                startDate: new Date(),
-                language: 'vi'
-            });
-
-            // Đặt giá trị mặc định cho datepicker
-            var today = new Date();
-            var dd = String(today.getDate()).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0');
-            var yyyy = today.getFullYear();
-            var todayFormatted = dd + '/' + mm + '/' + yyyy;
-
-            $('#departDate').val(todayFormatted);
-
-            // Ngày về mặc định là 7 ngày sau
-            var returnDate = new Date();
-            returnDate.setDate(returnDate.getDate() + 7);
-            var returnDD = String(returnDate.getDate()).padStart(2, '0');
-            var returnMM = String(returnDate.getMonth() + 1).padStart(2, '0');
-            var returnYYYY = returnDate.getFullYear();
-            var returnFormatted = returnDD + '/' + returnMM + '/' + returnYYYY;
-
-            $('#returnDate').val(returnFormatted);
-
-            // Passenger selector functionality
-            $('.quantity-btn.plus').click(function() {
-                var type = $(this).data('type');
-                var input = $('#' + type + 'Count');
-                var currentVal = parseInt(input.val());
-                var max = parseInt(input.attr('max'));
-
-                if (currentVal < max) {
-                    input.val(currentVal + 1);
-                    updatePassengerDisplay();
-                }
-            });
-
-            $('.quantity-btn.minus').click(function() {
-                var type = $(this).data('type');
-                var input = $('#' + type + 'Count');
-                var currentVal = parseInt(input.val());
-                var min = parseInt(input.attr('min'));
-
-                if (currentVal > min) {
-                    input.val(currentVal - 1);
-                    updatePassengerDisplay();
-                }
-            });
-
-            $('.apply-btn').click(function() {
-                updatePassengerDisplay();
-                $('#passengerDropdown').removeClass('show');
-            });
-
-            function updatePassengerDisplay() {
-                var adultCount = parseInt($('#adultCount').val());
-                var childCount = parseInt($('#childCount').val());
-                var infantCount = parseInt($('#infantCount').val());
-
-                var displayText = adultCount + ' Người lớn';
-
-                if (childCount > 0) {
-                    displayText += ', ' + childCount + ' Trẻ em';
-                }
-
-                if (infantCount > 0) {
-                    displayText += ', ' + infantCount + ' Em bé';
-                }
-
-                $('#passengerDisplay').val(displayText);
+        if (roundTrip && oneWay && returnDateContainer && returnDateInput) {
+            // Set initial state
+            if (oneWay.checked) {
+                returnDateContainer.style.display = 'none';
             }
 
-            // Toggle dropdown
-            $('#passengerDisplay').click(function(e) {
+            roundTrip.addEventListener('change', function() {
+                returnDateContainer.style.display = 'block';
+                if (!returnDateInput.value) {
+                    const today = new Date();
+                    const tomorrow = new Date(today);
+                    tomorrow.setDate(today.getDate() + 1);
+                    returnDateInput.value = formatDate(tomorrow);
+                }
+            });
+
+            oneWay.addEventListener('change', function() {
+                returnDateContainer.style.display = 'none';
+            });
+        }
+
+        // Ticket quantity control
+        const decreaseBtn = document.getElementById('decrease-tickets');
+        const increaseBtn = document.getElementById('increase-tickets');
+        const ticketCount = document.getElementById('ticket-count');
+        const ticketCountDisplay = document.getElementById('ticket-count-display');
+
+        if (decreaseBtn && increaseBtn && ticketCount && ticketCountDisplay) {
+            decreaseBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                $('#passengerDropdown').toggleClass('show');
-            });
-
-            // Close dropdown when clicking outside
-            $(document).on('click', function(e) {
-                if (!$(e.target).closest('.dropdown').length) {
-                    $('#passengerDropdown').removeClass('show');
+                let count = parseInt(ticketCount.value);
+                if (count > 1) {
+                    count--;
+                    ticketCount.value = count;
+                    ticketCountDisplay.textContent = count + ' vé';
                 }
             });
 
-            // Location suggestions
-            var airports = [
-                { code: 'SGN', city: 'Hồ Chí Minh' },
-                { code: 'HAN', city: 'Hà Nội' },
-                { code: 'DAD', city: 'Đà Nẵng' },
-                { code: 'PQC', city: 'Phú Quốc' },
-                { code: 'CXR', city: 'Nha Trang' },
-                { code: 'VCS', city: 'Côn Đảo' },
-                { code: 'VCA', city: 'Cần Thơ' },
-                { code: 'HPH', city: 'Hải Phòng' },
-                { code: 'HUI', city: 'Huế' }
-            ];
-
-            function showSuggestions(input, suggestionBox) {
-                var query = input.val().toLowerCase();
-                if (query.length < 2) {
-                    suggestionBox.html('').hide();
-                    return;
-                }
-
-                var filtered = airports.filter(function(airport) {
-                    return airport.city.toLowerCase().includes(query) ||
-                           airport.code.toLowerCase().includes(query);
-                });
-
-                var html = '';
-                filtered.forEach(function(airport) {
-                    html += '<div class="suggestion-item" data-code="' + airport.code + '">' +
-                            airport.city + ' (' + airport.code + ')</div>';
-                });
-
-                suggestionBox.html(html).show();
-            }
-
-            $('#fromLocation').on('input', function() {
-                showSuggestions($(this), $('#fromLocationSuggestions'));
-            });
-
-            $('#toLocation').on('input', function() {
-                showSuggestions($(this), $('#toLocationSuggestions'));
-            });
-
-            $(document).on('click', '.suggestion-item', function() {
-                var value = $(this).text();
-                var parent = $(this).closest('.input-group');
-
-                if (parent.find('#fromLocation').length) {
-                    $('#fromLocation').val(value);
-                    $('#fromLocationSuggestions').hide();
-                } else {
-                    $('#toLocation').val(value);
-                    $('#toLocationSuggestions').hide();
+            increaseBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                let count = parseInt(ticketCount.value);
+                if (count < 10) {
+                    count++;
+                    ticketCount.value = count;
+                    ticketCountDisplay.textContent = count + ' vé';
                 }
             });
+        }
 
-            // Hide suggestions when clicking outside
-            $(document).on('click', function(e) {
-                if (!$(e.target).closest('.input-group').length) {
-                    $('.location-suggestions').hide();
-                }
-            });
-        });
-    </script>
-}
+        // Set default dates
+        const departDate = document.getElementById('depart-date');
+        if (departDate && !departDate.value) {
+            departDate.value = formatDate(new Date());
+        }
+    });
+</script>
