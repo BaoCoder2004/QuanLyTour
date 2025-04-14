@@ -1,5 +1,6 @@
 ﻿@using QuanLyTour.Models.VeMayBay
-@model VeMayBayViewModel
+@model VeMayBayIndexViewModel
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -14,100 +15,43 @@
                         💥 Bạn đang tìm kiếm một địa điểm du lịch đẹp và thú vị để khám phá? <br />
                         👉 Nhiều địa điểm du lịch đầy màu sắc, nơi bạn có thể tận hưởng thiên nhiên hoang dã, tham gia các hoạt động giải trí và thưởng thức ẩm thực đặc trưng của địa phương
                     <p> ⚡️  Hãy đến và trải nghiệm cùng HANOITOUR của chúng tôi! </p>
+                    <a href="@Url.Action("DanhMucVeMayBay","VeMayBay")" class="btn btn-w-border">Xem ngay</a>
 
-                    <div class="search-form-container" style="margin-top:20px">
+                    <<div class="search-form-container" style="margin-top:20px">
                         <div class="row">
-                            <form id="search-form" class="search-container" method="post" action="@Url.Action("TimKiemVeMayBay", "VeMayBay")">
-                                <div class="trip-type">
-                                    <label class="trip-option">
-                                        <input type="radio" name="tripType" id="round-trip" checked>
-                                        <span class="radio-label">Khứ hồi</span>
-                                    </label>
-                                    <label class="trip-option">
-                                        <input type="radio" name="tripType" id="one-way">
-                                        <span class="radio-label">Một chiều</span>
-                                    </label>
+                            <form id="search-form" action="@Url.Action("TimKiemVeMayBay", "VeMayBay")" method="get">
+                                <!-- Ô nhập địa điểm -->
+                                <div class="col-xs-12 col-md-4" style="padding-right: 5px; margin-bottom: 10px;">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" style="background-color: white; border-right: none;"><i class="fa fa-map-marker"></i></span>
+                                        <input type="text" name="keyword" class="form-control input-lg" placeholder="Bạn muốn đi đâu?" style="height: 46px; border-left: none;" required>
+                                    </div>
                                 </div>
 
-                                <div class="search-form">
-                                    <div class="form-row">
-                                        <div class="station-selector">
-                                            <div class="station-input">
-                                                <i class="fa fa-plane"></i>
-                                                <div class="station-details">
-                                                    <div class="label">Chiều đi</div>
-                                                    <select id="from-station" name="GaDi" class="station-dropdown">
-                                                        <option value="Hà Nội">Hà Nội (HNO)</option>
-                                                        <option value="Sài Gòn">Sài Gòn (SGO)</option>
-                                                        <option value="Đà Nẵng">Đà Nẵng (DNA)</option>
-                                                        <option value="Huế">Huế (HUE)</option>
-                                                        <option value="Nha Trang">Nha Trang (NTR)</option>
-                                                        <option value="Phan Thiết">Phan Thiết (PTH)</option>
-                                                        <option value="Hải Phòng">Hải Phòng (HPH)</option>
-                                                        <option value="Đà Lạt">Đà Lạt (DLT)</option>
-                                                        <option value="Vũng Tàu">Vũng Tàu (VTU)</option>
-                                                        <option value="Đồng Hới">Đồng Hới (DHI)</option>
-                                                        <option value="Lào Cai">Lào Cai (LCA)</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div id="swap-stations" class="swap-button">
-                                                <i class="fa fa-exchange"></i>
-                                            </div>
-
-                                            <div class="station-input">
-                                                <i class="fa fa-plane"></i>
-                                                <div class="station-details">
-                                                    <div class="label">Chiều đến</div>
-                                                    <select id="to-station" name="GaDen" class="station-dropdown">
-                                                        <option value="Sài Gòn">Sài Gòn (SGO)</option>
-                                                        <option value="Hà Nội">Hà Nội (HNO)</option>
-                                                        <option value="Đà Nẵng">Đà Nẵng (DNA)</option>
-                                                        <option value="Huế">Huế (HUE)</option>
-                                                        <option value="Nha Trang">Nha Trang (NTR)</option>
-                                                        <option value="Phan Thiết">Phan Thiết (PTH)</option>
-                                                        <option value="Hải Phòng">Hải Phòng (HPH)</option>
-                                                        <option value="Đà Lạt">Đà Lạt (DLT)</option>
-                                                        <option value="Vũng Tàu">Vũng Tàu (VTU)</option>
-                                                        <option value="Đồng Hới">Đồng Hới (DHI)</option>
-                                                        <option value="Lào Cai">Lào Cai (LCA)</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="ticket-quantity">
-                                            <i class="fa fa-user"></i>
-                                            <div class="quantity-details">
-                                                <div class="label">Số lượng vé</div>
-                                                <div class="quantity-control">
-                                                    <button type="button" id="decrease-tickets" class="quantity-btn">-</button>
-                                                    <span id="ticket-count-display" class="quantity">1 vé</span>
-                                                    <button type="button" id="increase-tickets" class="quantity-btn">+</button>
-                                                    <input type="hidden" id="ticket-count" name="SoLuongVe" value="1">
-                                                </div>
-                                            </div>
-                                        </div>
+                                <!-- Ô chọn ngày -->
+                                <div class="col-xs-12 col-md-3" style="padding-right: 5px; padding-left: 5px; margin-bottom: 10px;">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" style="background-color: white; border-right: none;"><i class="fa fa-calendar"></i></span>
+                                        <input type="date" class="form-control input-lg" placeholder="Ngày khởi hành" style="height: 46px; border-left: none;">
                                     </div>
+                                </div>
 
-                                    <div class="form-row">
-                                        <div class="date-picker">
-                                            <div class="date-details">
-                                                <label for="depart-date" class="form-label">Ngày đi</label>
-                                                <input type="date" id="depart-date" name="NgayDi" class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div id="return-date-container" class="date-picker">
-                                            <div class="date-details-">
-                                                <label for="return-date" class="form-label">Ngày về</label>
-                                                <input type="date" id="return-date" name="NgayVe" class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <button type="submit" class="search-button">TÌM KIẾM</button>
+                                <!-- Ô chọn nơi khởi hành -->
+                                <div class="col-xs-12 col-md-3" style="padding-right: 5px; padding-left: 5px; margin-bottom: 10px;">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" style="background-color: white; border-right: none;"><i class="fa fa-plane"></i></span>
+                                        <select class="form-control input-lg" style="height: 46px; border-left: none;">
+                                            <option selected>Khởi hành từ</option>
+                                            <option>Hồ Chí Minh</option>
+                                            <option>Hà Nội</option>
+                                            <option>Đà Nẵng</option>
+                                        </select>
                                     </div>
+                                </div>
+
+                                <!-- Nút tìm kiếm -->
+                                <div class="col-xs-12 col-md-2" style="padding-left: 5px; margin-top: -10px;">
+                                    <button type="submit" class="btn btn-warning btn-lg" style="background-color: #ff8c00; border-color: #ff8c00; height: 46px; width: 100%; font-weight: bold;">TÌM KIẾM</button>
                                 </div>
                             </form>
                         </div>
@@ -117,156 +61,66 @@
         </div><!-- end row -->
     </div><!-- end container -->
 </div><!-- end search-tabs -->
-<!-- Thêm phần đặt vé máy bay -->
-<section class="flight-booking-section">
+<section class="section-padding">
     <div class="container">
-        <div class="page-heading white-heading">
-            <h2 style="color:black;">DANH MỤC VÉ MÁY BAY</h2>
-            <hr class="heading-line" />
-        </div><!-- end page-heading -->
-
-        <!-- Row 1 - Three flight cards per row -->
-        <div class="flights-grid">
-            <!-- Flight 1 -->
-            <div class="flight-card">
-                <div class="flight-route">
-                    <div class="cities">
-                        Quy Nhơn <span class="arrow">⇄</span> Hồ Chí Minh
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-heading white-heading">
+                    <h2 style="color:black;">DANH SÁCH VÉ MÁY BAY</h2>
+                    <hr class="heading-line" />
+                </div><!-- end page-heading -->
+                @if (Model != null && Model.VeMayBaysNoiDia.Any())
+                {
+                    <div class="owl-carousel owl-theme owl-custom-arrow" id="owl-flight-offers">
+                        @foreach (var ve in Model.VeMayBaysNoiDia)
+                        {
+                            <div class="item">
+                                <div class="hotel-card">
+                                    <!-- Bạn có thể đổi class thành flight-card nếu muốn -->
+                                    <div class="hotel-img-container text-center">
+                                        <a href="@Url.Action("ChiTietVeMayBay","VeMayBay", new { maVe = ve.MaVe })">
+                                            <img src="@Url.Content($"~/hinhanh/{ve.LogoUrl}")"
+                                                 class="img-responsive"
+                                                 alt="@ve.TenHang"
+                                                 style="max-height:60px; margin:0 auto;" />
+                                        </a>
+                                    </div>
+                                    <div class="hotel-info">
+                                        <h4>
+                                            <a href="@Url.Action("ChiTietVeMayBay","VeMayBay", new { maVe = ve.MaVe })">
+                                                @ve.MaChuyenBay – @ve.HangVe
+                                            </a>
+                                        </h4>
+                                        <div class="hotel-duration-container">
+                                            <div class="hotel-group">
+                                                <i class="fa fa-plane" aria-hidden="true"></i>
+                                                <span style="margin-left:5px;">
+                                                    @ve.DiemDi → @ve.DiemDen
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="hotel-highlights" style="margin-top:10px;">
+                                            <div>Khởi hành: @ve.GioKhoiHanh.ToString("dd/MM/yyyy HH:mm")</div>
+                                            <div>Hạ cánh: @ve.GioHaCanh.ToString("dd/MM/yyyy HH:mm")</div>
+                                        </div>
+                                        <div class="hotel-price" style="margin-top:10px;">
+                                            <strong>@ve.TongTien.ToString("#,##0") VNĐ</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
-                    <img class="airline-logo" src="/hinhanh/VietravelAirlines.png" alt="Vietravel Airlines">
-                </div>
-                <div class="flight-dates">
-                    <div class="date">07 thg 10</div>
-                    <div class="date">08 thg 10</div>
-                </div>
-                <div class="flight-price">
-                    <div class="price">1.376.000 <span class="currency">VND</span></div>
-                    <a href="@Url.Action("ChiTietVeMayBay", "VeMayBay", new { chuyenTauID = 1 })" class="view-button">Xem</a>
-                </div>
-            </div>
-
-            <!-- Flight 2 -->
-            <div class="flight-card">
-                <div class="flight-route">
-                    <div class="cities">
-                        Hồ Chí Minh <span class="arrow">⇄</span> Đà Nẵng
-                    </div>
-                    <img class="airline-logo" src="/hinhanh/VietravelAirlines.png" alt="Vietravel Airlines">
-                </div>
-                <div class="flight-dates">
-                    <div class="date">16 thg 09</div>
-                    <div class="date">19 thg 09</div>
-                </div>
-                <div class="flight-price">
-                    <div class="price">1.396.000 <span class="currency">VND</span></div>
-                    <a href="@Url.Action("ChiTietVeMayBay", "VeMayBay", new { chuyenTauID = 1 })" class="view-button">Xem</a>
-                </div>
-            </div>
-
-            <!-- Flight 3 -->
-            <div class="flight-card">
-                <div class="flight-route">
-                    <div class="cities">
-                        Hà Nội <span class="arrow">⇄</span> Đà Nẵng
-                    </div>
-                    <img class="airline-logo" src="~/hinhanh/VietravelAirlines.png" alt="Vietravel Airlines">
-                </div>
-                <div class="flight-dates">
-                    <div class="date">09 thg 09</div>
-                    <div class="date">18 thg 09</div>
-                </div>
-                <div class="flight-price">
-                    <div class="price">1.504.000 <span class="currency">VND</span></div>
-                    <a href="@Url.Action("ChiTietVeMayBay", "VeMayBay", new { chuyenTauID = 1 })" class="view-button">Xem</a>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<script>
-       document.addEventListener('DOMContentLoaded', function() {
-        // Thiết lập ngày mặc định cho lịch
-        function formatDate(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-
-        // Swap stations functionality
-        const swapButton = document.getElementById('swap-stations');
-        const fromStation = document.getElementById('from-station');
-        const toStation = document.getElementById('to-station');
-
-        if (swapButton && fromStation && toStation) {
-            swapButton.addEventListener('click', function() {
-                const tempValue = fromStation.value;
-                fromStation.value = toStation.value;
-                toStation.value = tempValue;
-            });
-        }
-
-        // Show/hide return date based on trip type
-        const roundTrip = document.getElementById('round-trip');
-        const oneWay = document.getElementById('one-way');
-        const returnDateContainer = document.getElementById('return-date-container');
-        const returnDateInput = document.getElementById('return-date');
-
-        if (roundTrip && oneWay && returnDateContainer && returnDateInput) {
-            // Set initial state
-            if (oneWay.checked) {
-                returnDateContainer.style.display = 'none';
-            }
-
-            roundTrip.addEventListener('change', function() {
-                returnDateContainer.style.display = 'block';
-                if (!returnDateInput.value) {
-                    const today = new Date();
-                    const tomorrow = new Date(today);
-                    tomorrow.setDate(today.getDate() + 1);
-                    returnDateInput.value = formatDate(tomorrow);
                 }
-            });
-
-            oneWay.addEventListener('change', function() {
-                returnDateContainer.style.display = 'none';
-            });
-        }
-
-        // Ticket quantity control
-        const decreaseBtn = document.getElementById('decrease-tickets');
-        const increaseBtn = document.getElementById('increase-tickets');
-        const ticketCount = document.getElementById('ticket-count');
-        const ticketCountDisplay = document.getElementById('ticket-count-display');
-
-        if (decreaseBtn && increaseBtn && ticketCount && ticketCountDisplay) {
-            decreaseBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                let count = parseInt(ticketCount.value);
-                if (count > 1) {
-                    count--;
-                    ticketCount.value = count;
-                    ticketCountDisplay.textContent = count + ' vé';
+                else
+                {
+                    <p class="text-center danger">Không có vé máy bay mới nào để hiển thị.</p>
                 }
-            });
 
-            increaseBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                let count = parseInt(ticketCount.value);
-                if (count < 10) {
-                    count++;
-                    ticketCount.value = count;
-                    ticketCountDisplay.textContent = count + ' vé';
-                }
-            });
-        }
-
-        // Set default dates
-        const departDate = document.getElementById('depart-date');
-        if (departDate && !departDate.value) {
-            departDate.value = formatDate(new Date());
-        }
-    });
-</script>
+                <div class="view-all text-center">
+                    <a href="@Url.Action("DanhMucVeMayBay","VeMayBay")" class="btn btn-orange">Xem nhiều hơn</a>
+                </div><!-- end view-all -->
+            </div><!-- end columns -->
+        </div><!-- end row -->
+    </div><!-- end container -->
+</section><!-- end hotel-offers -->

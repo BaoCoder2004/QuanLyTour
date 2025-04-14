@@ -1,628 +1,194 @@
 ﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
 @model QuanLyTour.Models.DetailViewModel
+
 @{
-    ViewData["Title"] = "Tìm kiếm vé máy bay";
+    ViewData["Title"] = "Thông tin vé máy bay";
     Layout = "~/Views/Shared/_Detail.cshtml";
 }
-<!--===== INNERPAGE-WRAPPER ====-->
-<!-- Search Container -->
-<div class="search-container">
-    <div class="container">
-        <div class="search-form">
-            <div class="form-section">
-                <div class="trip-type">
-                    <div class="trip-option active" id="oneWay">Một chiều</div>
-                    <div class="trip-option" id="roundTrip">Khứ hồi</div>
-                    <div class="trip-option" id="multiCity">Nhiều thành phố</div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label>Chọn chuyến bay</label>
-                            <div class="direction-selection-flight">
-                                <div class="station-selector-flight">
-                                    <i class="fa fa-plane-departure icon-change"></i>
-                                    <select class="form-control" id="departureStation">
-                                        <option value="SGN" selected>TP HCM (SGN)</option>
-                                        <option value="HAN">Hà Nội (HAN)</option>
-                                        <option value="DAD">Đà Nẵng (DAD)</option>
-                                        <option value="CXR">Nha Trang (CXR)</option>
-                                        <option value="PQC">Phú Quốc (PQC)</option>
-                                        <option value="HUI">Huế (HUI)</option>
-                                    </select>
+<section class="innerpage-wrapper">
+    <div id="flight-details" class="innerpage-section-padding">
+        <div class="container">
+            <div class="row">
+                <!-- Cột bên trái: Form booking -->
+                <div class="col-xs-12 col-sm-12 col-md-3 side-bar left-side-bar">
+                    <div class="side-bar-block booking-form-block">
+                        @if (Model.VeMayBayHienTai != null)
+                        {
+                            <h2 class="selected-price">
+                                @Model.VeMayBayHienTai.MaChuyenBay - @Model.VeMayBayHienTai.HangVe
+                                <span></span>
+                            </h2>
+                            <h2 class="selected-price">
+                                @Model.VeMayBayHienTai.TongTien.ToString("N0") <span>VNĐ</span>
+                            </h2>
+
+                            @if (Context.Session.GetString("UserName") != null)
+                            {
+                                <div class="booking-form">
+                                    <h3>ĐẶT VÉ MÁY BAY</h3>
+                                    <p>Đặt vé ngay để trải nghiệm chuyến bay tuyệt vời!</p>
+
+                                    @using (Html.BeginForm("DatVeMayBay", "VeMayBay", new { maVe = Model.VeMayBayHienTai.MaVe }, FormMethod.Post))
+                                    {
+                                        <div class="form-group">
+                                            @Html.Hidden("MaNguoiDung", (int?)ViewBag.MaNguoiDung)
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.TextBox("TenNguoiDung", (string)ViewBag.UserName,
+                                                     new { @class = "form-control", placeholder = "Tên khách hàng", required = "required" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.TextBox("SoDienThoai", (string)ViewBag.SoDienThoai,
+                                                     new { @class = "form-control", placeholder = "Số điện thoại", required = "required" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.TextBox("DiaChi", (string)ViewBag.DiaChi,
+                                                     new { @class = "form-control", placeholder = "Địa chỉ", required = "required" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="SoLuongVe">Số lượng vé:</label>
+                                            <input type="number" name="SoLuongVe" id="SoLuongVe" class="form-control" min="1" value="1" />
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.TextBox("NgayBay", null,
+                                                     new { @class = "form-control dpd1", placeholder = "Chọn ngày bay", required = "required" })
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="TongTien">Tổng tiền:</label>
+                                            <input type="text" id="TongTien" class="form-control" readonly placeholder="Tổng tiền sẽ hiển thị ở đây" />
+                                        </div>
+
+                                        <!-- Thông tin thanh toán -->
+                                        <h4>Thông tin thanh toán</h4>
+                                        <div class="form-group">
+                                            <label for="SoThe">Số thẻ thanh toán:</label>
+                                            <input type="text" name="SoThe" id="SoThe" class="form-control" placeholder="Nhập số thẻ thanh toán" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="ChuThe">Chủ thẻ:</label>
+                                            <input type="text" name="ChuThe" id="ChuThe" class="form-control" placeholder="Nhập tên chủ thẻ" required />
+                                        </div>
+
+                                        <script>
+                                            var gia = @Model.VeMayBayHienTai.TongTien;
+
+                                            function tinhTongTien() {
+                                                var soLuong = document.getElementById("SoLuong").value || 1;
+                                                document.getElementById("TongTien").value = (gia * soLuong).toLocaleString('vi-VN') + " VNĐ";
+                                            }
+
+                                            document.addEventListener("DOMContentLoaded", tinhTongTien);
+                                            document.getElementById("SoLuong").addEventListener("input", tinhTongTien);
+                                        </script>
+
+                                        <div class="form-group right-icon">
+                                            <select class="form-control">
+                                                <option selected>@Model.VeMayBayHienTai.HangVe</option>
+                                            </select>
+                                            <i class="fa fa-angle-down"></i>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-block btn-orange">Đặt và Thanh toán</button>
+                                    }
                                 </div>
-                                <button class="swap-btn" id="swapStations">
-                                    <i class="fa fa-exchange-alt"></i>
-                                </button>
-                                <div class="station-selector-flight">
-                                    <i class="fa fa-plane-arrival icon-change"></i>
-                                    <select class="form-control" id="arrivalStation">
-                                        <option value="DAD" selected>Đà Nẵng (DAD)</option>
-                                        <option value="SGN">TP HCM (SGN)</option>
-                                        <option value="HAN">Hà Nội (HAN)</option>
-                                        <option value="CXR">Nha Trang (CXR)</option>
-                                        <option value="PQC">Phú Quốc (PQC)</option>
-                                        <option value="HUI">Huế (HUI)</option>
-                                    </select>
-                                </div>
-                            </div>
+                            }
+                            else
+                            {
+                                @using (Html.BeginForm("DangNhap", "Home", FormMethod.Get))
+                                {
+                                    <button class="btn btn-block btn-orange">Đăng nhập để đặt vé</button>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <h3 class="text-danger">Không tìm thấy thông tin vé máy bay.</h3>
+                        }
+                    </div><!-- end booking-form-block -->
+                </div><!-- end col-xs-12 col-sm-12 col-md-3 -->
+                <!-- Phần hiển thị thông tin vé & vé tương tự -->
+                <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 content-side">
+                    @if (Model.VeMayBayHienTai != null)
+                    {
+                        <div class="detail-info">
+                            <h2>Thông tin chuyến bay</h2>
+                            <p>
+                                <strong>Mã chuyến bay:</strong> @Model.VeMayBayHienTai.MaChuyenBay <br />
+                                <strong>Hãng vé:</strong> @Model.VeMayBayHienTai.HangVe <br />
+                                <strong>Hãng hàng không:</strong> @Model.VeMayBayHienTai.TenHang <br />
+                                <strong>Điểm đi:</strong> @Model.VeMayBayHienTai.DiemDi <br />
+                                <strong>Điểm đến:</strong> @Model.VeMayBayHienTai.DiemDen <br />
+                                <strong>Giờ khởi hành:</strong> @Model.VeMayBayHienTai.GioKhoiHanh.ToString("dd/MM/yyyy HH:mm") <br />
+                                <strong>Giờ hạ cánh:</strong> @Model.VeMayBayHienTai.GioHaCanh.ToString("dd/MM/yyyy HH:mm") <br />
+                                <strong>Giá vé:</strong> @Model.VeMayBayHienTai.TongTien.ToString("N0") VNĐ <br />
+                            </p>
+
+                            @* Hiển thị thông tin chiều về nếu có *@
+                            @if (Model.VeMayBayHienTai.GioKhoiHanhVe.HasValue && Model.VeMayBayHienTai.GioHaCanhVe.HasValue)
+                            {
+                                <p>
+                                    <strong>Giờ khởi hành chiều về:</strong> @Model.VeMayBayHienTai.GioKhoiHanhVe.Value.ToString("dd/MM/yyyy HH:mm") <br />
+                                    <strong>Giờ hạ cánh chiều về:</strong> @Model.VeMayBayHienTai.GioHaCanhVe.Value.ToString("dd/MM/yyyy HH:mm") <br />
+                                </p>
+                            }
                         </div>
-                    </div>
 
-                    <div class="col-md-4">
-                        <div class="date-selection-flight">
-                            <div class="form-group">
-                                <label>Ngày đi</label>
-                                <div class="date-input">
-                                    <i class="fa fa-calendar"></i>
-                                    <input type="date" class="form-control" id="departDate" value="2025-09-16">
-                                    <span class="date-display">16/09/2025</span>
-                                </div>
-                            </div>
-                            <div class="form-group return-date">
-                                <label>Ngày về</label>
-                                <div class="date-input">
-                                    <i class="fa fa-calendar"></i>
-                                    <input type="date" class="form-control" id="returnDate" value="2025-09-19">
-                                    <span class="date-display">19/09/2025</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Hành khách</label>
-                            <div class="passenger-dropdown">
-                                <div class="passenger-summary" id="passengerSummary">
-                                    <i class="fa fa-user"></i>
-                                    <span>1 người lớn, 0 trẻ em, 0 em bé</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </div>
-                                <div class="passenger-popup" id="passengerPopup">
-                                    <div class="passenger-type">
-                                        <div class="passenger-label">Người lớn (>12 tuổi)</div>
-                                        <div class="passenger-controls">
-                                            <button type="button" class="btn btn-default" id="decreaseAdult">-</button>
-                                            <input type="text" id="adultCount" value="1" readonly class="form-control text-center">
-                                            <button type="button" class="btn btn-default" id="increaseAdult">+</button>
+                        <div class="available-blocks" id="available-rooms">
+                            <h2>Các vé máy bay gợi ý:</h2>
+                            @if (Model.VeMayBayTuongTu != null && Model.VeMayBayTuongTu.Any())
+                            {
+                                @foreach (var item in Model.VeMayBayTuongTu)
+                                {
+                                    <div class="list-block main-block room-block">
+                                        <div class="list-content">
+                                            <div class="col-sm-6 col-md-4">
+                                                <div class="simple-flight-card">
+                                                    <div class="route d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <strong>@item.DiemDi</strong> ⇄ <strong>@item.DiemDen</strong>
+                                                        </div>
+                                                        <div>
+                                                            <img src="@Url.Content($"~/hinhanh/{item.LogoUrl}")"
+                                                                 class="airline-logo"
+                                                                 alt="@item.TenHang" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="dates">
+                                                        <small>Khởi hành: @item.GioKhoiHanh.ToString("dd/MM/yyyy")</small><br />
+                                                        <small>Hạ cánh: @item.GioHaCanh.ToString("dd/MM/yyyy")</small>
+                                                    </div>
+                                                    <div class="price">
+                                                        <strong>@item.TongTien.ToString("N0") VNĐ</strong>
+                                                    </div>
+                                                    <div class="action text-right">
+                                                        <a href="@Url.Action("ChiTietVeMayBay","VeMayBay",new{maVe=item.MaVe})"
+                                                           class="btn btn-warning btn-sm">Xem</a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="passenger-type">
-                                        <div class="passenger-label">Trẻ em (2-12 tuổi)</div>
-                                        <div class="passenger-controls">
-                                            <button type="button" class="btn btn-default" id="decreaseChild">-</button>
-                                            <input type="text" id="childCount" value="0" readonly class="form-control text-center">
-                                            <button type="button" class="btn btn-default" id="increaseChild">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="passenger-type">
-                                        <div class="passenger-label">Em bé (<2 tuổi)</div>
-                                        <div class="passenger-controls">
-                                            <button type="button" class="btn btn-default" id="decreaseInfant">-</button>
-                                            <input type="text" id="infantCount" value="0" readonly class="form-control text-center">
-                                            <button type="button" class="btn btn-default" id="increaseInfant">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="apply-button">
-                                        <button type="button" class="btn btn-primary" id="applyPassengers">Áp dụng</button>
-                                    </div>
+                                }
+                                <div class="text-center">
+                                    @Html.PagedListPager(Model.VeMayBayTuongTu, page => Url.Action("DanhMucVeMayBay", new { page }))
                                 </div>
-                            </div>
+                            }
+                            else
+                            {
+                                <p class="text-center text-danger">Không có vé máy bay tương tự.</p>
+                            }
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="additional-options">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="flexibleDates">
-                            <label class="form-check-label" for="flexibleDates">
-                                Tìm giá vé +/- 3 ngày
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-search">
-                            <i class="fa fa-search"></i> Tìm kiếm
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Results Container -->
-<div class="results-container">
-    <div class="container">
-        <!-- Results Header -->
-        <div class="results-header">
-            <div class="row">
-                <div class="col-md-9">
-                    <h2 class="results-title">Vé máy bay từ TP HCM đến Đà Nẵng</h2>
-                    <div class="route-display">Thứ 3, 16 tháng 9, 2025 | 1 Hành khách</div>
-                </div>
-                <div class="col-md-3">
-                    <div class="sort-options">
-                        <label>Sắp xếp theo:</label>
-                        <select class="form-control" id="sortOptions">
-                            <option value="price">Giá thấp nhất</option>
-                            <option value="duration">Thời gian bay</option>
-                            <option value="departure">Giờ khởi hành</option>
-                            <option value="arrival">Giờ đến</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Date Navigation -->
-        <div class="date-navigation">
-            <div class="date-scroll-wrapper">
-                <button class="date-scroll-btn left">
-                    <i class="fa fa-chevron-left"></i>
-                </button>
-                <div class="date-options" id="dateOptions">
-                    <!-- Date options will be added dynamically by JavaScript -->
-                </div>
-                <button class="date-scroll-btn right">
-                    <i class="fa fa-chevron-right"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Filter Options -->
-        <div class="filter-options">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="filter-group">
-                        <h4>Hãng hàng không</h4>
-                        <div class="filter-items">
-                            <div class="filter-item">
-                                <input type="checkbox" id="VN" checked>
-                                <label for="VN">Vietnam Airlines</label>
-                            </div>
-                            <div class="filter-item">
-                                <input type="checkbox" id="VJ" checked>
-                                <label for="VJ">Vietjet Air</label>
-                            </div>
-                            <div class="filter-item">
-                                <input type="checkbox" id="BL" checked>
-                                <label for="BL">Pacific Airlines</label>
-                            </div>
-                            <div class="filter-item">
-                                <input type="checkbox" id="QH" checked>
-                                <label for="QH">Bamboo Airways</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="filter-group">
-                        <h4>Giờ khởi hành</h4>
-                        <div class="filter-items">
-                            <div class="filter-item">
-                                <input type="checkbox" id="morning" checked>
-                                <label for="morning">Sáng (00:00 - 11:59)</label>
-                            </div>
-                            <div class="filter-item">
-                                <input type="checkbox" id="afternoon" checked>
-                                <label for="afternoon">Chiều (12:00 - 17:59)</label>
-                            </div>
-                            <div class="filter-item">
-                                <input type="checkbox" id="evening" checked>
-                                <label for="evening">Tối (18:00 - 23:59)</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="filter-group">
-                        <h4>Giá vé</h4>
-                        <div class="price-range">
-                            <div class="price-slider" id="priceSlider"></div>
-                            <div class="price-labels">
-                                <span class="min-price">500,000 VND</span>
-                                <span class="max-price">3,000,000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="filter-group">
-                        <h4>Thời gian bay</h4>
-                        <div class="filter-items">
-                            <div class="filter-item">
-                                <input type="checkbox" id="duration1" checked>
-                                <label for="duration1">Dưới 2 giờ</label>
-                            </div>
-                            <div class="filter-item">
-                                <input type="checkbox" id="duration2" checked>
-                                <label for="duration2">2 - 4 giờ</label>
-                            </div>
-                            <div class="filter-item">
-                                <input type="checkbox" id="duration3" checked>
-                                <label for="duration3">Trên 4 giờ</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Flight Options -->
-        <!-- VietJet Flight Option -->
-        <div class="flight-option">
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="airline-details">
-                        <img src="/images/vietjet-logo.png" alt="VietJet Air" class="airline-logo">
-                        <div class="airline-name">VietJet Air</div>
-                        <div class="flight-code">VJ635</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="station-info">
-                        <div class="time">07:10</div>
-                        <div class="station-code">SGN</div>
-                        <div class="station-name">TP HCM</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="journey-visualization">
-                        <div class="duration">1h 15p</div>
-                        <div class="flight-path">
-                            <div class="flight-line"></div>
-                            <div class="flight-icon"><i class="fa fa-plane"></i></div>
-                        </div>
-                        <div class="flight-type">Bay thẳng</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="station-info">
-                        <div class="time">08:25</div>
-                        <div class="station-code">DAD</div>
-                        <div class="station-name">Đà Nẵng</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="fare-details">
-                        <div class="price">599,000 VND</div>
-                        <div class="fare-type">Eco</div>
-                        <div class="seats-available">Còn 12 chỗ</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <button class="btn btn-select-flight">Chọn</button>
-                    <div class="fare-details-link">
-                        <a href="#" class="show-details">Chi tiết giá vé</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Vietnam Airlines Flight Option -->
-        <div class="flight-option">
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="airline-details">
-                        <img src="/images/vietnam-airlines-logo.png" alt="Vietnam Airlines" class="airline-logo">
-                        <div class="airline-name">Vietnam Airlines</div>
-                        <div class="flight-code">VN120</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="station-info">
-                        <div class="time">10:30</div>
-                        <div class="station-code">SGN</div>
-                        <div class="station-name">TP HCM</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="journey-visualization">
-                        <div class="duration">1h 20p</div>
-                        <div class="flight-path">
-                            <div class="flight-line"></div>
-                            <div class="flight-icon"><i class="fa fa-plane"></i></div>
-                        </div>
-                        <div class="flight-type">Bay thẳng</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="station-info">
-                        <div class="time">11:50</div>
-                        <div class="station-code">DAD</div>
-                        <div class="station-name">Đà Nẵng</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="fare-details">
-                        <div class="price">1,290,000 VND</div>
-                        <div class="fare-type">Eco</div>
-                        <div class="seats-available">Còn 8 chỗ</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <button class="btn btn-select-flight">Chọn</button>
-                    <div class="fare-details-link">
-                        <a href="#" class="show-details">Chi tiết giá vé</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bamboo Airways Flight Option -->
-        <div class="flight-option">
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="airline-details">
-                        <img src="/images/bamboo-logo.png" alt="Bamboo Airways" class="airline-logo">
-                        <div class="airline-name">Bamboo Airways</div>
-                        <div class="flight-code">QH206</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="station-info">
-                        <div class="time">14:45</div>
-                        <div class="station-code">SGN</div>
-                        <div class="station-name">TP HCM</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="journey-visualization">
-                        <div class="duration">1h 15p</div>
-                        <div class="flight-path">
-                            <div class="flight-line"></div>
-                            <div class="flight-icon"><i class="fa fa-plane"></i></div>
-                        </div>
-                        <div class="flight-type">Bay thẳng</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="station-info">
-                        <div class="time">16:00</div>
-                        <div class="station-code">DAD</div>
-                        <div class="station-name">Đà Nẵng</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="fare-details">
-                        <div class="price">899,000 VND</div>
-                        <div class="fare-type">Eco</div>
-                        <div class="seats-available">Còn 5 chỗ</div>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <button class="btn btn-select-flight">Chọn</button>
-                    <div class="fare-details-link">
-                        <a href="#" class="show-details">Chi tiết giá vé</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Trip type toggle
-        const oneWayBtn = document.getElementById('oneWay');
-        const roundTripBtn = document.getElementById('roundTrip');
-        const multiCityBtn = document.getElementById('multiCity');
-        const returnDateDiv = document.querySelector('.return-date');
-
-        oneWayBtn.addEventListener('click', function() {
-            oneWayBtn.classList.add('active');
-            roundTripBtn.classList.remove('active');
-            multiCityBtn.classList.remove('active');
-            returnDateDiv.style.visibility = 'hidden';
-        });
-
-        roundTripBtn.addEventListener('click', function() {
-            roundTripBtn.classList.add('active');
-            oneWayBtn.classList.remove('active');
-            multiCityBtn.classList.remove('active');
-            returnDateDiv.style.visibility = 'visible';
-        });
-
-        multiCityBtn.addEventListener('click', function() {
-            multiCityBtn.classList.add('active');
-            oneWayBtn.classList.remove('active');
-            roundTripBtn.classList.remove('active');
-            returnDateDiv.style.visibility = 'hidden';
-        });
-
-        // Swap stations
-        const swapStationsBtn = document.getElementById('swapStations');
-        swapStationsBtn.addEventListener('click', function() {
-            const departureStation = document.getElementById('departureStation');
-            const arrivalStation = document.getElementById('arrivalStation');
-            const tempValue = departureStation.value;
-
-            departureStation.value = arrivalStation.value;
-            arrivalStation.value = tempValue;
-        });
-
-        // Initialize date selector
-        initializeDateSelector();
-
-        // Date scrolling
-        const leftScrollBtn = document.querySelector('.date-scroll-btn.left');
-        const rightScrollBtn = document.querySelector('.date-scroll-btn.right');
-        const dateOptionsContainer = document.querySelector('.date-options');
-
-        leftScrollBtn.addEventListener('click', function() {
-            dateOptionsContainer.scrollBy({ left: -360, behavior: 'smooth' });
-        });
-
-        rightScrollBtn.addEventListener('click', function() {
-            dateOptionsContainer.scrollBy({ left: 360, behavior: 'smooth' });
-        });
-
-        // Passenger dropdown
-        const passengerSummary = document.getElementById('passengerSummary');
-        const passengerPopup = document.getElementById('passengerPopup');
-
-        passengerSummary.addEventListener('click', function() {
-            passengerPopup.classList.toggle('show');
-        });
-
-        // Close passenger popup when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!passengerSummary.contains(event.target) && !passengerPopup.contains(event.target)) {
-                passengerPopup.classList.remove('show');
-            }
-        });
-
-        // Passenger count buttons
-        setupPassengerCounter('adult', 1, 9);
-        setupPassengerCounter('child', 0, 9);
-        setupPassengerCounter('infant', 0, 4);
-
-        // Apply passenger selection
-        document.getElementById('applyPassengers').addEventListener('click', function() {
-            const adultCount = document.getElementById('adultCount').value;
-            const childCount = document.getElementById('childCount').value;
-            const infantCount = document.getElementById('infantCount').value;
-
-            document.querySelector('#passengerSummary span').textContent =
-                `${adultCount} người lớn, ${childCount} trẻ em, ${infantCount} em bé`;
-            passengerPopup.classList.remove('show');
-        });
-
-        // Format date displays
-        formatDateDisplays();
-    });
-
-    // Initialize date selector with nearby dates
-    function initializeDateSelector() {
-        const dateContainer = document.getElementById('dateOptions');
-        const selectedDate = new Date('2025-09-16');
-
-        // Get the days of week in Vietnamese
-        const days = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
-
-        // Create date options for 7 days before and after the selected date
-        dateContainer.innerHTML = '';
-
-        for (let i = -7; i <= 7; i++) {
-            const currentDate = new Date(selectedDate);
-            currentDate.setDate(selectedDate.getDate() + i);
-
-            const dateOption = document.createElement('div');
-            dateOption.className = 'date-option';
-
-            if (i === 0) {
-                dateOption.classList.add('active');
-            }
-
-            const dayName = days[currentDate.getDay()];
-            const day = currentDate.getDate();
-            const month = currentDate.getMonth() + 1;
-
-            dateOption.innerHTML = `
-                <div class="day-name">${dayName}</div>
-                <div class="date-number">${day}/${month}</div>
-                <div class="price-preview">599K</div>
-            `;
-
-            dateOption.addEventListener('click', function() {
-                // Remove active class from all dates
-                const activeDates = dateContainer.querySelectorAll('.date-option.active');
-                activeDates.forEach(date => date.classList.remove('active'));
-
-                // Add active class to clicked date
-                this.classList.add('active');
-
-                // Update the date display
-                const formattedDate = formatDate(currentDate);
-                document.getElementById('departDate').value = formattedDate;
-                document.querySelector('.results-header .route-display').textContent =
-                    `${getDayName(currentDate)}, ${day} tháng ${month}, 2025 | 1 Hành khách`;
-            });
-
-            dateContainer.appendChild(dateOption);
-        }
-    }
-
-    function getDayName(date) {
-        const days = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
-        return days[date.getDay()];
-    }
-
-    // Format date as yyyy-mm-dd
-    function formatDate(date) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
-
-    // Format date displays
-    function formatDateDisplays() {
-        const departDate = document.getElementById('departDate');
-        const returnDate = document.getElementById('returnDate');
-
-        const formatDateForDisplay = (dateInput) => {
-            const date = new Date(dateInput.value);
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-
-            return `${day}/${month}/${year}`;
-        };
-
-        // Initial format
-        departDate.nextElementSibling.textContent = formatDateForDisplay(departDate);
-        returnDate.nextElementSibling.textContent = formatDateForDisplay(returnDate);
-
-        // Update on change
-        departDate.addEventListener('change', function() {
-            this.nextElementSibling.textContent = formatDateForDisplay(this);
-        });
-
-        returnDate.addEventListener('change', function() {
-            this.nextElementSibling.textContent = formatDateForDisplay(this);
-        });
-    }
-
-    // Setup passenger counter
-    function setupPassengerCounter(type, min, max) {
-        const countInput = document.getElementById(`${type}Count`);
-        const decreaseBtn = document.getElementById(`decrease${type.charAt(0).toUpperCase() + type.slice(1)}`);
-        const increaseBtn = document.getElementById(`increase${type.charAt(0).toUpperCase() + type.slice(1)}`);
-
-        decreaseBtn.addEventListener('click', function() {
-            let currentValue = parseInt(countInput.value);
-            if (currentValue > min) {
-                countInput.value = currentValue - 1;
-            }
-        });
-
-        increaseBtn.addEventListener('click', function() {
-            let currentValue = parseInt(countInput.value);
-            if (currentValue < max) {
-                countInput.value = currentValue + 1;
-            }
-        });
-    }
-</script>
+                    }
+                    else
+                    {
+                        <p class="text-center text-danger">Không tìm thấy vé máy bay này.</p>
+                    }
+                </div><!-- end col-xs-12 col-sm-12 col-md-9 col-lg-9 -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end flight-details -->
+</section>

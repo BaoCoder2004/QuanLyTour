@@ -1,0 +1,126 @@
+﻿@model IPagedList<QuanLyTour.Models.VeMayBay.VeMayBayViewModel>
+@using QuanLyTour.Models.VeMayBay
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+@{
+    ViewData["Title"] = "Quản lý vé máy bay";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    .search-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+        .search-container input[type=text] {
+            padding: 6px;
+            margin-right: 5px;
+        }
+
+        .search-container button {
+            padding: 6px 10px;
+        }
+</style>
+
+<section id="main-content">
+    <section class="wrapper">
+        <section class="panel">
+            <header class="panel-heading">
+                Quản lý vé máy bay
+            </header>
+            <div class="panel-body">
+                <!-- Thêm vé mới -->
+                <a href="@Url.Action("ThemVeMayBayView", "Admin")">
+                    <button type="button" class="btn btn-success mb-3">
+                        <i class="fa fa-plus"></i> Thêm vé mới
+                    </button>
+                </a>
+
+                <!-- Hiển thị thông báo -->
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success" role="alert">
+                        @TempData["Success"]
+                    </div>
+                }
+
+                <!-- Bảng dữ liệu -->
+                <div class="grid cs-style-3">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkAll" /></th>
+                                <th>Mã Vé</th>
+                                <th>Mã Chuyến Bay</th>
+                                <th>Điểm Đi</th>
+                                <th>Điểm Đến</th>
+                                <th>Giờ Khởi Hành</th>
+                                <th>Giờ Hạ Cánh</th>
+                                <th>Giá Vé Gốc</th>
+                                <th>Thuế/Phí</th>
+                                <th>Tổng Tiền</th>
+                                <th>Hành Lý Xách Tay (kg)</th>
+                                <th>Hành Lý Ký Gửi (kg)</th>
+                                <th>Hạng Vé</th>
+                                <th>Trạng Thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var ve in Model)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" class="checkItem" /></td>
+                                    <td>@ve.MaVe</td>
+                                    <td>@ve.MaChuyenBay</td>
+                                    <td>@ve.DiemDi</td>
+                                    <td>@ve.DiemDen</td>
+                                    <td>@ve.GioKhoiHanh.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@ve.GioHaCanh.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@ve.GiaNet.ToString("N0") VNĐ</td>
+                                    <td>@ve.ThuePhi.ToString("N0") VNĐ</td>
+                                    <td>@ve.TongTien.ToString("N0") VNĐ</td>
+                                    <td>@(ve.HanhLyXachTayKg.HasValue ? ve.HanhLyXachTayKg.Value.ToString() : "-")</td>
+                                    <td>@(ve.HanhLyKyGuiKg.HasValue ? ve.HanhLyKyGuiKg.Value.ToString() : "-")</td>
+                                    <td>@ve.HangVe</td>
+                                    <td>@(ve.TrangThai ? "Còn vé" : "Hết vé")</td>
+                                    <td>
+                                        <a href="@Url.Action("SuaVeMayBayView", "Admin", new { maVe = ve.MaVe })" class="btn btn-warning btn-sm">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a href="@Url.Action("XoaVeMayBayView", "Admin", new { maVe = ve.MaVe })" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa vé này?');">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <!-- Phân trang -->
+                    <div class="pagination-container">
+                        @Html.PagedListPager(Model, page => Url.Action("QuanLyVeMayBayView", new { page }), new PagedListRenderOptions { LiElementClasses = new[] { "page-item" }, PageClasses = new[] { "page-link" } })
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+</section>
+
+<script>
+    document.getElementById("checkAll").addEventListener("click", function () {
+        var checkboxes = document.getElementsByClassName("checkItem");
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = this.checked;
+        }
+    });
+</script>

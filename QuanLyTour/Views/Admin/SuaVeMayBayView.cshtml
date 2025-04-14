@@ -1,0 +1,152 @@
+﻿@model QuanLyTour.Models.VeMayBay.VeMayBayViewModel
+@using QuanLyTour.Models.VeMayBay
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Sửa Vé Máy Bay";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section id="main-content">
+    <section class="wrapper">
+        <section class="panel">
+            <header class="panel-heading">
+                Sửa Vé Máy Bay
+            </header>
+            <div class="panel-body">
+                <div class="grid cs-style-3">
+                    @using (Html.BeginForm("SuaVeMayBayView", "Admin", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <!-- Mã Vé (readonly) -->
+                        <div class="form-group">
+                            <label for="MaVe">Mã Vé:</label>
+                            @Html.TextBoxFor(m => m.MaVe, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <!-- Chọn chuyến bay -->
+                        <div class="form-group">
+                            <label for="IdChuyenBay">Chuyến Bay:</label>
+                            @Html.DropDownListFor(
+                                     m => m.IdChuyenBay,
+                                     (IEnumerable<SelectListItem>)ViewBag.ChuyenBayList,
+                                     "-- Chọn chuyến bay --",
+                                     new { @class = "form-control", required = "required" }
+                                     )
+                        </div>
+
+                        <!-- Giá Vé Gốc -->
+                        <div class="form-group">
+                            <label for="GiaNet">Giá Vé Gốc:</label>
+                            @Html.TextBoxFor(m => m.GiaNet, new
+                                {
+                                    @class = "form-control",
+                                    type = "number",
+                                    min = "0",
+                                    step = "1000",
+                                    placeholder = "Nhập giá vé gốc",
+                                    required = "required"
+                                })
+                        </div>
+
+                        <!-- Thuế, Phí -->
+                        <div class="form-group">
+                            <label for="ThuePhi">Thuế, Phí:</label>
+                            @Html.TextBoxFor(m => m.ThuePhi, new
+                                {
+                                    @class = "form-control",
+                                    type = "number",
+                                    min = "0",
+                                    step = "1000",
+                                    placeholder = "Nhập thuế, phí",
+                                    required = "required"
+                                })
+                        </div>
+
+                        <!-- Hành Lý Xách Tay (kg) -->
+                        <div class="form-group">
+                            <label for="HanhLyXachTayKg">Hành Lý Xách Tay (kg):</label>
+                            @Html.TextBoxFor(m => m.HanhLyXachTayKg, new
+                                {
+                                    @class = "form-control",
+                                    type = "number",
+                                    min = "0",
+                                    step = "1",
+                                    placeholder = "Nhập số kg hành lý xách tay"
+                                })
+                        </div>
+
+                        <!-- Hành Lý Ký Gửi (kg) -->
+                        <div class="form-group">
+                            <label for="HanhLyKyGuiKg">Hành Lý Ký Gửi (kg):</label>
+                            @Html.TextBoxFor(m => m.HanhLyKyGuiKg, new
+                                {
+                                    @class = "form-control",
+                                    type = "number",
+                                    min = "0",
+                                    step = "1",
+                                    placeholder = "Nhập số kg hành lý ký gửi"
+                                })
+                        </div>
+
+                        <!-- Hạng Vé -->
+                        <div class="form-group">
+                            <label for="HangVe">Hạng Vé:</label>
+                            @Html.DropDownListFor(
+                                     m => m.HangVe,
+                                     new List<SelectListItem>
+                        {
+                        new SelectListItem { Text = "Economy", Value = "Eco" },
+                        new SelectListItem { Text = "Business", Value = "Business" },
+                        new SelectListItem { Text = "First Class", Value = "First Class" }
+                        },
+                                     "-- Chọn hạng vé --",
+                                     new { @class = "form-control", required = "required" }
+                                     )
+                        </div>
+
+                        <!-- Trạng Thái -->
+                        <div class="form-group">
+                            <label for="TrangThai">Trạng Thái:</label>
+                            @Html.DropDownListFor(
+                                     m => m.TrangThai,
+                                     new List<SelectListItem>
+                        {
+                        new SelectListItem { Text = "Còn Vé", Value = "true" },
+                        new SelectListItem { Text = "Hết Vé", Value = "false" }
+                        },
+                                     "-- Chọn trạng thái --",
+                                     new { @class = "form-control", required = "required" }
+                                     )
+                        </div>
+
+                        <div class="modal-footer">
+                            <a href="@Url.Action("QuanLyVeMayBayView", "Admin")" class="btn btn-secondary">Hủy</a>
+                            <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+    </section>
+</section>
+
+<script>
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            var forms = document.getElementsByClassName('needs-validation');
+            Array.prototype.forEach.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>

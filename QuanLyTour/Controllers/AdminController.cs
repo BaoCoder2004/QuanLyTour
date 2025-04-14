@@ -6,6 +6,8 @@ using X.PagedList.Extensions;
 using QuanLyTour.Models.KhachSan;
 using QuanLyTour.Models.Tour;
 using System.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using QuanLyTour.Models.VeMayBay;
 
 
 namespace QuanLyTour.Controllers
@@ -747,11 +749,369 @@ namespace QuanLyTour.Controllers
 			}
 			return RedirectToAction("QuanLyKhachSanView");
 		}
-		#endregion
+        #endregion
 
-		#region QuanLyND
+        #region VeMayBay
 
-		public ActionResult QuanLyNguoiDung(int? page)
+        // Lấy danh sách vé (join ChuyenBay & HangHangKhong) + phân trang
+        public IActionResult QuanLyVeMayBayView(int? page)
+        {
+            int pageSize = 6;
+            int pageNumber = (page ?? 1);
+
+            List<VeMayBayViewModel> dsVe = new List<VeMayBayViewModel>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                string sql = @"
+            SELECT v.MaVe,
+                   v.IdChuyenBay, 
+                   v.HangVe, 
+                   v.GiaNet, 
+                   v.ThuePhi,
+                   v.TongTien,
+                   v.HanhLyXachTayKg, 
+                   v.HanhLyKyGuiKg, 
+                   v.TrangThai,
+
+                   c.MaChuyenBay, 
+                   c.DiemDi, 
+                   c.DiemDen, 
+                   c.GioKhoiHanh, 
+                   c.GioHaCanh,
+                   c.CoTheDoiVe,
+                   c.CoTheHoanVe,
+                   c.PhiDoiVe,
+                   c.PhiHoanVe,
+                   c.IdHangHangKhong,
+
+                   h.TenHang,
+                   h.LogoUrl,
+                   h.HanhLyXachTayKg AS DefaultHanhLyXachTayKg,
+                   h.HanhLyKyGuiKg AS DefaultHanhLyKyGuiKg
+            FROM VeMayBay v
+            INNER JOIN ChuyenBay c ON v.IdChuyenBay = c.IdChuyenBay
+            INNER JOIN HangHangKhong h ON c.IdHangHangKhong = h.Id
+            ORDER BY v.MaVe DESC
+        ";
+
+                using (var command = new SqlCommand(sql, connection))
+                {
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var vm = new VeMayBayViewModel
+                            {
+                                // Vé
+                                MaVe = reader.GetInt32(reader.GetOrdinal("MaVe")),
+                                IdChuyenBay = reader.GetInt32(reader.GetOrdinal("IdChuyenBay")),
+                                HangVe = reader.GetString(reader.GetOrdinal("HangVe")),
+                                GiaNet = reader.GetDecimal(reader.GetOrdinal("GiaNet")),
+                                ThuePhi = reader.GetDecimal(reader.GetOrdinal("ThuePhi")),
+                                TongTien = reader.GetDecimal(reader.GetOrdinal("TongTien")),
+                                HanhLyXachTayKg = reader.IsDBNull(reader.GetOrdinal("HanhLyXachTayKg"))
+                                                  ? (int?)null
+                                                  : reader.GetInt32(reader.GetOrdinal("HanhLyXachTayKg")),
+                                HanhLyKyGuiKg = reader.IsDBNull(reader.GetOrdinal("HanhLyKyGuiKg"))
+                                                ? (int?)null
+                                                : reader.GetInt32(reader.GetOrdinal("HanhLyKyGuiKg")),
+                                TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
+
+                                // Chuyến bay
+                                MaChuyenBay = reader.GetString(reader.GetOrdinal("MaChuyenBay")),
+                                DiemDi = reader.GetString(reader.GetOrdinal("DiemDi")),
+                                DiemDen = reader.GetString(reader.GetOrdinal("DiemDen")),
+                                GioKhoiHanh = reader.GetDateTime(reader.GetOrdinal("GioKhoiHanh")),
+                                GioHaCanh = reader.GetDateTime(reader.GetOrdinal("GioHaCanh")),
+                                CoTheDoiVe = reader.GetBoolean(reader.GetOrdinal("CoTheDoiVe")),
+                                CoTheHoanVe = reader.GetBoolean(reader.GetOrdinal("CoTheHoanVe")),
+                                PhiDoiVe = reader.IsDBNull(reader.GetOrdinal("PhiDoiVe"))
+                                           ? (decimal?)null
+                                           : reader.GetDecimal(reader.GetOrdinal("PhiDoiVe")),
+                                PhiHoanVe = reader.IsDBNull(reader.GetOrdinal("PhiHoanVe"))
+                                            ? (decimal?)null
+                                            : reader.GetDecimal(reader.GetOrdinal("PhiHoanVe")),
+
+                                // Hãng hàng không
+                                TenHang = reader.GetString(reader.GetOrdinal("TenHang")),
+                                LogoUrl = reader.IsDBNull(reader.GetOrdinal("LogoUrl"))
+                                          ? string.Empty
+                                          : reader.GetString(reader.GetOrdinal("LogoUrl")),
+                                DefaultHanhLyXachTayKg = reader.GetInt32(reader.GetOrdinal("DefaultHanhLyXachTayKg")),
+                                DefaultHanhLyKyGuiKg = reader.GetInt32(reader.GetOrdinal("DefaultHanhLyKyGuiKg"))
+                            };
+
+                            dsVe.Add(vm);
+                        }
+                    }
+                }
+            }
+
+            var pagedVe = dsVe.ToPagedList(pageNumber, pageSize);
+            return View(pagedVe);
+        }
+
+        // Xoá vé
+        public IActionResult XoaVeMayBayView(int maVe)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                // Kiểm tra xem vé có tồn tại không
+                string checkSql = "SELECT COUNT(*) FROM VeMayBay WHERE MaVe = @maVe";
+                using (var checkCommand = new SqlCommand(checkSql, connection))
+                {
+                    checkCommand.Parameters.AddWithValue("@maVe", maVe);
+                    int exists = (int)checkCommand.ExecuteScalar();
+
+                    if (exists == 0)
+                    {
+                        TempData["ErrorMessage"] = "Vé không tồn tại.";
+                        return RedirectToAction("QuanLyVeMayBayView");
+                    }
+                }
+
+                // Nếu tồn tại, tiến hành xóa
+                string deleteSql = "DELETE FROM VeMayBay WHERE MaVe = @maVe";
+                using (var deleteCommand = new SqlCommand(deleteSql, connection))
+                {
+                    deleteCommand.Parameters.AddWithValue("@maVe", maVe);
+                    int rowsAffected = deleteCommand.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        TempData["Success"] = "Xoá vé thành công.";
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Không thể xoá vé do lỗi hệ thống.";
+                    }
+                }
+            }
+
+            return RedirectToAction("QuanLyVeMayBayView");
+        }
+
+        [HttpGet]
+        public IActionResult SuaVeMayBayView(int maVe)
+        {
+            VeMayBayViewModel ve = null;
+            var dsChuyenBay = new List<ChuyenBay>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                // 1) Lấy danh sách chuyến bay (để hiển thị dropdown)
+                string sqlChuyenBay = "SELECT IdChuyenBay, MaChuyenBay FROM ChuyenBay";
+                using (var cmdCB = new SqlCommand(sqlChuyenBay, connection))
+                {
+                    using (var reader = cmdCB.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            dsChuyenBay.Add(new ChuyenBay
+                            {
+                                IdChuyenBay = reader.GetInt32(0),
+                                MaChuyenBay = reader.GetString(1)
+                            });
+                        }
+                    }
+                }
+
+                // 2) Lấy thông tin vé cần sửa (join 3 bảng để lấy đầy đủ các trường)
+                string sql = @"
+    SELECT v.MaVe,
+           v.IdChuyenBay, 
+           v.HangVe, 
+           v.GiaNet, 
+           v.ThuePhi,
+           v.TongTien,
+           v.HanhLyXachTayKg, 
+           v.HanhLyKyGuiKg, 
+           v.TrangThai,
+           
+           c.MaChuyenBay,
+           c.DiemDi,
+           c.DiemDen,
+           c.GioKhoiHanh,
+           c.GioHaCanh,
+           c.CoTheDoiVe,
+           c.CoTheHoanVe,
+           c.PhiDoiVe,
+           c.PhiHoanVe,
+           
+           h.TenHang,
+           h.LogoUrl,
+           h.HanhLyXachTayKg AS DefaultHanhLyXachTayKg,
+           h.HanhLyKyGuiKg AS DefaultHanhLyKyGuiKg
+    FROM VeMayBay v
+    INNER JOIN ChuyenBay c ON v.IdChuyenBay = c.IdChuyenBay
+    INNER JOIN HangHangKhong h ON c.IdHangHangKhong = h.Id
+    WHERE v.MaVe = @maVe
+";
+                using (var cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@maVe", maVe);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            ve = new VeMayBayViewModel
+                            {
+                                MaVe = reader.GetInt32(reader.GetOrdinal("MaVe")),
+                                IdChuyenBay = reader.GetInt32(reader.GetOrdinal("IdChuyenBay")),
+                                HangVe = reader.GetString(reader.GetOrdinal("HangVe")),
+                                GiaNet = reader.GetDecimal(reader.GetOrdinal("GiaNet")),
+                                ThuePhi = reader.GetDecimal(reader.GetOrdinal("ThuePhi")),
+                                TongTien = reader.GetDecimal(reader.GetOrdinal("TongTien")),
+                                HanhLyXachTayKg = reader.IsDBNull(reader.GetOrdinal("HanhLyXachTayKg"))
+                                                  ? (int?)null
+                                                  : reader.GetInt32(reader.GetOrdinal("HanhLyXachTayKg")),
+                                HanhLyKyGuiKg = reader.IsDBNull(reader.GetOrdinal("HanhLyKyGuiKg"))
+                                                  ? (int?)null
+                                                  : reader.GetInt32(reader.GetOrdinal("HanhLyKyGuiKg")),
+                                TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
+                                // Thông tin chuyến bay
+                                MaChuyenBay = reader.GetString(reader.GetOrdinal("MaChuyenBay")),
+                                DiemDi = reader.GetString(reader.GetOrdinal("DiemDi")),
+                                DiemDen = reader.GetString(reader.GetOrdinal("DiemDen")),
+                                GioKhoiHanh = reader.GetDateTime(reader.GetOrdinal("GioKhoiHanh")),
+                                GioHaCanh = reader.GetDateTime(reader.GetOrdinal("GioHaCanh")),
+                                CoTheDoiVe = reader.GetBoolean(reader.GetOrdinal("CoTheDoiVe")),
+                                CoTheHoanVe = reader.GetBoolean(reader.GetOrdinal("CoTheHoanVe")),
+                                PhiDoiVe = reader.IsDBNull(reader.GetOrdinal("PhiDoiVe"))
+                                            ? (decimal?)null
+                                            : reader.GetDecimal(reader.GetOrdinal("PhiDoiVe")),
+                                PhiHoanVe = reader.IsDBNull(reader.GetOrdinal("PhiHoanVe"))
+                                            ? (decimal?)null
+                                            : reader.GetDecimal(reader.GetOrdinal("PhiHoanVe")),
+                                // Thông tin hãng hàng không
+                                TenHang = reader.GetString(reader.GetOrdinal("TenHang")),
+                                LogoUrl = reader.IsDBNull(reader.GetOrdinal("LogoUrl"))
+                                          ? string.Empty
+                                          : reader.GetString(reader.GetOrdinal("LogoUrl")),
+                                DefaultHanhLyXachTayKg = reader.GetInt32(reader.GetOrdinal("DefaultHanhLyXachTayKg")),
+                                DefaultHanhLyKyGuiKg = reader.GetInt32(reader.GetOrdinal("DefaultHanhLyKyGuiKg"))
+                            };
+                        }
+                    }
+                }
+            }
+
+            if (ve == null)
+            {
+                return NotFound("Không tìm thấy vé máy bay.");
+            }
+
+            // Gán danh sách chuyến bay cho ViewBag (để dùng cho dropdown)
+            ViewBag.ChuyenBayList = dsChuyenBay.Select(cb => new SelectListItem
+            {
+                Value = cb.IdChuyenBay.ToString(),
+                Text = cb.MaChuyenBay
+            }).ToList();
+
+            return View(ve);
+        }
+
+        [HttpPost]
+        public IActionResult SuaVeMayBayView(VeMayBayViewModel model)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                string sql = @"
+    UPDATE VeMayBay
+    SET IdChuyenBay = @idChuyenBay, 
+        GiaNet = @giaNet, 
+        ThuePhi = @thuePhi,
+        HangVe = @hangVe, 
+        HanhLyXachTayKg = @hanhLyXachTayKg,
+        HanhLyKyGuiKg = @hanhLyKyGuiKg,
+        TrangThai = @trangThai
+    WHERE MaVe = @maVe";
+                using (var command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@maVe", model.MaVe);
+                    command.Parameters.AddWithValue("@idChuyenBay", model.IdChuyenBay);
+                    command.Parameters.AddWithValue("@giaNet", model.GiaNet);
+                    command.Parameters.AddWithValue("@thuePhi", model.ThuePhi);
+                    command.Parameters.AddWithValue("@hangVe", model.HangVe);
+                    command.Parameters.AddWithValue("@hanhLyXachTayKg", (object?)model.HanhLyXachTayKg ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@hanhLyKyGuiKg", (object?)model.HanhLyKyGuiKg ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@trangThai", model.TrangThai);
+                    command.ExecuteNonQuery();
+                }
+            }
+            return RedirectToAction("QuanLyVeMayBayView");
+        }
+
+        // Hiển thị form thêm vé
+        [HttpGet]
+        public IActionResult ThemVeMayBayView()
+        {
+            // Lấy ds chuyến bay
+            var dsChuyenBay = new List<ChuyenBay>();
+            using var connection = new SqlConnection(_connectionString);
+            connection.Open();
+            using (var cmd = new SqlCommand("SELECT IdChuyenBay, MaChuyenBay FROM ChuyenBay", connection))
+            using (var reader = cmd.ExecuteReader())
+                while (reader.Read())
+                    dsChuyenBay.Add(new ChuyenBay
+                    {
+                        IdChuyenBay = reader.GetInt32(0),
+                        MaChuyenBay = reader.GetString(1)
+                    });
+
+            ViewBag.ChuyenBayList = dsChuyenBay
+                .Select(cb => new SelectListItem
+                {
+                    Value = cb.IdChuyenBay.ToString(),
+                    Text = cb.MaChuyenBay
+                }).ToList();
+
+            // Trả về model rỗng (mặc định SoLuongVe=0)
+            return View(new VeMayBayViewModel());
+        }
+
+        [HttpPost]
+        public IActionResult ThemVeMayBayView(VeMayBayViewModel model)
+        {
+            // Tự động tính trạng thái dựa trên SoLuongVe
+            bool trangThai = model.SoLuongVe > 0;
+
+            using var connection = new SqlConnection(_connectionString);
+            connection.Open();
+
+            // Nếu cột TongTien là computed thì không cần tính, DB tự tính
+            string sql = @"
+				INSERT INTO VeMayBay
+					(IdChuyenBay, HangVe, GiaNet, ThuePhi, HanhLyXachTayKg, HanhLyKyGuiKg, SoLuongVe, TrangThai)
+				VALUES
+					(@idChuyenBay, @hangVe, @giaNet, @thuePhi, @xachtay, @kygui, @soLuongVe, @trangThai)";
+            using var cmd = new SqlCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@idChuyenBay", model.IdChuyenBay);
+            cmd.Parameters.AddWithValue("@hangVe", model.HangVe);
+            cmd.Parameters.AddWithValue("@giaNet", model.GiaNet);
+            cmd.Parameters.AddWithValue("@thuePhi", model.ThuePhi);
+            cmd.Parameters.AddWithValue("@xachtay", (object?)model.HanhLyXachTayKg ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@kygui", (object?)model.HanhLyKyGuiKg ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@soLuongVe", model.SoLuongVe);
+            cmd.Parameters.AddWithValue("@trangThai", trangThai);
+            cmd.ExecuteNonQuery();
+
+            return RedirectToAction("QuanLyVeMayBayView");
+        }
+
+
+        #endregion
+
+        #region QuanLyND
+
+        public ActionResult QuanLyNguoiDung(int? page)
 		{
 			int pageSize = 10; // Số lượng mục trên mỗi trang
 			int pageNumber = (page ?? 1);

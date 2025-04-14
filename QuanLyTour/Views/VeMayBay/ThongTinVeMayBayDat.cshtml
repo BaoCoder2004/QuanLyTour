@@ -1,0 +1,48 @@
+﻿@using QuanLyTour.Models.VeMayBay
+@using System.Globalization
+@model List<VeMayBayBookingViewModel>
+
+@{
+    ViewData["Title"] = "Thông tin vé máy bay đã đặt";
+    Layout = "~/Views/Shared/_Detail.cshtml";
+}
+
+<section class="innerpage-wrapper">
+    <h2 class="text-center">DANH SÁCH CÁC VÉ MÁY BAY ĐÃ ĐẶT</h2>
+    @if (Model != null && Model.Count > 0)
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Mã vé</th>
+                    <th>Tên khách hàng</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Ngày đặt</th>
+                    <th>Số lượng vé</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model)
+                {
+                    <tr>
+                        <td>@booking.MaVe</td>
+                        <td>@booking.HoTenKhachHang</td>
+                        <td>@booking.SoDienThoai</td>
+                        <td>@booking.Email</td>
+                        <td>@booking.NgayDat.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture)</td>
+                        <td>@booking.SoLuongVe</td>
+                        <td>@booking.TongTien.ToString("N0", CultureInfo.InvariantCulture) VNĐ</td>
+                        <td>@booking.TrangThai</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-center">Chưa có vé máy bay nào được đặt.</p>
+    }
+</section>
