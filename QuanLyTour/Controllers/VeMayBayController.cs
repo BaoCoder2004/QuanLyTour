@@ -22,7 +22,7 @@ namespace QuanLyTour.Controllers
         // Hiển thị danh sách vé máy bay đang còn (TrangThai = 1)
         public IActionResult Index()
         {
-            // Kiểm tra thông tin người dùng từ Session
+            // Kiểm tra thông tin người dùng từ Session1
             var tenNguoiDung = HttpContext.Session.GetString("TenNguoiDung");
             ViewBag.TenNguoiDung = tenNguoiDung;
 
