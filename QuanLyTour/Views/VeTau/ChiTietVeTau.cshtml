@@ -3,8 +3,14 @@
 @{
     ViewData["Title"] = "Thông tin đặt vé";
     Layout = "~/Views/Shared/_Detail.cshtml";
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
 }
 <!--===== INNERPAGE-WRAPPER ====-->
+<!-- Search Container -->
 <!-- Search Container -->
 <div class="search-container">
     <div class="container">
@@ -20,8 +26,8 @@
                         <div class="form-group">
                             <label>Chọn chiều đi</label>
                             <div class="direction-selection">
-                                <div class="station-selector station-selector-change">
-                                    <i class="fa fa-train icon-change"></i>
+                                <div class="station-selector">
+                                    <i class="fa fa-train"></i>
                                     <select class="form-control" id="departureStation">
                                         <option value="HNO" selected>Hà Nội (HNO)</option>
                                         <option value="SGO">Sài Gòn (SGO)</option>
@@ -33,8 +39,8 @@
                                 <button class="swap-btn" id="swapStations">
                                     <i class="fa fa-exchange"></i>
                                 </button>
-                                <div class="station-selector station-selector-change">
-                                    <i class="fa fa-train icon-change"></i>
+                                <div class="station-selector">
+                                    <i class="fa fa-train"></i>
                                     <select class="form-control" id="arrivalStation">
                                         <option value="LCA" selected>Lào Cai (LCA)</option>
                                         <option value="HNO">Hà Nội (HNO)</option>
@@ -51,7 +57,7 @@
                         <div class="form-group">
                             <label>Ngày đi</label>
                             <div class="date-input">
-                                <input type="date" class="form-control form-control" id="departDate">
+                                <input type="date" class="form-control" id="departDate">
                             </div>
                         </div>
                     </div>
@@ -176,7 +182,7 @@
                 </div>
 
                 <div class="col-md-2">
-                    <button class="btn btn-select-seat">Chọn chỗ</button>
+                    <button class="btn btn-select-seat" data-toggle="modal" data-target="#seatSelectionModal" data-train="SP3">Chọn chỗ</button>
                 </div>
             </div>
         </div>
@@ -223,7 +229,1059 @@
                 </div>
 
                 <div class="col-md-2">
-                    <button class="btn btn-select-seat">Chọn chỗ</button>
+                    <button class="btn btn-select-seat" data-toggle="modal" data-target="#seatSelectionModal" data-train="SP1">Chọn chỗ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Seat Selection Modal -->
+<div class="modal fade" id="seatSelectionModal" tabindex="-1" role="dialog" aria-labelledby="seatSelectionModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="seatSelectionModalLabel">Ga Hà Nội → Ga Lào Cai | <span id="modalDate"></span></h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center" id="modalTrainCode">Tàu Tốc Hành</h4>
+
+                <!-- Coach selection -->
+                <div class="coach-selection">
+                    <div class="coach-option" data-coach="coach2">
+                        <div class="coach-title">Toa 2: Giường nằm khoang 4 điều hòa</div>
+                        <div class="coach-details">Giá từ 1298K - 1435K</div>
+                    </div>
+                    <div class="coach-option" data-coach="coach4">
+                        <div class="coach-title">Toa 4: Giường nằm khoang 6 điều hòa</div>
+                        <div class="coach-details">Còn 25 chỗ | Giá từ 1055K - 1235K</div>
+                    </div>
+                    <div class="coach-option active" data-coach="coach3">
+                        <div class="coach-title">Toa 3: Giường nằm khoang 6 điều hòa</div>
+                        <div class="coach-details">Còn 19 chỗ | Giá từ 1053K - 1235K</div>
+                    </div>
+                    <div class="coach-option" data-coach="coach1">
+                        <div class="coach-title">Toa 1: Ngồi mềm điều hòa</div>
+                        <div class="coach-details">Còn 54 chỗ | Giá từ 797K - 817K</div>
+                    </div>
+                </div>
+
+                <!-- Coach 3 content (active by default) -->
+                <div class="coach-content active" id="coach3">
+                    <h4 class="compartment-title">Toa 3: Giường nằm khoang 6 điều hòa</h4>
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <div class="compartment-container">
+                                <div class="floor-label-container">
+                                    <div class="floor-labels">
+                                        <div class="floor-label">Tầng 3</div>
+                                        <div class="floor-label">Tầng 2</div>
+                                        <div class="floor-label">Tầng 1</div>
+                                    </div>
+                                </div>
+
+                                <div class="compartment-layout">
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 1</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">5</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">6</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">3</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">4</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">1</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">2</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 2</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">11</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">12</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">9</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">10</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">7</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">8</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 3</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">17</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">18</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">15</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">16</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">13</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">14</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 4</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">23</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">24</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">21</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">22</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">19</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">20</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 5</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">29</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">30</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">27</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">28</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">25</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">26</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 6</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">35</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">36</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">33</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">34</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">31</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">32</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 7</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">41</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">42</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">39</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">40</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">37</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">38</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other coach content -->
+                <div class="coach-content" id="coach2">
+                    <h4 class="compartment-title">Toa 2: Giường nằm khoang 4 điều hòa</h4>
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <div class="compartment-container">
+                                <div class="floor-label-container">
+                                    <div class="floor-labels">
+                                        <div class="floor-label">Tầng 2</div>
+                                        <div class="floor-label">Tầng 1</div>
+                                    </div>
+                                </div>
+
+                                <div class="compartment-layout">
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 1</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">3</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">4</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">1</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">2</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 2</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">9</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">10</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">7</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">8</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 3</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">15</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">16</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">13</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">14</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 4</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">21</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">22</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">19</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">20</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 5</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">27</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">28</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">25</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">26</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 6</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">33</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">34</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">31</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">32</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 7</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">39</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">40</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">37</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">38</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="coach-content" id="coach4">
+                    <h4 class="compartment-title">Toa 4: Giường nằm khoang 6 điều hòa</h4>
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <div class="compartment-container">
+                                <div class="floor-label-container">
+                                    <div class="floor-labels">
+                                        <div class="floor-label">Tầng 3</div>
+                                        <div class="floor-label">Tầng 2</div>
+                                        <div class="floor-label">Tầng 1</div>
+                                    </div>
+                                </div>
+
+                                <div class="compartment-layout">
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 1</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">5</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">6</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">3</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">4</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">1</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">2</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 2</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">11</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">12</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">9</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">10</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">7</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">8</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 3</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">17</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">18</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">15</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">16</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">13</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">14</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 4</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">23</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">24</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">21</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">22</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">19</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat sold">
+                                                <div class="seat-number">20</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 5</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">29</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">30</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">27</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">28</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">25</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">26</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 6</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">35</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">36</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">33</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">34</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">31</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">32</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="berth-column">
+                                        <div class="berth-content">Khoang 7</div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">41</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">42</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">39</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">40</div>
+                                                <div class="seat-price">1161K</div>
+                                            </div>
+                                        </div>
+                                        <div class="berth-row">
+                                            <div class="seat available">
+                                                <div class="seat-number">37</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                            <div class="seat available">
+                                                <div class="seat-number">38</div>
+                                                <div class="seat-price">1054K</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="coach-content" id="coach1">
+                    <h4 class="compartment-title">Toa 1: Ngồi mềm điều hòa</h4>
+                    <div class="seated-coach-container">
+                        <div class="seat-layout">
+                            <!-- Hàng ghế bên trái -->
+                            <div class="seat-column left-side">
+                                <div class="seat-row">
+                                    <div class="seat available">
+                                        <div class="seat-number">1</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">2</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">3</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">4</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">5</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">6</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">7</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">8</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                </div>
+                                <div class="seat-row">
+                                    <div class="seat available">
+                                        <div class="seat-number">17</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">18</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">19</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">20</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">21</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">22</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">23</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">24</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                </div>
+                                <div class="seat-row">
+                                    <div class="seat available">
+                                        <div class="seat-number">33</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">34</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">35</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">36</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">37</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">38</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">39</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">40</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                </div>
+                                <div class="seat-row">
+                                    <div class="seat available">
+                                        <div class="seat-number">49</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">50</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">51</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">52</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">53</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">54</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">55</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">56</div>
+                                        <div class="seat-price">888K</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bàn ngăn cách -->
+                            <div class="table-container">
+                                <div class="table-separator-1">
+                                    <div class="table-label">Bàn</div>
+                                </div>
+                                <div class="table-separator-2">
+                                    <div class="table-label">Bàn</div>
+                                </div>
+                            </div>
+
+                            <!-- Hàng ghế bên phải -->
+                            <div class="seat-column right-side">
+                                <div class="seat-row">
+                                    <div class="seat available">
+                                        <div class="seat-number">9</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">10</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">11</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">12</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">13</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">14</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">15</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">16</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                </div>
+                                <div class="seat-row">
+                                    <div class="seat available">
+                                        <div class="seat-number">25</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">26</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">27</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">28</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">29</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">30</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">31</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">32</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                </div>
+                                <div class="seat-row">
+                                    <div class="seat available">
+                                        <div class="seat-number">41</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">42</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">43</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">44</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">45</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">46</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">47</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">48</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                </div>
+                                <div class="seat-row">
+                                    <div class="seat available">
+                                        <div class="seat-number">57</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">58</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">59</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">60</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">61</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">62</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">63</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                    <div class="seat available">
+                                        <div class="seat-number">64</div>
+                                        <div class="seat-price">904K</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legend for seat status -->
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-box legend-available"></div>
+                        <span>Còn trống</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box legend-selected"></div>
+                        <span>Đang chọn</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box legend-sold"></div>
+                        <span>Đã bán</span>
+                    </div>
+                </div>
+
+                <!-- Selected passengers info -->
+                <div id="selected-passengers" class="selected-passengers">
+                    <!-- Selected seats will appear here -->
+                </div>
+
+                <!-- Customer note -->
+                <div class="customer-note">
+                    <p><i class="fa fa-info-circle"></i> Quý khách vui lòng chọn chỗ mong muốn để tiến hành đặt vé.</p>
+                </div>
+
+                <!-- Checkout bar -->
+                <div class="checkout-bar">
+                    <div class="seat-count">
+                        Đã chọn: <span id="selected-count">0</span> chỗ
+                    </div>
+                    <button type="button" class="btn btn-primary" id="btn-proceed">
+                        Tiếp tục <i class="fa fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -285,6 +1343,14 @@
                     const selectedYear = parseInt(document.getElementById('yearSelector').value);
                     scrollToMonthYear(selectedMonth, selectedYear);
                 });
+
+                // Update modal content when opened
+                $('.btn-select-seat').on('click', function() {
+                    const trainCode = $(this).data('train');
+                    const dateDisplay = $(this).closest('.train-option').find('.date-display').first().text();
+                    $('#modalTrainCode').text('Tàu Tốc Hành ' + trainCode);
+                    $('#modalDate').text(dateDisplay);
+                });
             });
 
             // Initialize date selector with full year of dates
@@ -341,23 +1407,17 @@
                 const currentYear = today.getFullYear();
 
                 // Get the selected depart date to highlight
-                const departDate = document.getElementById('departDate').value;
-                const [day, month, year] = departDate.split('-').map(Number);
+                const departDateInput = document.getElementById('departDate');
+                let selectedDate = departDateInput.value ? new Date(departDateInput.value.split('-').reverse().join('-')) : today;
 
                 // Get the days of the week in Vietnamese
                 const days = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
 
                 // Create date options for the entire year
-                // Start from first day of current year
                 const startDate = new Date(currentYear, 0, 1);
-
-                // End on last day of next year
                 const endDate = new Date(currentYear + 1, 11, 31);
 
-                const dateToMatch = new Date(year, month - 1, day);
-                dateToMatch.setHours(0, 0, 0, 0);
-
-                const current = new Date(startDate);
+                let current = new Date(startDate);
                 current.setHours(0, 0, 0, 0);
 
                 while (current <= endDate) {
@@ -379,7 +1439,7 @@
                     dateOption.dataset.date = current.toISOString();
 
                     // Check if this is the selected date
-                    if (current.toDateString() === dateToMatch.toDateString()) {
+                    if (current.toDateString() === selectedDate.toDateString()) {
                         dateOption.classList.add('active');
                     }
 
@@ -393,7 +1453,7 @@
                         this.classList.add('active');
 
                         // Update depart date input
-                        document.getElementById('departDate').value = formattedDate;
+                        document.getElementById('departDate').value = formatDate(new Date(this.dataset.date));
                     });
 
                     // Add to container
@@ -427,23 +1487,359 @@
                 }
             }
 
-        document.addEventListener('DOMContentLoaded', function() {
-        const passengerInput = document.getElementById('passengerCount');
-        const increaseBtn = document.getElementById('increasePassenger');
-        const decreaseBtn = document.getElementById('decreasePassenger');
+            // Passenger count handling
+            document.addEventListener('DOMContentLoaded', function() {
+                const passengerInput = document.getElementById('passengerCount');
+                const increaseBtn = document.getElementById('increasePassenger');
+                const decreaseBtn = document.getElementById('decreasePassenger');
 
-        increaseBtn.addEventListener('click', function() {
-            let currentValue = parseInt(passengerInput.value);
-            if (currentValue < 10) {
-                passengerInput.value = currentValue + 1;
+                increaseBtn.addEventListener('click', function() {
+                    let currentValue = parseInt(passengerInput.value);
+                    if (currentValue < 10) {
+                        passengerInput.value = currentValue + 1;
+                    }
+                });
+
+                decreaseBtn.addEventListener('click', function() {
+                    let currentValue = parseInt(passengerInput.value);
+                    if (currentValue > 1) {
+                        passengerInput.value = currentValue - 1;
+                    }
+                });
+            });
+
+        $(document).ready(function() {
+        // Global variables
+        var selectedSeats = [];
+        var maxSeats = 5; // Maximum number of seats a customer can book at once
+
+        // Initialize components
+        updateSelectedCount();
+        updateCheckoutButton();
+
+        // Coach selection
+        $('.coach-option').click(function() {
+            var coachId = $(this).data('coach');
+
+            // Update active coach option
+            $('.coach-option').removeClass('active');
+            $(this).addClass('active');
+
+            // Show related coach content
+            $('.coach-content').removeClass('active');
+            $('#' + coachId).addClass('active');
+
+            // Clear selected seats when changing coach
+            clearSelectedSeats();
+        });
+
+        // Seat selection
+        $(document).on('click', '.seat.available', function() {
+            var seatNumber = $(this).find('.seat-number').text();
+            var seatPrice = $(this).find('.seat-price').text();
+            var currentCoach = $('.coach-content.active').attr('id');
+
+            // Check if the seat is already selected
+            if ($(this).hasClass('selected')) {
+                // Remove seat from selection
+                removeSeat(seatNumber);
+                $(this).removeClass('selected');
+                if (selectedSeats.length === 0) {
+                    $('.customer-note').show();
+                }
+            } else {
+                // Check if maximum seats already selected
+                if (selectedSeats.length >= maxSeats) {
+                    showNotification('Quý khách chỉ được chọn tối đa ' + maxSeats + ' chỗ ngồi', 'warning');
+                    return;
+                }
+
+                // Add seat to selection
+                $(this).addClass('selected');
+                addSeat(seatNumber, seatPrice, currentCoach);
+
+                // Hide the customer note when a seat is selected
+                $('.customer-note').hide();
+            }
+
+            updateSelectedCount();
+            updateCheckoutButton();
+        });
+
+        // Remove seat when clicking on X button
+        $(document).on('click', '.remove-seat', function() {
+            var seatNumber = $(this).data('seat');
+
+            // Find and unselect seat in UI
+            var seatElement = $('.seat.selected .seat-number:contains("' + seatNumber + '")').closest('.seat');
+            if (seatElement.length) {
+                seatElement.removeClass('selected');
+            }
+
+            // Remove seat from selected list
+            removeSeat(seatNumber);
+
+            // Update count and button state
+            updateSelectedCount();
+            updateCheckoutButton();
+
+            // Show customer note if no seats selected
+            if (selectedSeats.length === 0) {
+                $('.customer-note').show();
             }
         });
 
-        decreaseBtn.addEventListener('click', function() {
-            let currentValue = parseInt(passengerInput.value);
-            if (currentValue > 1) {
-                passengerInput.value = currentValue - 1;
+        // Proceed to next step
+        $('#btn-proceed').click(function() {
+            if (selectedSeats.length === 0) {
+                showNotification('Vui lòng chọn ít nhất 1 chỗ ngồi', 'warning');
+                return;
             }
+
+            // Show confirmation
+            var totalPrice = calculateTotalPrice();
+            showNotification('Đã chọn ' + selectedSeats.length + ' chỗ với tổng tiền ' + totalPrice, 'success');
+        });
+
+        // Helper functions
+        function addSeat(seatNumber, seatPrice, coach) {
+            // Get coach name from the coach content title
+            var coachName = $('#' + coach + ' .compartment-title').text();
+
+            // Add to selected seats array
+            selectedSeats.push({
+                number: seatNumber,
+                price: seatPrice,
+                coach: coach,
+                coachName: coachName
+            });
+
+            // Add to UI
+            var seatHtml = [
+                '<div class="selected-passenger" id="passenger-' + seatNumber + '">',
+                    '<div class="passenger-info">',
+                        '<span class="seat-tag">Chỗ ' + seatNumber + '</span>',
+                        '<span>' + getCompartmentInfo(seatNumber, coach) + '</span>',
+                    '</div>',
+                    '<div class="d-flex align-items-center">',
+                        '<span class="price-tag mr-3">' + seatPrice + '</span>',
+                        '<i class="fa fa-times remove-seat" data-seat="' + seatNumber + '"></i>',
+                    '</div>',
+                '</div>'
+            ].join('');
+
+            $('#selected-passengers').append(seatHtml);
+        }
+
+        function removeSeat(seatNumber) {
+            // Remove from UI
+            $('#passenger-' + seatNumber).remove();
+
+            // Remove from array
+            selectedSeats = selectedSeats.filter(function(seat) {
+                return seat.number !== seatNumber.toString();
+            });
+        }
+
+        function clearSelectedSeats() {
+            // Clear array
+            selectedSeats = [];
+
+            // Clear UI
+            $('#selected-passengers').empty();
+
+            // Unselect all seats
+            $('.seat').removeClass('selected');
+
+            // Show customer note
+            $('.customer-note').show();
+
+            updateSelectedCount();
+            updateCheckoutButton();
+        }
+
+        function updateSelectedCount() {
+            $('#selected-count').text(selectedSeats.length);
+        }
+
+        function updateCheckoutButton() {
+            if (selectedSeats.length > 0) {
+                $('#btn-proceed').removeClass('disabled');
+            } else {
+                $('#btn-proceed').addClass('disabled');
+            }
+        }
+
+        function calculateTotalPrice() {
+            var total = 0;
+            selectedSeats.forEach(function(seat) {
+                var priceValue = parseInt(seat.price.replace('K', '')) * 1000;
+                total += priceValue;
+            });
+
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total);
+        }
+
+        function getCompartmentInfo(seatNumber, coach) {
+            var coachName = $('#' + coach + ' .compartment-title').text().split(':')[0];
+            var compartmentNumber = '';
+
+            if (coach === 'coach3' || coach === 'coach4') {
+                var seatNum = parseInt(seatNumber);
+                if (seatNum <= 6) compartmentNumber = '1';
+                else if (seatNum <= 12) compartmentNumber = '2';
+                else if (seatNum <= 18) compartmentNumber = '3';
+                else if (seatNum <= 24) compartmentNumber = '4';
+                else if (seatNum <= 30) compartmentNumber = '5';
+                else if (seatNum <= 36) compartmentNumber = '6';
+                else if (seatNum <= 42) compartmentNumber = '7';
+                return coachName + ', Khoang ' + compartmentNumber;
+            } else if (coach === 'coach2') {
+                var seatNum = parseInt(seatNumber);
+                compartmentNumber = Math.ceil(seatNum / 4).toString();
+                return coachName + ', Khoang ' + compartmentNumber;
+            } else if (coach === 'coach1') {
+                return coachName + ', Chỗ ngồi ' + seatNumber;
+            }
+
+            return coachName;
+        }
+
+        function showNotification(message, type) {
+            var alertClass = type === 'warning' ? 'alert-warning' : 'alert-success';
+            var notification = $(
+                '<div class="alert ' + alertClass + ' alert-dismissible" role="alert">' +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                        '<span aria-hidden="true">&times;</span>' +
+                    '</button>' +
+                    message +
+                '</div>'
+            );
+
+            notification.css({
+                'position': 'fixed',
+                'top': '20px',
+                'right': '20px',
+                'z-index': '9999',
+                'max-width': '300px'
+            });
+
+            $('body').append(notification);
+
+            setTimeout(function() {
+                notification.fadeOut(function() {
+                    $(this).remove();
+                });
+            }, 5000);
+        }
+
+        // Keyboard navigation for seats
+        $(document).keydown(function(e) {
+            if ($('.seat:focus').length) {
+                var focusedSeat = $('.seat:focus');
+                var nextSeat;
+                var currentCoach = $('.coach-content.active').attr('id');
+
+                if (currentCoach === 'coach1') {
+                    var seatRow = focusedSeat.closest('.seat-row');
+                    var seatColumn = focusedSeat.closest('.seat-column');
+                    var seatIndex = focusedSeat.index();
+                    var rowIndex = seatRow.index();
+                    var isLeftSide = seatColumn.hasClass('left-side');
+
+                    switch(e.keyCode) {
+                        case 37: // Left arrow
+                            nextSeat = focusedSeat.prev('.seat');
+                            break;
+                        case 39: // Right arrow
+                            nextSeat = focusedSeat.next('.seat');
+                            if (!nextSeat.length && isLeftSide && seatIndex === 7) {
+                                // Jump to right-side, same row
+                                nextSeat = seatColumn.nextAll('.right-side').find('.seat-row').eq(rowIndex).find('.seat').first();
+                            }
+                            break;
+                        case 38: // Up arrow
+                            if (rowIndex > 0) {
+                                nextSeat = seatRow.prev('.seat-row').find('.seat').eq(seatIndex);
+                            }
+                            break;
+                        case 40: // Down arrow
+                            nextSeat = seatRow.next('.seat-row').find('.seat').eq(seatIndex);
+                            break;
+                        case 13: // Enter key - select seat
+                            if (focusedSeat.hasClass('available')) {
+                                focusedSeat.click();
+                            }
+                            break;
+                    }
+                } else {
+                    switch(e.keyCode) {
+                        case 37: // Left arrow
+                            nextSeat = focusedSeat.prev('.seat');
+                            break;
+                        case 38: // Up arrow
+                            var currentIndex = focusedSeat.index();
+                            nextSeat = focusedSeat.parent().prev('.berth-row').children('.seat').eq(currentIndex);
+                            break;
+                        case 39: // Right arrow
+                            nextSeat = focusedSeat.next('.seat');
+                            break;
+                        case 40: // Down arrow
+                            var idx = focusedSeat.index();
+                            nextSeat = focusedSeat.parent().next('.berth-row').children('.seat').eq(idx);
+                            break;
+                        case 13: // Enter key - select seat
+                            if (focusedSeat.hasClass('available')) {
+                                focusedSeat.click();
+                            }
+                            break;
+                    }
+                }
+
+                if (nextSeat && nextSeat.length) {
+                    nextSeat.focus();
+                    e.preventDefault();
+                }
+            }
+        });
+
+        // Make seats focusable
+        $('.seat').attr('tabindex', '0');
+
+        // Mobile detection
+        function isMobile() {
+            return window.innerWidth <= 768;
+        }
+
+        // Adjust UI for mobile
+        function adjustForMobile() {
+            if (isMobile()) {
+                $('.coach-selection').css('flex-direction', 'column');
+            } else {
+                $('.coach-selection').css('flex-direction', '');
+            }
+        }
+
+        // Call on load and resize
+        adjustForMobile();
+        $(window).resize(adjustForMobile);
+
+        // Smooth scrolling to selected seat
+        function scrollToSelectedSeat() {
+            if (selectedSeats.length > 0) {
+                var lastSeat = selectedSeats[selectedSeats.length - 1];
+                var seatElement = $('.seat .seat-number:contains(' + lastSeat.number + ')').closest('.seat');
+
+                if (seatElement.length) {
+                    $('html, body').animate({
+                        scrollTop: seatElement.offset().top - 100
+                    }, 500);
+                }
+            }
+        }
+
+        $(document).on('click', '.seat.available', function() {
+            setTimeout(scrollToSelectedSeat, 100);
         });
     });
 </script>
