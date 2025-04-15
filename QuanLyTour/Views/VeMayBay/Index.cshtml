@@ -75,37 +75,27 @@
                         @foreach (var ve in Model.VeMayBaysNoiDia)
                         {
                             <div class="item">
-                                <div class="hotel-card">
-                                    <!-- Bạn có thể đổi class thành flight-card nếu muốn -->
-                                    <div class="hotel-img-container text-center">
-                                        <a href="@Url.Action("ChiTietVeMayBay","VeMayBay", new { maVe = ve.MaVe })">
+                                <div class="hotel-card flight-card">
+                                    <a href="@Url.Action("ChiTietVeMayBay", "VeMayBay", new { maVe = ve.MaVe })">
+                                    <div class="route d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>@ve.DiemDi</strong> ⇄ <strong>@ve.DiemDen</strong>
+                                        </div>
+                                        <div>
                                             <img src="@Url.Content($"~/hinhanh/{ve.LogoUrl}")"
-                                                 class="img-responsive"
-                                                 alt="@ve.TenHang"
-                                                 style="max-height:60px; margin:0 auto;" />
-                                        </a>
+                                                 class="airline-logo"
+                                                 alt="@ve.TenHang" />
+                                        </div>
                                     </div>
-                                    <div class="hotel-info">
-                                        <h4>
-                                            <a href="@Url.Action("ChiTietVeMayBay","VeMayBay", new { maVe = ve.MaVe })">
-                                                @ve.MaChuyenBay – @ve.HangVe
-                                            </a>
-                                        </h4>
-                                        <div class="hotel-duration-container">
-                                            <div class="hotel-group">
-                                                <i class="fa fa-plane" aria-hidden="true"></i>
-                                                <span style="margin-left:5px;">
-                                                    @ve.DiemDi → @ve.DiemDen
-                                                </span>
-                                            </div>
+
+                                    <div class="route d-flex justify-content-between align-items-center">
+                                        <div class="dates">
+                                            <div>✈️ <strong>Khởi hành:</strong> @ve.GioKhoiHanh.ToString("dd/MM/yyyy HH:mm")</div>
+                                            <div>🛬 <strong>Hạ cánh:</strong> @ve.GioHaCanh.ToString("dd/MM/yyyy HH:mm")</div>
                                         </div>
-                                        <div class="hotel-highlights" style="margin-top:10px;">
-                                            <div>Khởi hành: @ve.GioKhoiHanh.ToString("dd/MM/yyyy HH:mm")</div>
-                                            <div>Hạ cánh: @ve.GioHaCanh.ToString("dd/MM/yyyy HH:mm")</div>
-                                        </div>
-                                        <div class="hotel-price" style="margin-top:10px;">
-                                            <strong>@ve.TongTien.ToString("#,##0") VNĐ</strong>
-                                        </div>
+                                    </div>
+                                    <div class="price text-success font-weight-bold">
+                                        <strong>@string.Format("{0:#,##0} VNĐ", ve.TongTien)</strong>
                                     </div>
                                 </div>
                             </div>
@@ -114,9 +104,8 @@
                 }
                 else
                 {
-                    <p class="text-center danger">Không có vé máy bay mới nào để hiển thị.</p>
+                    <p class="text-center text-danger">Không có vé máy bay mới nào để hiển thị.</p>
                 }
-
                 <div class="view-all text-center">
                     <a href="@Url.Action("DanhMucVeMayBay","VeMayBay")" class="btn btn-orange">Xem nhiều hơn</a>
                 </div><!-- end view-all -->

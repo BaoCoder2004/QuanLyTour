@@ -1,5 +1,112 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IPagedList<QuanLyTour.Models.VeMayBay.VeMayBayViewModel>
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+
 @{
+    ViewData["Title"] = "Tìm kiếm vé máy bay";
+    Layout = "~/Views/Shared/_Detail.cshtml";
 }
+
+<section class="innerpage-wrapper">
+    <div class="container">
+        <h3>Kết quả tìm kiếm cho: "<strong>@ViewBag.Keyword</strong>"</h3>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="row">
+                @foreach (var v in Model)
+                {
+                    <div class="col-sm-6 col-md-4">
+                        <a href="@Url.Action("ChiTietVeMayBay","VeMayBay", new { maVe = v.MaVe })"
+                           class="flight-link">
+                            <div class="simple-flight-card">
+                                <div class="route d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>@v.DiemDi</strong> ⇄ <strong>@v.DiemDen</strong>
+                                    </div>
+                                    <img src="@Url.Content($"~/hinhanh/{v.LogoUrl}")"
+                                         class="airline-logo"
+                                         alt="@v.TenHang" />
+                                </div>
+                                <div class="dates">
+                                    <small>✈️ @v.GioKhoiHanh.ToString("dd/MM/yyyy")</small><br />
+                                    <small>🛬 @v.GioHaCanh.ToString("dd/MM/yyyy")</small>
+                                </div>
+                                <div class="price text-success">
+                                    <strong>@v.TongTien.ToString("N0") VNĐ</strong>
+                                </div>
+                                <div class="action text-right">
+                                    <button class="btn btn-warning btn-sm">Xem</button>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+
+            <div class="text-center">
+                @Html.PagedListPager(
+                         Model,
+                         page => Url.Action("TimKiemVeMayBay", new { keyword = ViewBag.Keyword, page }),
+                         PagedListRenderOptions.Classic
+                         )
+            </div>
+        }
+        else
+        {
+            <p class="text-center text-danger">
+                Không tìm thấy vé máy bay nào cho từ khóa "<strong>@ViewBag.Keyword</strong>".
+            </p>
+        }
+    </div>
+</section>
+
+<style>
+    .flight-link {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+    }
+
+        .flight-link:hover {
+            text-decoration: none;
+        }
+
+    .simple-flight-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 20px;
+    }
+
+        .simple-flight-card .route {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .simple-flight-card .airline-logo {
+            max-height: 24px;
+        }
+
+        .simple-flight-card .dates {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .simple-flight-card .price {
+            font-size: 18px;
+            color: #28a745;
+            margin-bottom: 8px;
+            text-align: right;
+        }
+
+        .simple-flight-card .action .btn {
+            padding: 4px 12px;
+            font-size: 14px;
+        }
+</style>

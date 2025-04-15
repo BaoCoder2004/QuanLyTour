@@ -20,9 +20,9 @@ namespace QuanLyTour.Controllers
         }
 
         // Hiển thị danh sách vé máy bay đang còn (TrangThai = 1)
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            // Kiểm tra thông tin người dùng từ Session1
+            // Kiểm tra thông tin người dùng từ Session
             var tenNguoiDung = HttpContext.Session.GetString("TenNguoiDung");
             ViewBag.TenNguoiDung = tenNguoiDung;
 
@@ -31,7 +31,7 @@ namespace QuanLyTour.Controllers
             try
             {
                 using var connection = new SqlConnection(_connectionString);
-                connection.Open();
+                await connection.OpenAsync();
 
                 var sql = @"
             SELECT 
@@ -46,20 +46,17 @@ namespace QuanLyTour.Controllers
                 cb.GioKhoiHanh, 
                 cb.GioHaCanh,
                 hh.TenHang, 
-                hh.LogoUrl,
-                cb.CoTheDoiVe,
-                cb.CoTheHoanVe,
-                cb.PhiDoiVe,
-                cb.PhiHoanVe
+                hh.LogoUrl 
             FROM VeMayBay v
             JOIN ChuyenBay cb ON v.IdChuyenBay = cb.IdChuyenBay
             JOIN HangHangKhong hh ON cb.IdHangHangKhong = hh.Id
             WHERE v.TrangThai = 1
             ORDER BY cb.GioKhoiHanh";
 
+
                 using var command = new SqlCommand(sql, connection);
-                using var reader = command.ExecuteReader();
-                while (reader.Read())
+                using var reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
                 {
                     VeMayBaysNoiDia.Add(new VeMayBayViewModel
                     {
@@ -74,11 +71,7 @@ namespace QuanLyTour.Controllers
                         GioKhoiHanh = reader.GetDateTime(8),
                         GioHaCanh = reader.GetDateTime(9),
                         TenHang = reader.GetString(10),
-                        LogoUrl = reader.GetString(11),
-                        CoTheDoiVe = reader.GetBoolean(12),
-                        CoTheHoanVe = reader.GetBoolean(13),
-                        PhiDoiVe = reader.IsDBNull(14) ? null : reader.GetDecimal(14),
-                        PhiHoanVe = reader.IsDBNull(15) ? null : reader.GetDecimal(15)
+                        LogoUrl = reader.GetString(11)
                     });
                 }
             }
