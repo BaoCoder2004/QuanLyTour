@@ -390,3 +390,9 @@
 		min-width: 300px;
 	}
 }
+
+.pagination-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
