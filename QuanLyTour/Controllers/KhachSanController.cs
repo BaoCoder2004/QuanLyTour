@@ -257,7 +257,7 @@ namespace QuanLyTour.Controllers
                 SELECT t.MaKhachSan, t.TenKhachSan, t.MaLoaiKhachSan,t.SoNgay,t.DiaDiem, t.TrangThai, t.GiaKhachSan, t.HinhAnh1, l.TenLoaiKhachSan
                 FROM KhachSan t
                 INNER JOIN LoaiKhachSan l ON t.MaLoaiKhachSan = l.MaLoaiKhachSan
-                WHERE (TenKhachSan LIKE @Keyword)";
+                WHERE (DiaDiem LIKE @Keyword)";
 
                     using (var command = new SqlCommand(query, connection))
                     {
